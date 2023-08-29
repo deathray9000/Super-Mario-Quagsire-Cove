@@ -259,18 +259,19 @@ extern const Gfx transparent_star_seg3_sub_dl_body[];
 extern const Gfx transparent_star_seg3_dl_body[];
 
 // tree
-extern const GeoLayout bubbly_tree_geo[];
-extern const GeoLayout spiky_tree_geo[];
-extern const GeoLayout snow_tree_geo[];
-extern const GeoLayout palm_tree_geo[];
-extern const Gfx tree_seg3_dl_bubbly[];
-extern const Gfx tree_seg3_dl_bubbly_transparent[];
-extern const Gfx tree_seg3_dl_spiky[];
-extern const Gfx tree_seg3_dl_spiky_transparent[];
-extern const Gfx tree_seg3_dl_snowy_pine[];
-extern const Gfx tree_seg3_dl_snowy_pine_transparent[];
-extern const Gfx tree_seg3_dl_palm[];
-extern const Gfx tree_seg3_dl_palm_transparent[];
+extern const GeoLayout tree_geo[];
+extern Lights1 tree_sm64_leaves_lights;
+extern Lights1 tree_sm64_trunk_lights;
+extern u8 tree_sm64_leaves_rgba16[];
+extern u8 tree_sm64_trunk_rgba16[];
+extern Vtx tree_sm64_N64_Tree_mesh_layer_1_vtx_0[97];
+extern Gfx tree_sm64_N64_Tree_mesh_layer_1_tri_0[];
+extern Vtx tree_sm64_N64_Tree_mesh_layer_1_vtx_1[18];
+extern Gfx tree_sm64_N64_Tree_mesh_layer_1_tri_1[];
+extern Gfx mat_tree_sm64_leaves[];
+extern Gfx mat_tree_sm64_trunk[];
+extern Gfx tree_sm64_N64_Tree_mesh_layer_1[];
+extern Gfx tree_sm64_material_revert_render_settings[];
 
 // warp_pipe
 extern const GeoLayout warp_pipe_geo[];
@@ -287,11 +288,49 @@ extern const Gfx white_particle_dl[];
 
 // wooden_signpost
 extern const GeoLayout wooden_signpost_geo[];
-extern const Gfx wooden_signpost_seg3_dl_0302D9C8[];
-extern const Gfx wooden_signpost_seg3_dl_0302DA48[];
-extern const Gfx wooden_signpost_seg3_dl_0302DC40[];
-extern const Gfx wooden_signpost_seg3_dl_0302DCD0[];
-extern const Gfx wooden_signpost_seg3_dl_0302DD08[];
+extern Lights1 wooden_signpost_back_lights;
+extern Lights1 wooden_signpost_stone_lights;
+extern Lights1 wooden_signpost_front_lights;
+extern u8 wooden_signpost_wooden_signpost_back_rgba16_rgba16[];
+extern u8 wooden_signpost_wf_textures_08000_rgba16_rgba16[];
+extern u8 wooden_signpost_wooden_signpost_front_rgba16_rgba16[];
+extern Vtx wooden_signpost_base_mesh_layer_1_vtx_0[10];
+extern Gfx wooden_signpost_base_mesh_layer_1_tri_0[];
+extern Vtx wooden_signpost_base_mesh_layer_1_vtx_1[20];
+extern Gfx wooden_signpost_base_mesh_layer_1_tri_1[];
+extern Vtx wooden_signpost_sign_mesh_layer_1_vtx_0[28];
+extern Gfx wooden_signpost_sign_mesh_layer_1_tri_0[];
+extern Vtx wooden_signpost_sign_mesh_layer_1_vtx_1[4];
+extern Gfx wooden_signpost_sign_mesh_layer_1_tri_1[];
+extern Gfx mat_wooden_signpost_back[];
+extern Gfx mat_wooden_signpost_stone[];
+extern Gfx mat_wooden_signpost_front[];
+extern Gfx wooden_signpost_base_mesh_layer_1[];
+extern Gfx wooden_signpost_sign_mesh_layer_1[];
+extern Gfx wooden_signpost_material_revert_render_settings[];
 extern const Collision wooden_signpost_seg3_collision_0302DD80[];
+
+// broken_signpost
+extern const GeoLayout broken_signpost_geo[];
+extern Lights1 broken_signpost_back_lights;
+extern Lights1 broken_signpost_stone_lights;
+extern Lights1 broken_signpost_front_lights;
+extern u8 broken_signpost_wooden_signpost_back_rgba16_rgba16[];
+extern u8 broken_signpost_wf_textures_08000_rgba16_rgba16[];
+extern u8 broken_signpost_wooden_signpost_front_rgba16_rgba16[];
+extern Vtx broken_signpost_base_mesh_layer_1_vtx_0[10];
+extern Gfx broken_signpost_base_mesh_layer_1_tri_0[];
+extern Vtx broken_signpost_base_mesh_layer_1_vtx_1[20];
+extern Gfx broken_signpost_base_mesh_layer_1_tri_1[];
+extern Vtx broken_signpost_sign_mesh_layer_1_vtx_0[28];
+extern Gfx broken_signpost_sign_mesh_layer_1_tri_0[];
+extern Vtx broken_signpost_sign_mesh_layer_1_vtx_1[4];
+extern Gfx broken_signpost_sign_mesh_layer_1_tri_1[];
+extern Gfx mat_broken_signpost_back[];
+extern Gfx mat_broken_signpost_stone[];
+extern Gfx mat_broken_signpost_front[];
+extern Gfx broken_signpost_base_mesh_layer_1[];
+extern Gfx broken_signpost_sign_mesh_layer_1[];
+extern Gfx broken_signpost_material_revert_render_settings[];
 
 #endif

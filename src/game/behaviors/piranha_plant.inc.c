@@ -1,4 +1,3 @@
-
 /**
  * Behavior for bhvPiranhaPlant.
  * This controls Piranha Plants, which alternate between sleeping, attacking,
@@ -181,7 +180,7 @@ void piranha_plant_act_shrink_and_die(void) {
  * Wait for Mario to move far away, then respawn the Piranha Plant.
  */
 void piranha_plant_act_wait_to_respawn(void) {
-    if (o->oDistanceToMario > 1200.0f) {
+    if (FALSE) {
         o->oAction = PIRANHA_PLANT_ACT_RESPAWN;
     }
 }
@@ -318,4 +317,132 @@ void bhv_piranha_plant_loop(void) {
 
 #endif
     o->oInteractStatus = INT_STATUS_NONE;
+}
+
+static struct ObjectHitbox sPlanter = {
+    /* interactType:      */ INTERACT_DAMAGE,
+    /* downOffset:        */ 0,
+    /* damageOrCoinValue: */ 2,
+    /* health:            */ 0,
+    /* numLootCoins:      */ 2,
+    /* radius:            */ 100,
+    /* height:            */ 80,
+    /* hurtboxRadius:     */ 120,
+    /* hurtboxHeight:     */ 90,
+};
+
+void bhv_normal_piranha_init(void) {
+    obj_set_hitbox(o, &sPlanter);
+    cur_obj_init_animation(0);
+};
+
+void bhv_normal_piranha_loop(void) {
+    s16 Turn = o->oFaceAngleYaw - (o->oAngleToMario + 0x4000);
+    s8 Timer = o->oVelY;
+
+    if (o->oVelX == 1) {
+        switch (Timer) {
+            case 0:
+                cur_obj_init_animation(1);
+                break;
+            case 10:
+                cur_obj_play_sound_2(SOUND_OBJ2_PIRANHA_PLANT_BITE);
+                break;
+            case 21:
+                cur_obj_play_sound_2(SOUND_OBJ2_PIRANHA_PLANT_BITE);
+                cur_obj_init_animation(2);
+                break;
+            case 28:
+                o->oPosX -= 18 * coss(o->oFaceAngleYaw);
+                o->oPosZ += 18 * sins(o->oFaceAngleYaw);
+                break;
+            case 30:
+                o->oPosX -= 18 * coss(o->oFaceAngleYaw);
+                o->oPosZ += 18 * sins(o->oFaceAngleYaw);
+                break;
+            case 32:
+                o->oPosX -= 18 * coss(o->oFaceAngleYaw);
+                o->oPosZ += 18 * sins(o->oFaceAngleYaw);
+                break;
+            case 34:
+                o->oPosX -= 18 * coss(o->oFaceAngleYaw);
+                o->oPosZ += 18 * sins(o->oFaceAngleYaw);
+                break;
+            case 36:
+                cur_obj_play_sound_2(SOUND_OBJ2_PIRANHA_PLANT_BITE);
+                break;
+            case 53:
+                o->oVelX = 1;
+                cur_obj_init_animation(3);
+                o->oPosX = o->oHomeX;
+                o->oPosZ = o->oHomeZ;
+                break;
+            case 74:
+                o->oVelX = 0;
+                o->oVelY = 0;
+                cur_obj_init_animation(0);
+        }
+        o->oVelY++;
+    } else if (o->oVelX == 2) {
+        if (o->oTimer <= 3) {
+            o->header.gfx.scale[1] -= 0.2;
+        }
+        o->oVelY++;
+
+        if (o->oVelY == 20) {
+            obj_spawn_loot_yellow_coins(o, o->oNumLootCoins, 5.0f);
+            obj_mark_for_deletion(o);
+        }
+    } else if (o->oVelX == 3) {
+        if (o->oTimer >= 40) {
+            o->header.gfx.scale[0] -= 0.04;
+            o->header.gfx.scale[1] -= 0.04;
+            o->header.gfx.scale[2] -= 0.04;
+        }
+
+        if (o->oTimer == 40) {
+            cur_obj_play_sound_2(SOUND_OBJ_ENEMY_DEFEAT_SHRINK);
+        }
+
+        if (o->oTimer == 65) {
+            obj_spawn_loot_yellow_coins(o, o->oNumLootCoins, 5.0f);
+            obj_mark_for_deletion(o);
+        }
+    } else {
+        if (o->oDistanceToMario < 800.0f) {
+            o->oVelY += 1;
+
+            if(Turn < -600) {
+                o->oFaceAngleYaw += 750;
+            } else if(Turn > 600) {
+                o->oFaceAngleYaw -= 750;
+            } else {
+                o->oFaceAngleYaw = o->oAngleToMario + 0x4000;
+            }
+
+            if (o->oVelY >= 120 && Turn >= -0x1000 && Turn <= 0x1000) {
+                o->oVelX = 1;
+                o->oVelY = 0;
+            }
+        } else {
+            o->oVelY = 0;
+        }
+    }
+
+    if (o->oInteractStatus & INT_STATUS_HIT_MINE) {
+        cur_obj_init_animation(4);
+        o->oVelX = 3;
+        o->oVelY = 0;
+        o->oTimer = 0;
+        o->oInteractStatus = 1;
+    } else if (o->oInteractStatus & INT_STATUS_WAS_ATTACKED) {
+        o->oVelX = 2;
+        o->oVelY = 0;
+        o->oTimer = 0;
+        o->oInteractStatus = 1;
+    } else if (o->oInteractStatus == 1) {
+        o->oInteractStatus = 1;
+    } else {
+        o->oInteractStatus = 0;
+    }
 }

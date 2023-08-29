@@ -540,5 +540,12 @@ extern const BehaviorScript bhvEndBirds1[];
 extern const BehaviorScript bhvEndBirds2[];
 extern const BehaviorScript bhvIntroScene[];
 extern const BehaviorScript bhvUnusedFakeStar[];
+extern const BehaviorScript bhvNoteBlock[];
+extern const BehaviorScript bhvWooper[];
+extern const BehaviorScript bhvPropeller[];
+extern const BehaviorScript bhvBrokenSign[];
+extern const BehaviorScript bhvCheckpoint_Flag[];
+extern const BehaviorScript bhvNormalPiranha[];
+extern const BehaviorScript bhvOGpipe[];
 
 #endif // BEHAVIOR_DATA_H

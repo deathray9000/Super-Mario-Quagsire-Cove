@@ -1,0 +1,5 @@
+#include "anim_idle.inc.c"
+#include "anim_buildup.inc.c"
+#include "anim_lunge.inc.c"
+#include "anim_return.inc.c"
+#include "anim_death.inc.c"

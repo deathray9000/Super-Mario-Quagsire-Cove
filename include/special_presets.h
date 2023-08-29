@@ -84,7 +84,7 @@ static struct SpecialPreset SpecialObjectPresets[] = {
     { 0x76, SPTYPE_YROT_NO_PARAMS    , 0x00, MODEL_LEVEL_GEOMETRY_14                 , bhvStaticObject                  },
     { 0x77, SPTYPE_YROT_NO_PARAMS    , 0x00, MODEL_LEVEL_GEOMETRY_15                 , bhvStaticObject                  },
     { 0x78, SPTYPE_YROT_NO_PARAMS    , 0x00, MODEL_LEVEL_GEOMETRY_16                 , bhvStaticObject                  },
-    { 0x79, SPTYPE_NO_YROT_OR_PARAMS , 0x00, MODEL_BOB_BUBBLY_TREE                   , bhvTree                          },
+    { 0x79, SPTYPE_NO_YROT_OR_PARAMS , 0x00, MODEL_TREE                              , bhvTree                          },
     { 0x7A, SPTYPE_NO_YROT_OR_PARAMS , 0x00, MODEL_COURTYARD_SPIKY_TREE              , bhvTree                          },
     { 0x7B, SPTYPE_NO_YROT_OR_PARAMS , 0x00, MODEL_CCM_SNOW_TREE                     , bhvTree                          },
     { 0x7C, SPTYPE_NO_YROT_OR_PARAMS , 0x00, MODEL_UNKNOWN_TREE_1A                   , bhvTree                          },

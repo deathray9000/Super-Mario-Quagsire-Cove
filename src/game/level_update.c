@@ -1,3 +1,4 @@
+#include "texscroll.h"
 #include <ultra64.h>
 
 #include "sm64.h"
@@ -580,7 +581,11 @@ s16 music_unchanged_through_warp(s16 arg) {
  * Set the current warp type and destination level/area/node.
  */
 void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags) {
-    if (destWarpNode >= WARP_NODE_CREDITS_MIN) {
+    if (gMarioState->isDead == TRUE) {
+        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
+        gMarioState->numCoins = 0;
+        gHudDisplay.coins = 0;
+    } else if (destWarpNode >= WARP_NODE_CREDITS_MIN) {
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
     } else if (destLevel != gCurrLevelNum) {
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
@@ -730,7 +735,12 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 }
 #endif
                 sDelayedWarpTimer = 48;
-                sSourceWarpNodeId = WARP_NODE_DEATH;
+                if (gWarpCheckpoint.courseNum != COURSE_NONE && gSavedCourseNum == gLevelToCourseNumTable[(gCurrLevelNum) - 1]
+                                                                                    && gWarpCheckpoint.actNum == gCurrActNum) {
+                    sSourceWarpNodeId = gWarpCheckpoint.warpNode;
+                } else {
+                    sSourceWarpNodeId = WARP_NODE_DEATH;
+                }
                 play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, sDelayedWarpTimer, 0x00, 0x00, 0x00);
                 play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
 #ifdef PREVENT_DEATH_LOOP
@@ -930,7 +940,7 @@ void update_hud_values(void) {
         }
 #else
         if (gMarioState->numCoins > 999) {
-            gMarioState->numLives = (s8) 999; //! Wrong variable
+            gMarioState->numCoins = (s8) 999; //! Wrong variable
         }
 #endif
 
@@ -1140,7 +1150,7 @@ s32 update_level(void) {
 
     switch (sCurrPlayMode) {
         case PLAY_MODE_NORMAL:
-            changeLevel = play_mode_normal();
+            changeLevel = play_mode_normal(); scroll_textures();
             break;
         case PLAY_MODE_PAUSED:
             changeLevel = play_mode_paused();
@@ -1313,8 +1323,8 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
-
-    if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE) {
+	
+    if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE || gMarioState->isDead == TRUE) {
         return FALSE;
     }
 

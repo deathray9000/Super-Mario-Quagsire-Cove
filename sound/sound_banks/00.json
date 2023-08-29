@@ -39,6 +39,26 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "05_heavy_landing"
+        },
+        "inst6": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "06_woop_cry"
+        },
+        "inst7": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "07_woop_talk"
+        },
+        "inst8": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "08_noteblock"
+        },
+        "inst9": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "09_checkpoint"
         }
     },
     "instrument_list": [
@@ -47,6 +67,10 @@
         "inst2",
         "inst3",
         "inst4",
-        "inst5"
+        "inst5",
+        "inst6",
+        "inst7",
+        "inst8",
+        "inst9"
     ]
 }

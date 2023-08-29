@@ -14,6 +14,7 @@
 #include "memory.h"
 #include "behavior_data.h"
 #include "rumble_init.h"
+#include "game_init.h"
 
 #include "config.h"
 
@@ -751,6 +752,32 @@ void tilt_body_ground_shell(struct MarioState *m, s16 startYaw) {
     marioObj->header.gfx.pos[1] += 45.0f;
 }
 
+s32 act_ground_spin(struct MarioState *m) {
+    play_mario_sound(m, SOUND_MARIO_PUNCH_YAH, 0);
+    set_mario_animation(m, MARIO_ANIM_TWIRL);
+
+    if (m->actionTimer == 1) {
+        m->marioObj->hitboxRadius = 57;
+    }
+
+    if (m->actionTimer < 8) {
+        m->marioObj->header.gfx.angle[1] += 0x2000;
+        m->particleFlags |= PARTICLE_SPARKLES;
+    } else {
+        m->marioObj->hitboxRadius = 37;
+        return set_mario_action(m, ACT_WALKING, 0);
+    }
+
+    m->actionTimer += 1;
+    perform_ground_step(m);
+
+    if (m->forwardVel > 15) {
+        mario_set_forward_vel(m, 15.0f);
+    }
+
+    return FALSE;
+}
+
 s32 act_walking(struct MarioState *m) {
     Vec3f startPos;
     s16 startYaw = m->faceAngle[1];
@@ -759,6 +786,10 @@ s32 act_walking(struct MarioState *m) {
 
     if (should_begin_sliding(m)) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
+    }
+
+    if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        return set_mario_action(m, ACT_GROUND_SPIN, 0);
     }
 
     if (m->input & INPUT_FIRST_PERSON) {
@@ -949,6 +980,10 @@ s32 act_turning_around(struct MarioState *m) {
         return set_jumping_action(m, ACT_SIDE_FLIP, 0);
     }
 
+    if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        return set_mario_action(m, ACT_GROUND_SPIN, 0);
+    }
+
     if (m->input & INPUT_IDLE) {
         return set_mario_action(m, ACT_BRAKING, 0);
     }
@@ -998,6 +1033,10 @@ s32 act_finish_turning_around(struct MarioState *m) {
 
     if (m->input & INPUT_A_PRESSED) {
         return set_jumping_action(m, ACT_SIDE_FLIP, 0);
+    }
+
+    if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        return set_mario_action(m, ACT_GROUND_SPIN, 0);
     }
 
 #ifdef RESET_DIRECTION_WHEN_TURNING_AROUND
@@ -1075,6 +1114,10 @@ s32 act_decelerating(struct MarioState *m) {
 
         if (m->input & INPUT_A_PRESSED) {
             return set_jump_from_landing(m);
+        }
+
+        if (gPlayer1Controller->buttonPressed & L_TRIG) {
+            return set_mario_action(m, ACT_GROUND_SPIN, 0);
         }
 
         if (check_ground_dive_or_punch(m)) {
@@ -1961,6 +2004,7 @@ s32 mario_execute_moving_action(struct MarioState *m) {
     /* clang-format off */
     switch (m->action) {
         case ACT_WALKING:                  cancel = act_walking(m);                  break;
+        case ACT_GROUND_SPIN:              cancel = act_ground_spin(m);              break;
         case ACT_HOLD_WALKING:             cancel = act_hold_walking(m);             break;
         case ACT_HOLD_HEAVY_WALKING:       cancel = act_hold_heavy_walking(m);       break;
         case ACT_TURNING_AROUND:           cancel = act_turning_around(m);           break;

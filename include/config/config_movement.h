@@ -36,7 +36,7 @@
 #define FALL_DAMAGE_HEIGHT_SMALL 1150.0f
 
 // Fall height for double fall damage. Vanilla is 3000.0f.
-#define FALL_DAMAGE_HEIGHT_LARGE 3000.0f
+#define FALL_DAMAGE_HEIGHT_LARGE 2500.0f
 
 // Disables Mario getting stuck in snow and sand when falling.
 // #define NO_GETTING_BURIED
@@ -45,7 +45,7 @@
 // #define HANDS_FREE_HOLDING_FIX
 
 // Prevents Mario from losing his cap.
-// #define PREVENT_CAP_LOSS
+#define PREVENT_CAP_LOSS
 
 // Enables Platform Displacement 2, also known as momentum patch. Makes Mario keep the momemtum from moving platforms.
 #define PLATFORM_DISPLACEMENT_2
@@ -72,7 +72,7 @@
 #define FIRSTY_LAST_FRAME 1
 
 // The maximum angle the player can wall kick, in degrees. 0..90. To allow 45 degree wall kicks, you must supply `46` to allow 45 and under.
-#define WALL_KICK_DEGREES 45
+#define WALL_KICK_DEGREES 46
 
 // This is vanilla behavior, disable it to allow ledge grabbing regardless of floor pitch.
 // #define LEDGE_GRABS_CHECK_SLOPE_ANGLE

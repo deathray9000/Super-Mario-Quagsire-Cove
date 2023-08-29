@@ -349,11 +349,16 @@ Gfx *geo_mirror_mario_set_alpha(s32 callContext, struct GraphNode *node, UNUSED 
  */
 Gfx *geo_switch_mario_stand_run(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) {
     struct GraphNodeSwitchCase *switchCase = (struct GraphNodeSwitchCase *) node;
-    struct MarioBodyState *bodyState = &gBodyStates[switchCase->numCases];
+    // struct MarioBodyState *bodyState = &gBodyStates[switchCase->numCases];
+    struct MarioState *m = &gMarioStates[0];
 
     if (callContext == GEO_CONTEXT_RENDER) {
         // assign result. 0 if moving, 1 if stationary.
-        switchCase->selectedCase = ((bodyState->action & ACT_FLAG_STATIONARY) == 0);
+        if (m->flags & MARIO_PROPELLER) {
+            switchCase->selectedCase = 1;
+        } else {
+            switchCase->selectedCase = 0;
+        }
     }
     return NULL;
 }
@@ -536,6 +541,17 @@ Gfx *geo_mario_rotate_wing_cap_wings(s32 callContext, struct GraphNode *node, UN
         }
         rotNode->rotation[0] = (asGenerated->parameter & 1) ? rotX : -rotX;
     }
+    return NULL;
+}
+
+Gfx *geo_propeller_spin(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) {
+
+    if (callContext == GEO_CONTEXT_RENDER) {
+        struct GraphNodeRotation *rotNode = (struct GraphNodeRotation *) node->next;
+
+        rotNode->rotation[0] = (((gAreaUpdateCounter & 0xF) << 12) + 1.0f) * 1.0f;
+    }
+    
     return NULL;
 }
 

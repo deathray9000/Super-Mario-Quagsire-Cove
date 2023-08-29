@@ -417,6 +417,41 @@ s32 act_disappeared(struct MarioState *m) {
     return FALSE;
 }
 
+s32 act_enter_pipe(struct MarioState *m) {
+
+    if (m->prevAction == ACT_CROUCHING) {
+        set_mario_animation(m, MARIO_ANIM_STOP_CROUCHING);
+        if (m->actionState == 10) {
+            play_sound(SOUND_MENU_ENTER_PIPE, m->marioObj->header.gfx.cameraToObject);
+            m->marioObj->header.gfx.pos[1] -= 10;
+        }
+    
+        if (m->actionState > 10) {
+            m->marioObj->header.gfx.pos[1] -= 10;
+        }
+
+        if (m->actionState >= 25) {
+            set_mario_action(m, ACT_DISAPPEARED, m->actionArg);
+        }
+        m->actionState += 1;
+    } else {
+        if (m->actionState == 0) {
+            play_sound(SOUND_MENU_ENTER_PIPE, m->marioObj->header.gfx.cameraToObject);
+            m->marioObj->header.gfx.pos[1] -= 20;
+        }
+    
+        if (m->actionState > 0) {
+            m->marioObj->header.gfx.pos[1] -= 20;
+        }
+
+        if (m->actionState >= 10) {
+            set_mario_action(m, ACT_DISAPPEARED, m->actionArg);
+        }
+        m->actionState += 1;
+    }
+    return FALSE;
+}
+
 s32 act_reading_automatic_dialog(struct MarioState *m) {
     u32 actionArg;
 
@@ -2700,6 +2735,7 @@ s32 mario_execute_cutscene_action(struct MarioState *m) {
         case ACT_BUTT_STUCK_IN_GROUND:       cancel = act_butt_stuck_in_ground(m);       break;
         case ACT_FEET_STUCK_IN_GROUND:       cancel = act_feet_stuck_in_ground(m);       break;
         case ACT_PUTTING_ON_CAP:             cancel = act_putting_on_cap(m);             break;
+        case ACT_ENTER_PIPE:                 cancel = act_enter_pipe(m);                 break;
     }
     /* clang-format on */
 

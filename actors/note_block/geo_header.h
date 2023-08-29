@@ -1,0 +1,13 @@
+extern const GeoLayout note_block_geo[];
+extern Lights1 note_block_f3d_material_lights;
+extern Lights1 note_block_f3d_material_001_lights;
+extern u8 note_block_note_block_side_rgba16[];
+extern u8 note_block_note_block_other_rgba16[];
+extern Vtx note_block_Cube_mesh_layer_1_vtx_0[16];
+extern Gfx note_block_Cube_mesh_layer_1_tri_0[];
+extern Vtx note_block_Cube_mesh_layer_1_vtx_1[8];
+extern Gfx note_block_Cube_mesh_layer_1_tri_1[];
+extern Gfx mat_note_block_f3d_material[];
+extern Gfx mat_note_block_f3d_material_001[];
+extern Gfx note_block_Cube_mesh_layer_1[];
+extern Gfx note_block_material_revert_render_settings[];

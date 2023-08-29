@@ -16,11 +16,16 @@
 #include "sound_init.h"
 #include "surface_terrains.h"
 #include "rumble_init.h"
+#include "game_init.h"
 
 s32 check_common_idle_cancels(struct MarioState *m) {
     mario_drop_held_object(m);
     if (m->floor->normal.y < COS73) {
         return mario_push_off_steep_floor(m, ACT_FREEFALL, 0);
+    }
+
+    if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        return set_mario_action(m, ACT_GROUND_SPIN, 0);
     }
 
     if (m->input & INPUT_STOMPED) {
@@ -245,7 +250,7 @@ s32 act_sleeping(struct MarioState *m) {
     s32 animFrame;
     if (m->input
         & (INPUT_NONZERO_ANALOG | INPUT_A_PRESSED | INPUT_OFF_FLOOR | INPUT_ABOVE_SLIDE
-           | INPUT_FIRST_PERSON | INPUT_STOMPED | INPUT_B_PRESSED | INPUT_Z_PRESSED)) {
+           | INPUT_FIRST_PERSON | INPUT_STOMPED | INPUT_B_PRESSED | INPUT_Z_PRESSED | (gPlayer1Controller->buttonPressed & L_TRIG))) {
         return set_mario_action(m, ACT_WAKING_UP, m->actionState);
     }
 
@@ -351,7 +356,7 @@ s32 act_shivering(struct MarioState *m) {
 
     if (m->input
         & (INPUT_NONZERO_ANALOG | INPUT_A_PRESSED | INPUT_OFF_FLOOR | INPUT_ABOVE_SLIDE
-           | INPUT_FIRST_PERSON | INPUT_STOMPED | INPUT_B_PRESSED | INPUT_Z_PRESSED)) {
+           | INPUT_FIRST_PERSON | INPUT_STOMPED | INPUT_B_PRESSED | INPUT_Z_PRESSED | (gPlayer1Controller->buttonPressed & L_TRIG))) {
         m->actionState = ACT_STATE_SHIVERING_RETURN_TO_IDLE;
     }
 
@@ -1019,6 +1024,12 @@ s32 act_ground_pound_land(struct MarioState *m) {
 
     if (m->input & INPUT_ABOVE_SLIDE) {
         return set_mario_action(m, ACT_BUTT_SLIDE, 0);
+    }
+
+    if (m->input & INPUT_A_PRESSED) { 
+       set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+       m->vel[1] += 10;
+       return FALSE;
     }
 
     landing_step(m, MARIO_ANIM_GROUND_POUND_LANDING, ACT_BUTT_SLIDE_STOP);

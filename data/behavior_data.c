@@ -2475,6 +2475,7 @@ const BehaviorScript bhvPiranhaPlant[] = {
     SET_INT(oIntangibleTimer,   0),
     SET_INT(oDamageOrCoinValue, 3),
     SET_INT(oNumLootCoins,      5),
+    DROP_TO_FLOOR(),
     SPAWN_CHILD(/*Model*/ MODEL_BUBBLE, /*Behavior*/ bhvPiranhaPlantBubble),
     SET_FLOAT(oDrawingDistance, 2000),
     SET_HOME(),
@@ -3168,7 +3169,7 @@ const BehaviorScript bhvFloorTrapInCastle[] = {
 
 const BehaviorScript bhvTree[] = {
     BEGIN(OBJ_LIST_POLELIKE),
-    BILLBOARD(),
+    DROP_TO_FLOOR(),
     OR_LONG(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_OPACITY_FROM_CAMERA_DIST)),
     SET_INT(oInteractType, INTERACT_POLE),
     SET_HITBOX(/*Radius*/ 80, /*Height*/ 500),
@@ -3775,13 +3776,13 @@ const BehaviorScript bhvJetStream[] = {
 
 const BehaviorScript bhvMessagePanel[] = {
     BEGIN(OBJ_LIST_SURFACE),
-    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
     LOAD_COLLISION_DATA(wooden_signpost_seg3_collision_0302DD80),
     SET_FLOAT(oCollisionDistance, 150),
     SET_INTERACT_TYPE(INTERACT_TEXT),
     SET_INT(oInteractionSubtype, INT_SUBTYPE_SIGN),
     DROP_TO_FLOOR(),
-    SET_HITBOX(/*Radius*/ 150, /*Height*/ 80),
+    SET_HITBOX(/*Radius*/ 150, /*Height*/ 200),
     SET_INT(oWoodenPostTotalMarioAngle, 0),
     BEGIN_LOOP(),
         SET_INT(oIntangibleTimer, 0),
@@ -6087,4 +6088,82 @@ const BehaviorScript bhvIntroScene[] = {
     END_LOOP(),
 };
 
+const BehaviorScript bhvNoteBlock[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(note_block_collision),
+    CALL_NATIVE(bhv_note_block_init),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_note_block_loop),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
 
+const BehaviorScript bhvWooper[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    SET_INT(oInteractionSubtype, INT_SUBTYPE_NPC),
+    LOAD_ANIMATIONS(oAnimations, Wooper_anims),
+    DROP_TO_FLOOR(),
+    CALL_NATIVE(bhv_wooper_init),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_wooper_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvPropeller[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    CALL_NATIVE(bhv_propeller_init),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_propeller_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvBrokenSign[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    CALL_NATIVE(bhv_BrokenSign_init),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_BrokenSign_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvCheckpoint_Flag[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    // LOAD_ANIMATIONS(oAnimations, Checkpoint_Flag_anims),
+    DROP_TO_FLOOR(),
+    CALL_NATIVE(bhv_Checkpoint_Flag_init),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_Checkpoint_Flag_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvNormalPiranha[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_ANIMATIONS(oAnimations, m_piranha_anims),
+    SET_HOME(),
+    DROP_TO_FLOOR(),
+    CALL_NATIVE(bhv_normal_piranha_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_normal_piranha_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvOGpipe[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, (OBJ_FLAG_SET_FACE_YAW_TO_MOVE_YAW | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_COLLISION_DATA(og_pipe_collision),
+    CALL_NATIVE(bhv_og_pipe_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_og_pipe_loop),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};

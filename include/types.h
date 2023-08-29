@@ -493,6 +493,7 @@ struct MarioState {
            Angle moveYaw;
            Angle ceilYaw;
            Angle wallYaw;
+           u8  propel : 1;
     // -- HackerSM64 MarioState fields end --
 };
 

@@ -1,0 +1,17 @@
+extern const GeoLayout og_pipe_geo[];
+extern Lights1 og_pipe_side_lights;
+extern Lights1 og_pipe_top_lights;
+extern Lights1 og_pipe_inside_lights;
+extern u8 og_pipe_warp_pipe_side_custom_rgba16_rgba16[];
+extern u8 og_pipe_warp_pipe_top_rgba16_rgba16[];
+extern Vtx og_pipe_model_mesh_layer_1_vtx_0[40];
+extern Gfx og_pipe_model_mesh_layer_1_tri_0[];
+extern Vtx og_pipe_model_mesh_layer_1_vtx_1[44];
+extern Gfx og_pipe_model_mesh_layer_1_tri_1[];
+extern Vtx og_pipe_model_mesh_layer_1_vtx_2[8];
+extern Gfx og_pipe_model_mesh_layer_1_tri_2[];
+extern Gfx mat_og_pipe_side[];
+extern Gfx mat_og_pipe_top[];
+extern Gfx mat_og_pipe_inside[];
+extern Gfx og_pipe_model_mesh_layer_1[];
+extern Gfx og_pipe_material_revert_render_settings[];

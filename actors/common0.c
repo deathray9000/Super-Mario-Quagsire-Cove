@@ -79,3 +79,31 @@ UNUSED static const u64 binid_17 = 17;
 
 #include "koopa_shell/model.inc.c"
 UNUSED static const u64 binid_18 = 18;
+
+#include "note_block/model.inc.c"
+#include "note_block/collision.inc.c"
+UNUSED static const u64 binid_19 = 19;
+
+#include "wooper/model.inc.c"
+#include "wooper/anims/data.inc.c"
+#include "wooper/anims/table.inc.c"
+UNUSED static const u64 binid_21 = 20;
+
+#include "propeller/model.inc.c"
+#include "propeller/anims/data.inc.c"
+#include "propeller/anims/table.inc.c"
+UNUSED static const u64 binid_20 = 21;
+
+#include "Checkpoint_Flag/model.inc.c"
+#include "Checkpoint_Flag/anims/data.inc.c"
+#include "Checkpoint_Flag/anims/table.inc.c"
+UNUSED static const u64 binid_22 = 22;
+
+#include "m_piranha/model.inc.c"
+#include "m_piranha/anims/data.inc.c"
+#include "m_piranha/anims/table.inc.c"
+UNUSED static const u64 binid_23 = 23;
+
+#include "og_pipe/model.inc.c"
+#include "og_pipe/collision.inc.c"
+UNUSED static const u64 binid_24 = 24;

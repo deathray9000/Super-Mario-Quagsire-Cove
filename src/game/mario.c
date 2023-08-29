@@ -842,6 +842,10 @@ u32 set_mario_action_airborne(struct MarioState *m, u32 action, u32 actionArg) {
         case ACT_JUMP_KICK:
             m->vel[1] = 20.0f;
             break;
+
+        case ACT_WALL_SLIDE:
+            m->vel[1] = 0.0f;
+            break;
     }
 
     m->peakHeight = m->pos[1];
@@ -1147,6 +1151,13 @@ s32 set_water_plunge_action(struct MarioState *m) {
         set_camera_mode(m->area->camera, WATER_SURFACE_CAMERA_MODE, 1);
     }
 
+   if (m->action == ACT_GROUND_POUND) {
+        m->particleFlags |= PARTICLE_PLUNGE_BUBBLE | PARTICLE_WATER_SPLASH;
+        play_sound(SOUND_ACTION_WATER_PLUNGE, m->marioObj->header.gfx.cameraToObject);
+        m->vel[1] = -20.0f;
+        return set_mario_action(m, ACT_WATER_POUND, 0);
+    }
+
     return set_mario_action(m, ACT_WATER_PLUNGE, 0);
 }
 
@@ -1219,6 +1230,7 @@ void update_mario_button_inputs(struct MarioState *m) {
         if (m->controller->buttonPressed & B_BUTTON) m->input |= INPUT_B_PRESSED;
         if (m->controller->buttonDown    & Z_TRIG  ) m->input |= INPUT_Z_DOWN;
         if (m->controller->buttonPressed & Z_TRIG  ) m->input |= INPUT_Z_PRESSED;
+        
     }
 
     if (m->input & INPUT_A_PRESSED) {
@@ -1373,8 +1385,22 @@ void update_mario_inputs(struct MarioState *m) {
 void set_submerged_cam_preset_and_spawn_bubbles(struct MarioState *m) {
     f32 heightBelowWater;
     s16 camPreset;
+#ifdef REONUCAM
+    // skip if not submerged
+    if ((m->action & ACT_GROUP_MASK) != ACT_GROUP_SUBMERGED) return;
 
+    // R Trigger toggles camera mode override
+    if ((gPlayer1Controller->buttonPressed & R_TRIG) && (m->action & ACT_FLAG_SWIMMING)) {
+        gReonucamState.waterCamOverride ^= 1;
+    }
+
+    // If override, set mode to 8 dir. Otherwise, use normal water processing
+    if (gReonucamState.waterCamOverride) {
+        if (m->area->camera->mode != CAMERA_MODE_8_DIRECTIONS) set_camera_mode(m->area->camera, CAMERA_MODE_8_DIRECTIONS, 1);
+    } else {
+#else
     if ((m->action & ACT_GROUP_MASK) == ACT_GROUP_SUBMERGED) {
+#endif
         heightBelowWater = (f32)(m->waterLevel - 80) - m->pos[1];
         camPreset = m->area->camera->mode;
 
@@ -1449,8 +1475,13 @@ void update_mario_health(struct MarioState *m) {
             m->healCounter--;
         }
         if (m->hurtCounter > 0) {
-            m->health -= 0x40;
-            m->hurtCounter--;
+            if (m->flags & MARIO_PROPELLER) {
+                m->flags &= ~MARIO_PROPELLER;
+                m->hurtCounter = 0;
+            } else {
+                m->health -= 0x40;
+                m->hurtCounter--;
+            }
         }
 
         if (m->health > 0x880) m->health = 0x880;
@@ -1477,7 +1508,8 @@ void update_mario_health(struct MarioState *m) {
 
 #ifdef BREATH_METER
 void update_mario_breath(struct MarioState *m) {
-    if (m->breath >= 0x100 && m->health >= 0x100) {
+//    if (m->breath >= 0x100 && m->health >= 0x100) {
+    if (m->health >= 0x100) {
         if (m->pos[1] < (m->waterLevel - 140) && !(m->flags & MARIO_METAL_CAP) && !(m->action & ACT_FLAG_INTANGIBLE)) {
             m->breath--;
             if (m->breath < 0x300) {
@@ -1503,9 +1535,9 @@ void update_mario_breath(struct MarioState *m) {
         }
         if (m->breath > 0x880) m->breath = 0x880;
         if (m->breath < 0x100) {
-            // If breath is "zero", set health to "zero"
+            // If breath is "zero", decrease health until dead
             m->breath =  0xFF;
-            m->health =  0xFF;
+            m->health -=  16;
         }
     }
 }
@@ -1795,10 +1827,8 @@ void init_mario(void) {
 
     gMarioState->invincTimer = 0;
 
-    if (save_file_get_flags()
-        & (SAVE_FLAG_CAP_ON_GROUND | SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI
-           | SAVE_FLAG_CAP_ON_MR_BLIZZARD)) {
-        gMarioState->flags = 0;
+   if (gMarioState->flags & MARIO_PROPELLER && gMarioState->isDead == FALSE) {
+        gMarioState->flags = (MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD | MARIO_PROPELLER);
     } else {
         gMarioState->flags = (MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD);
     }
@@ -1888,4 +1918,21 @@ void init_mario_from_save_file(void) {
 
     gHudDisplay.coins = 0;
     gHudDisplay.wedges = 8;
+}
+
+u32 check_powerup_state(struct MarioState *m) {
+    if (!(m->action == ACT_WALL_KICK_AIR || m->action == ACT_GROUND_POUND || m->action == ACT_FREEFALL)) {
+        m->propel = TRUE;
+    }
+
+    if (gPlayer1Controller->buttonPressed & L_TRIG && !(m->input & INPUT_B_DOWN)) {    
+        if (m->flags & MARIO_PROPELLER && m->propel == TRUE) {
+            play_sound(SOUND_PROPELLER, m->marioObj->header.gfx.cameraToObject); 
+            m->vel[1] = 80.0f;
+            m->propel = FALSE;
+            return set_mario_action(m, ACT_TWIRLING, 0);
+        }
+    }
+    
+    return FALSE;
 }

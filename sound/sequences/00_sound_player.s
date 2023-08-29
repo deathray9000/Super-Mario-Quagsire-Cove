@@ -355,6 +355,51 @@ sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
 sound_ref .sound_action_jump_default
+sound_ref .sound_action_wooper_attacked
+sound_ref .sound_action_wooper_talking
+sound_ref .sound_action_noteblock
+sound_ref .sound_action_checkpoint
+
+ .sound_action_checkpoint:
+  chan_setbank 0
+  chan_setinstr 9
+  chan_setlayer 0, .layer_298F
+  chan_end
+
+  .layer_298F:
+  layer_note1 40, 0x5c, 157
+  layer_end
+
+
+ .sound_action_noteblock:
+  chan_setbank 0
+  chan_setinstr 8
+  chan_setlayer 0, .layer_297F
+  chan_end
+
+  .layer_297F:
+  layer_note1 41, 0x3c, 127
+  layer_end
+
+ .sound_action_wooper_attacked:
+  chan_setbank 0
+  chan_setinstr 6
+  chan_setlayer 0, .layer_296D
+  chan_end
+
+  .layer_296D:
+  layer_note1 41, 0x3c, 127
+  layer_end
+
+   .sound_action_wooper_talking:
+  chan_setbank 0
+  chan_setinstr 7
+  chan_setlayer 0, .layer_296E
+  chan_end
+
+  .layer_296E:
+  layer_note1 41, 0x3c, 127
+  layer_end
 
 .sound_action_jump_default:
 chan_setbank 1
@@ -2039,6 +2084,17 @@ sound_ref .sound_peach_something_special
 sound_ref .sound_peach_bake_a_cake
 sound_ref .sound_peach_for_mario
 sound_ref .sound_peach_mario2
+sound_ref .sound_propeller
+
+.sound_propeller:
+chan_setbank 8
+  chan_setinstr 27
+  chan_setlayer 0, .layer_296F
+  chan_end
+
+  .layer_296F:
+  layer_note1 41, 0x3c, 127
+  layer_end
 
 .sound_mario_jump_hoo:
 chan_setbank 8

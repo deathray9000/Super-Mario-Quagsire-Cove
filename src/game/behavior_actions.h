@@ -549,6 +549,24 @@ void bhv_intro_scene_loop(void);
 void bhv_dust_smoke_loop(void);
 void bhv_yoshi_loop(void);
 void bhv_volcano_trap_loop(void);
+void bhv_note_block_init(void);
+void bhv_note_block_loop(void);
+void bhv_wooper_loop(void);
+void bhv_wooper_init(void);
+void bhv_propeller_init(void);
+void bhv_propeller_loop(void);
+void bhv_BrokenSign_init(void);
+void bhv_BrokenSign_loop(void);
+void bhv_Checkpoint_Flag_init(void);
+void bhv_Checkpoint_Flag_loop(void);
+void bhv_normal_piranha_init(void);
+void bhv_normal_piranha_loop(void);
+void bhv_og_pipe_init(void);
+void bhv_og_pipe_loop(void);
+
+Gfx *geo_flag_wave(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
+
+Gfx *geo_prop_blade(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
 
 Gfx *geo_move_mario_part_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
 

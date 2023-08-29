@@ -384,10 +384,18 @@ struct MacroPreset MacroObjectPresets[] = {
     {bhvFloomba,                        MODEL_GOOMBA,                       GOOMBA_SIZE_HUGE   }, // macro_huge_floomba
     {bhvFloomba,                        MODEL_GOOMBA,                       GOOMBA_SIZE_TINY   }, // macro_tiny_floomba
     {bhvFloombaTripletSpawner,          MODEL_NONE,                         0}, // macro_floomba_triplet_spawner
-    {bhvFloombaTripletSpawner,          MODEL_NONE,                         8}  // macro_floomba_quintuplet_spawner - unused
+    {bhvFloombaTripletSpawner,          MODEL_NONE,                         8},  // macro_floomba_quintuplet_spawner - unused
 #else
-    {bhvYellowCoin,                     MODEL_YELLOW_COIN,                  0}  // macro_empty_365
+    {bhvYellowCoin,                     MODEL_YELLOW_COIN,                  0},  // macro_empty_365
 #endif
-};
+    {bhvNoteBlock, MODEL_NOTE_BLOCK, 0}, //macro_note_block
+    {bhvWooper, MODEL_WOOPER, 0}, //macro_note_block
+    {bhvPropeller, MODEL_PROPELLER, 0}, //macro_propeller
+    {bhvBrokenSign, MODEL_BROKEN_SIGNPOST, 0}, // macro_broken_signpost
+    {bhvCheckpoint_Flag, MODEL_CHECKPOINT_FLAG, 0}, // macro_checkpoint_flag
+    {bhvNormalPiranha, MODEL_M_PIRANHA, 0}, //macro_propeller
+    {bhvOGpipe, MODEL_OG_PIPE, 0} //macro_propeller
+
+    };
 
 #endif // MACRO_PRESETS_H
