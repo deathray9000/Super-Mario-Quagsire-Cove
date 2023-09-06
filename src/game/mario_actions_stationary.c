@@ -24,10 +24,6 @@ s32 check_common_idle_cancels(struct MarioState *m) {
         return mario_push_off_steep_floor(m, ACT_FREEFALL, 0);
     }
 
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        return set_mario_action(m, ACT_GROUND_SPIN, 0);
-    }
-
     if (m->input & INPUT_STOMPED) {
         return set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
     }

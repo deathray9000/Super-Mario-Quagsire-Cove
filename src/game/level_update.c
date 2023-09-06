@@ -583,8 +583,13 @@ s16 music_unchanged_through_warp(s16 arg) {
 void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags) {
     if (gMarioState->isDead == TRUE) {
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
-        gMarioState->numCoins = 0;
-        gHudDisplay.coins = 0;
+        gMarioState->numCoins -= 10;
+        if (gMarioState->numCoins < 0) {
+            gMarioState->numCoins = 0; 
+            gHudDisplay.coins = 0;
+        } else {
+            gHudDisplay.coins -= 10;
+        }
     } else if (destWarpNode >= WARP_NODE_CREDITS_MIN) {
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
     } else if (destLevel != gCurrLevelNum) {
@@ -903,7 +908,7 @@ void update_hud_values(void) {
 #ifdef BREATH_METER
         s16 numBreathWedges = gMarioState->breath > 0 ? gMarioState->breath >> 8 : 0;
 #endif
-        COND_BIT((gCurrCourseNum >= COURSE_MIN), gHudDisplay.flags, HUD_DISPLAY_FLAG_COIN_COUNT);
+        COND_BIT(TRUE, gHudDisplay.flags, HUD_DISPLAY_FLAG_COIN_COUNT);
 
         if (gHudDisplay.coins < gMarioState->numCoins) {
             if (gGlobalTimer & 1) {
@@ -939,8 +944,9 @@ void update_hud_values(void) {
             gHudDisplay.coins = 999;
         }
 #else
-        if (gMarioState->numCoins > 999) {
-            gMarioState->numCoins = (s8) 999; //! Wrong variable
+        if (gMarioState->numCoins > 9999) {
+            gMarioState->numCoins = 9999;
+            gHudDisplay.coins = 9999;
         }
 #endif
 
@@ -1329,8 +1335,6 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     }
 
     if (gCurrLevelNum != LEVEL_BOWSER_1 && gCurrLevelNum != LEVEL_BOWSER_2 && gCurrLevelNum != LEVEL_BOWSER_3) {
-        gMarioState->numCoins = 0;
-        gHudDisplay.coins = 0;
         gCurrCourseStarFlags =
             save_file_get_star_flags(gCurrSaveFileNum - 1, COURSE_NUM_TO_INDEX(gCurrCourseNum));
     }

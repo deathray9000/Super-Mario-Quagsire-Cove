@@ -339,12 +339,6 @@ static s32 act_water_idle(struct MarioState *m) {
         return set_mario_action(m, ACT_WATER_POUND, 0);
     }
 
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        set_mario_animation(m, MARIO_ANIM_A_POSE);
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
-    }
-
     if (m->input & INPUT_A_PRESSED) {
         return set_mario_action(m, ACT_BREASTSTROKE, 0);
     }
@@ -393,12 +387,6 @@ static s32 act_water_action_end(struct MarioState *m) {
 
     if (m->input & INPUT_Z_PRESSED) {
         return set_mario_action(m, ACT_WATER_POUND, 0);
-    }
-
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        set_mario_animation(m, MARIO_ANIM_A_POSE);
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
     }
 
     common_idle_step(m, MARIO_ANIM_WATER_ACTION_END, 0);
@@ -543,12 +531,6 @@ static s32 act_breaststroke(struct MarioState *m) {
         return set_mario_action(m, ACT_WATER_POUND, 0);
     }
 
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        set_mario_animation(m, MARIO_ANIM_A_POSE);
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
-    }
-
     if (++m->actionTimer == 14) {
         return set_mario_action(m, ACT_FLUTTER_KICK, 0);
     }
@@ -609,12 +591,6 @@ static s32 act_swimming_end(struct MarioState *m) {
         return set_mario_action(m, ACT_WATER_POUND, 0);
     }
 
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        set_mario_animation(m, MARIO_ANIM_A_POSE);
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
-    }
-
     if (m->actionTimer >= 15) {
         return set_mario_action(m, ACT_WATER_ACTION_END, 0);
     }
@@ -654,12 +630,6 @@ static s32 act_flutter_kick(struct MarioState *m) {
 
     if (m->input & INPUT_Z_PRESSED) {
         return set_mario_action(m, ACT_WATER_POUND, 0);
-    }
-
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        set_mario_animation(m, MARIO_ANIM_A_POSE);
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
     }
 
     if (!(m->input & INPUT_A_DOWN)) {
@@ -1550,11 +1520,6 @@ s32 act_water_pound(struct MarioState *m) {
         return FALSE;
     }
 
-    if (gPlayer1Controller->buttonDown & L_TRIG) {
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
-    }
-
     play_sound_if_no_flag(m, SOUND_ACTION_THROW, MARIO_ACTION_SOUND_PLAYED);
 
     if (m->actionState == 0 && m->prevAction != ACT_GROUND_POUND) {
@@ -1644,12 +1609,6 @@ static s32 act_water_pound_jump(struct MarioState *m) {
         }
     } 
 
-    if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        set_mario_animation(m, MARIO_ANIM_A_POSE);
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
-    }
-
     if (m->input & INPUT_Z_PRESSED) {
         return set_mario_action(m, ACT_WATER_POUND, 0);
     }
@@ -1664,42 +1623,6 @@ static s32 act_water_pound_jump(struct MarioState *m) {
     if (m->vel[1] <= 2) {
         return set_mario_action(m, ACT_WATER_IDLE, 0);
     }
-    return FALSE;
-}
-
-static s32 act_water_spin(struct MarioState *m) {
-
-    if (m->actionTimer == 0) {
-        m->forwardVel = 50.0f;
-    } else if (m->actionTimer == 27){
-        if (m->input & INPUT_A_DOWN) {
-            return set_mario_action(m, ACT_BREASTSTROKE, 0);
-        } else {
-            return set_mario_action(m, ACT_WATER_IDLE, 0);
-        }
-    }
-    
-    if (m->actionTimer >= 10) {
-        m->forwardVel -= 1.0f;
-        set_mario_animation(m, MARIO_ANIM_WATER_SPIN_END);
-    } else if (m->actionTimer <= 6) {
-        m->particleFlags |= PARTICLE_SPARKLES;
-        set_mario_animation(m, MARIO_ANIM_WATER_SPIN);
-    } else {
-        set_mario_animation(m, MARIO_ANIM_WATER_SPIN);
-    }
-
-    if (m->input & INPUT_Z_PRESSED && m->actionTimer >= 6) {
-        return set_mario_action(m, ACT_WATER_POUND, 0);
-    }
-
-    if (m->actionTimer >= 6 && gPlayer1Controller->buttonPressed & L_TRIG) {
-        set_mario_action(m, ACT_WATER_SPIN, 0);
-        return FALSE;
-    }
-
-    m->actionTimer++;
-    common_swimming_step(m, 300);
     return FALSE;
 }
 
@@ -1797,7 +1720,6 @@ s32 mario_execute_submerged_action(struct MarioState *m) {
         case ACT_WATER_POUND:                cancel = act_water_pound(m);                break;
         case ACT_WATER_POUND_LAND:           cancel = act_water_pound_land(m);           break;
         case ACT_WATER_POUND_JUMP:           cancel = act_water_pound_jump(m);           break;
-        case ACT_WATER_SPIN:                 cancel = act_water_spin(m);                 break;
         case ACT_TORPEDO:                    cancel = act_torpedo(m);                    break;
     }
     /* clang-format on */

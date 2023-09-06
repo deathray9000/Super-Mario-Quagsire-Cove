@@ -403,6 +403,8 @@
 #define MODEL_CYAN_FISH                   0x67        // cyan_fish_geo
 #define MODEL_WATER_RING                  0x68        // water_ring_geo
 #define MODEL_SKEETER                     0x69        // skeeter_geo
+#define MODEL_SWOOP                       0x6A        // swoop_geo
+#define MODEL_SCUTTLEBUG                  0x6B        // scuttlebug_geo
 
 // group 14
 #define MODEL_PIRANHA_PLANT               0x64        // piranha_plant_geo
@@ -423,9 +425,7 @@
 #define MODEL_BIG_CHILL_BULLY             0x65        // chilly_chief_big_geo
 #define MODEL_MONEYBAG                    0x66        // moneybag_geo
 
-// group 17
-#define MODEL_SWOOP                       0x64        // swoop_geo
-#define MODEL_SCUTTLEBUG                  0x65        // scuttlebug_geo
+// group 17 original
 #define MODEL_MR_I_IRIS                   0x66        // mr_i_iris_geo
 #define MODEL_MR_I_BODY                   0x67        // mr_i_geo
 #define MODEL_MR_I MODEL_MR_I_BODY // backwards compatibility

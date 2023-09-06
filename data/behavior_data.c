@@ -3678,6 +3678,7 @@ const BehaviorScript bhvBlueCoinJumping[] = {
 const BehaviorScript bhvSeaweed[] = {
     BEGIN(OBJ_LIST_LEVEL),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    DROP_TO_FLOOR(),
     LOAD_ANIMATIONS(oAnimations, seaweed_seg6_anims_0600A4D4),
     ANIMATE(SEAWEED_ANIM_WAVE),
     CALL_NATIVE(bhv_seaweed_init),

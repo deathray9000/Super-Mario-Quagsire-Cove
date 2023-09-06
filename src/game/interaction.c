@@ -170,9 +170,7 @@ u32 determine_interaction(struct MarioState *m, struct Object *obj) {
     u32 action = m->action;
 
     if (action & ACT_FLAG_ATTACKING) {
-        if (action == ACT_GROUND_SPIN || action == ACT_SPIN || action == ACT_WATER_SPIN) {
-                interaction = INT_PUNCH;
-        } else if (action == ACT_PUNCHING || action == ACT_MOVE_PUNCHING || action == ACT_JUMP_KICK) {
+        if (action == ACT_PUNCHING || action == ACT_MOVE_PUNCHING || action == ACT_JUMP_KICK) {
             s16 dYawToObject = mario_obj_angle_to_object(m, obj) - m->faceAngle[1];
 
             if (m->flags & MARIO_PUNCHING) {
@@ -648,8 +646,6 @@ void bounce_back_from_attack(struct MarioState *m, u32 interaction) {
 
         if (m->action & ACT_FLAG_AIR) {
             mario_set_forward_vel(m, -16.0f);
-        } else if (m->action != ACT_GROUND_SPIN) {
-            mario_set_forward_vel(m, -48.0f);
         }
 
         set_camera_shake_from_hit(SHAKE_ATTACK);
@@ -1571,8 +1567,9 @@ u32 check_object_grab_mario(struct MarioState *m, UNUSED u32 interactType, struc
 }
 
 u32 interact_pole(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
+    struct Object *marioObj = m->marioObj;
     s32 actionId = m->action & ACT_ID_MASK;
-    if (actionId >= ACT_GROUP_AIRBORNE && actionId < (ACT_HOLD_JUMP & ACT_ID_MASK)) {
+    if (actionId >= ACT_GROUP_AIRBORNE && actionId < (ACT_HOLD_JUMP & ACT_ID_MASK) && GET_BPARAM3(obj->oBehParams) == 0) {
         if (!(m->prevAction & ACT_FLAG_ON_POLE) || m->usedObj != obj) {
 #if defined(VERSION_SH) || defined(SHINDOU_POLES)
             f32 velConv = m->forwardVel; // conserve the velocity.
@@ -1580,7 +1577,7 @@ u32 interact_pole(struct MarioState *m, UNUSED u32 interactType, struct Object *
             u32 lowSpeed;
 #else
             u32 lowSpeed = (m->forwardVel <= 10.0f);
-            struct Object *marioObj = m->marioObj;
+            
 #endif
 
             mario_stop_riding_and_holding(m);
@@ -1612,6 +1609,18 @@ u32 interact_pole(struct MarioState *m, UNUSED u32 interactType, struct Object *
             queue_rumble_data(5, 80);
 #endif
             return set_mario_action(m, ACT_GRAB_POLE_FAST, 0);
+        }
+    } else if (GET_BPARAM3(obj->oBehParams) == 1) {
+        if (absf(m->faceAngle[1] - obj->oFaceAngleYaw) > DEGREES(45)){
+            return FALSE;
+        } else if (!(m->action == ACT_CLIMBING_LADDER || m->prevAction == ACT_CLIMBING_LADDER)) {
+            m->usedObj = obj;
+            marioObj->oMarioPolePos =  ((m->pos[1] - obj->oPosY) < 0) ? -obj->hitboxDownOffset : (m->pos[1] - obj->oPosY);
+            m->vel[1] = 0.0f;
+            m->forwardVel = 0.0f;
+            m->faceAngle[1] = obj->oFaceAngleYaw;
+            vec3s_set(marioObj->header.gfx.angle, 0, m->faceAngle[1], 0);
+            set_mario_action(m, ACT_CLIMBING_LADDER, 0);
         }
     }
 

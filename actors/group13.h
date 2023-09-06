@@ -100,4 +100,44 @@ extern const GeoLayout water_ring_geo[];
 extern const Gfx water_ring_seg6_dl_06013AC0[];
 extern const struct Animation *const water_ring_seg6_anims_06013F7C[];
 
+// swoop
+extern const GeoLayout swoop_geo[];
+extern const Gfx swoop_seg6_dl_060065B8[];
+extern const Gfx swoop_seg6_dl_060066F8[];
+extern const Gfx swoop_seg6_dl_06006758[];
+extern const Gfx swoop_seg6_dl_06006848[];
+extern const Gfx swoop_seg6_dl_06006880[];
+extern const Gfx swoop_seg6_dl_06006A10[];
+extern const Gfx swoop_seg6_dl_06006A68[];
+extern const Gfx swoop_seg6_dl_06006A88[];
+extern const Gfx swoop_seg6_dl_06006B98[];
+extern const Gfx swoop_seg6_dl_06006BD0[];
+extern const Gfx swoop_seg6_dl_06006CC8[];
+extern const Gfx swoop_seg6_dl_06006D00[];
+extern const struct Animation *const swoop_seg6_anims_060070D0[];
+
+// scuttlebug
+extern const GeoLayout scuttlebug_geo[];
+extern const Gfx scuttlebug_seg6_dl_06013988[];
+extern const Gfx scuttlebug_seg6_dl_060139C0[];
+extern const Gfx scuttlebug_seg6_dl_060139F8[];
+extern const Gfx scuttlebug_seg6_dl_06013AB0[];
+extern const Gfx scuttlebug_seg6_dl_06013AE8[];
+extern const Gfx scuttlebug_seg6_dl_06013B98[];
+extern const Gfx scuttlebug_seg6_dl_06013BD0[];
+extern const Gfx scuttlebug_seg6_dl_06013C80[];
+extern const Gfx scuttlebug_seg6_dl_06013CB8[];
+extern const Gfx scuttlebug_seg6_dl_06013D68[];
+extern const Gfx scuttlebug_seg6_dl_06013DA0[];
+extern const Gfx scuttlebug_seg6_dl_06013FC8[];
+extern const Gfx scuttlebug_seg6_dl_060140F0[];
+extern const Gfx scuttlebug_seg6_dl_06014150[];
+extern const Gfx scuttlebug_seg6_dl_06014188[];
+extern const Gfx scuttlebug_seg6_dl_06014238[];
+extern const Gfx scuttlebug_seg6_dl_06014270[];
+extern const Gfx scuttlebug_seg6_dl_06014338[];
+extern const Gfx scuttlebug_seg6_dl_06014378[];
+extern const struct Animation *const scuttlebug_seg6_anims_06015064[];
+
+
 #endif

@@ -36,3 +36,13 @@ UNUSED static const u64 binid_5 = 5;
 
 #include "treasure_chest/model.inc.c"
 UNUSED static const u64 binid_6 = 6;
+
+#include "swoop/model.inc.c"
+#include "swoop/anims/data.inc.c"
+#include "swoop/anims/table.inc.c"
+UNUSED static const u64 binid_7 = 7;
+
+#include "scuttlebug/model.inc.c"
+#include "scuttlebug/anims/data.inc.c"
+#include "scuttlebug/anims/table.inc.c"
+UNUSED static const u64 binid_8 = 8;
