@@ -1,6 +1,32 @@
 // king_bobomb.inc.c
 
 // Copy of geo_update_projectile_pos_from_parent
+
+/*Requirements*/
+/*
+-start: stand in middle untill talked to
+-Next: jump back x amount
+- attack: throw 3 volleys of 3-4 bubbombs twards mario
+***sub requirements bobombs: explode on contact with ground, mario can hit midair to throw back to king
+- attack 2: throw big bomb
+***sub requirement: mario can punch bubomb back to king bob
+if hit by big bomb get stunned and able to be thrown once thrown jump to random pos
+else jump to random location
+return to attack 1
+*/
+Bool8 FindNearestBomb(){
+    f32 dist;
+    struct Object *mine = cur_obj_find_nearest_object_with_behavior(bhvBobomb, &dist);
+    if(mine == NULL){
+        return FALSE;
+    }
+    if(dist < 800){
+        return TRUE;        
+    }
+
+}
+
+
 Gfx *geo_update_held_mario_pos(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx) {
     if (callContext == GEO_CONTEXT_RENDER) {
         Mat4 mtx2;
@@ -217,6 +243,29 @@ void king_bobomb_act_stop_music(void) { // act 8
     }
 }
 
+void king_bobomb_act_jump(void){
+    o->oAction = KING_BOBOMB_ACT_JUMP
+}
+
+void king_bobomb_act_throw_bombs(void){
+    o->oFaceAngleYaw = o->oAngleToMario;
+    if (o->oTimer == 60 || o->oTimer == 120 || o->oTimer == 180){
+        struct Object* bomb1 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
+        struct Object* bomb2 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
+        struct Object* bomb3 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
+        bomb1->oFaceAngleYaw = o->oFaceAngleYaw - 30;
+        bomb2->oFaceAngleYaw = o->oFaceAngleYaw;
+        bomb3->oFaceAngleYaw = o->oFaceAngleYaw + 30;
+        
+    }
+    if(o->oTimer == 260){
+        o->oAction = KING_BOBOMB_ACT_JUMP;
+    }
+
+    o->oTimer++;
+
+}
+
 void king_bobomb_act_been_thrown(void) { // act 4
     if (o->oPosY - o->oHomeY > -100.0f) { // not thrown off hill
         if (o->oMoveFlags & OBJ_MOVE_LANDED) {
@@ -322,6 +371,8 @@ ObjActionFunc sKingBobombActions[] = {
     king_bobomb_act_hit_ground,
     king_bobomb_act_death,
     king_bobomb_act_stop_music,
+    king_bobomb_act_throw_bombs,
+    king_bobomb_act_jump
 };
 
 struct SoundState sKingBobombSoundStates[] = {
@@ -360,9 +411,10 @@ void king_bobomb_move(void) {
 
 void bhv_king_bobomb_loop(void) {
     o->oInteractionSubtype |= INT_SUBTYPE_GRABS_MARIO;
-
+    o->oAction = KING_BOBOMB_ACT_THROW_BOMBS;
     switch (o->oHeldState) {
         case HELD_FREE:
+
             king_bobomb_move();
             break;
         case HELD_HELD:
