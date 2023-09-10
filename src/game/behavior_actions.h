@@ -274,6 +274,8 @@ void bhv_bobomb_loop(void);
 void bhv_bobomb_fuse_smoke_init(void);
 void bhv_bobomb_buddy_init(void);
 void bhv_bobomb_buddy_loop(void);
+void bhv_bomb_init(void);
+void bhv_bomb_loop(void);
 void bhv_cannon_closed_init(void);
 void bhv_cannon_closed_loop(void);
 void bhv_whirlpool_init(void);

@@ -394,7 +394,8 @@ struct MacroPreset MacroObjectPresets[] = {
     {bhvBrokenSign, MODEL_BROKEN_SIGNPOST, 0}, // macro_broken_signpost
     {bhvCheckpoint_Flag, MODEL_CHECKPOINT_FLAG, 0}, // macro_checkpoint_flag
     {bhvNormalPiranha, MODEL_M_PIRANHA, 0}, //macro_propeller
-    {bhvOGpipe, MODEL_OG_PIPE, 0} //macro_propeller
+    {bhvOGpipe, MODEL_OG_PIPE, 0}, //macro_propeller
+    {bhvBomb, MODEL_BLACK_BOBOMB, 0}, // macro_bomb
 
     };
 

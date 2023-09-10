@@ -821,3 +821,4 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/broken_signpost.inc.c"
 #include "behaviors/Checkpoint_Flag.inc.c"
 #include "behaviors/og_pipe.inc.c"
+#include "behaviors/bomb.inc.c"

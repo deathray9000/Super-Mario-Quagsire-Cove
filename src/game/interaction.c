@@ -750,6 +750,8 @@ u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *
             o->oInteractStatus = 3;
         }
 
+    } else if (o->behavior == segmented_to_virtual(bhvBomb)) {
+            o->oInteractStatus = 1;
     } else {
         m->numCoins += o->oDamageOrCoinValue;
         m->healCounter += 4 * o->oDamageOrCoinValue;

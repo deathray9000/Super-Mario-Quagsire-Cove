@@ -171,7 +171,7 @@ void king_bobomb_act_activate(void) { // act 1
     o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x200);
 
     if (o->oDistanceToMario < 2500.0f) {
-        o->oAction = KING_BOBOMB_ACT_ACTIVE;
+        o->oAction = KING_BOBOMB_ACT_THROW_BOMBS;
     }
 
     if (mario_is_far_below_object(1200.0f)) {
@@ -244,18 +244,18 @@ void king_bobomb_act_stop_music(void) { // act 8
 }
 
 void king_bobomb_act_jump(void){
-    o->oAction = KING_BOBOMB_ACT_JUMP
+    o->oAction = KING_BOBOMB_ACT_JUMP;
 }
 
 void king_bobomb_act_throw_bombs(void){
     o->oFaceAngleYaw = o->oAngleToMario;
     if (o->oTimer == 60 || o->oTimer == 120 || o->oTimer == 180){
-        struct Object* bomb1 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
-        struct Object* bomb2 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
-        struct Object* bomb3 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
-        bomb1->oFaceAngleYaw = o->oFaceAngleYaw - 30;
-        bomb2->oFaceAngleYaw = o->oFaceAngleYaw;
-        bomb3->oFaceAngleYaw = o->oFaceAngleYaw + 30;
+        struct Object *bomb1 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
+        struct Object *bomb2 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
+        struct Object *bomb3 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
+        bomb1->oMoveAngleYaw = o->oMoveAngleYaw - DEGREES(30);
+        bomb2->oMoveAngleYaw = o->oMoveAngleYaw;
+        bomb3->oMoveAngleYaw = o->oMoveAngleYaw + DEGREES(30);
         
     }
     if(o->oTimer == 260){
