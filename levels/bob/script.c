@@ -74,7 +74,7 @@ const LevelScript level_bob_entry[] = {
 		OBJECT(MODEL_BLUE_COIN, -2186, 623, 4444, 0, 0, 0, (1 << 16), bhvHiddenBlueCoin),
 		OBJECT(MODEL_BLUE_COIN, -2186, 623, 4644, 0, 0, 0, (1 << 16), bhvHiddenBlueCoin),
 		OBJECT(MODEL_EXCLAMATION_BOX, -3914, -300, -169, 0, 0, 0, (2 << 16), bhvExclamationBox),
-		OBJECT(MODEL_KING_BOBOMB, -1745, 424, -1993, 0, -90, 0, 0, bhvKingBobomb),
+		OBJECT(MODEL_KING_BOBOMB, 2660, -2564, 41, 0, -90, 0, 0, bhvKingBobomb),
 		OBJECT(MODEL_EXCLAMATION_BOX, -4053, -300, -169, 0, 0, 0, (1 << 16), bhvExclamationBox),
 		OBJECT(MODEL_NOTE_BLOCK, -2974, -393, -169, 0, 0, 0, 0x7E , bhvNoteBlock),
 		OBJECT(MODEL_NOTE_BLOCK, -3801, -1348, 807, 0, 0, 0, 0x7E , bhvNoteBlock),

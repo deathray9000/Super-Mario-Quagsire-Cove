@@ -17,8 +17,6 @@ void bhv_bomb_init(void) {
     o->oGravity = 2.5f;
     o->oVelY = 50;
     o->oPosY += 20;
-    o->oForwardVel = (o->oDistanceToMario / 1050.0f);
-    
 }
 
 void bhv_bomb_loop(void) {
@@ -36,11 +34,14 @@ void bhv_bomb_loop(void) {
         }
     }
 
+    if (o->oTimer == 1) {
+        o->oForwardVel = (o->oDistanceToMario / 37.0f);
+    }
     if (!(7 & o->oTimer)) {
         spawn_object(o, MODEL_SMOKE, bhvBobombFuseSmoke);
     }
 
     //cur_obj_play_sound_1(SOUND_AIR_BOBOMB_LIT_FUSE);
 
-    o->oTimer++;
+    //o->oTimer++;
 }

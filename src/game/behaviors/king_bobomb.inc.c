@@ -248,8 +248,8 @@ void king_bobomb_act_jump(void){
 }
 
 void king_bobomb_act_throw_bombs(void){
-    o->oFaceAngleYaw = o->oAngleToMario;
-    if (o->oTimer == 60 || o->oTimer == 120 || o->oTimer == 180){
+    o->oMoveAngleYaw = o->oAngleToMario;
+    if (o->oTimer == 30 || o->oTimer == 60 || o->oTimer == 90){
         struct Object *bomb1 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
         struct Object *bomb2 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
         struct Object *bomb3 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
@@ -262,7 +262,7 @@ void king_bobomb_act_throw_bombs(void){
         o->oAction = KING_BOBOMB_ACT_JUMP;
     }
 
-    o->oTimer++;
+    //o->oTimer++;
 
 }
 
