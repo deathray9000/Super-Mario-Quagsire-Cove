@@ -751,7 +751,15 @@ u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *
         }
 
     } else if (o->behavior == segmented_to_virtual(bhvBomb)) {
-            o->oInteractStatus = 1;
+            u32 interaction = determine_interaction(m, o);
+            if (interaction == INT_KICK || interaction == INT_PUNCH || interaction == INT_FAST_ATTACK_OR_SHELL || 
+            interaction == INT_SLIDE_KICK || interaction == INT_TRIP) {
+                o->oMoveAngleYaw = m->faceAngle[1];
+                o->oInteractStatus = 2;
+                o->oHomeX += m->forwardVel;
+            } else {
+                o->oInteractStatus = 1;
+            }
     } else {
         m->numCoins += o->oDamageOrCoinValue;
         m->healCounter += 4 * o->oDamageOrCoinValue;

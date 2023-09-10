@@ -257,12 +257,13 @@ void king_bobomb_act_throw_bombs(void){
         bomb2->oMoveAngleYaw = o->oMoveAngleYaw;
         bomb3->oMoveAngleYaw = o->oMoveAngleYaw + DEGREES(30);
         
-    }
-    if(o->oTimer == 260){
+    } else if (o->oTimer == 120){
+        struct Object *bomb4 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
+        bomb4->oBehParams = 1;
+    } else if (o->oTimer == 240) {
         o->oAction = KING_BOBOMB_ACT_JUMP;
     }
 
-    //o->oTimer++;
 
 }
 
