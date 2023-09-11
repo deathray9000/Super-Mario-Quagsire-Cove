@@ -16,14 +16,15 @@ return to attack 1
 */
 Bool8 FindNearestBomb(){
     f32 dist;
-    struct Object *mine = cur_obj_find_nearest_object_with_behavior(bhvBobomb, &dist);
+    struct Object *mine = cur_obj_find_nearest_object_with_behavior(bhvBomb, &dist);
     if(mine == NULL){
         return FALSE;
     }
-    if(dist < 800){
+    if(dist < 200 && mine->oInteractStatus == 2){
+        mine->oInteractStatus = 1;
         return TRUE;        
     }
-
+    return FALSE;
 }
 
 
@@ -73,7 +74,12 @@ s32 mario_is_far_below_object(f32 min) {
 
 void king_bobomb_act_active(void) { // act 2
     cur_obj_become_tangible();
+    if (cur_obj_check_grabbed_mario()) {
+        o->oAction = KING_BOBOMB_ACT_GRABBED_MARIO;
+    }
 
+    o->oAction = KING_BOBOMB_ACT_JUMP;
+    /*
     if (o->oPosY - o->oHomeY < -100.0f) { // Thrown off hill
         o->oAction = KING_BOBOMB_ACT_RETURN_HOME;
         cur_obj_become_intangible();
@@ -112,6 +118,8 @@ void king_bobomb_act_active(void) { // act 2
         o->oAction = KING_BOBOMB_ACT_INACTIVE;
         stop_background_music(SEQUENCE_ARGS(4, SEQ_EVENT_BOSS));
     }
+    */
+    
 }
 
 void king_bobomb_act_grabbed_mario(void) { // act 3
@@ -168,7 +176,7 @@ void king_bobomb_act_activate(void) { // act 1
 
     cur_obj_init_animation_with_sound(KING_BOBOMB_ANIM_WALKING);
 
-    o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x200);
+    //o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x200);
 
     if (o->oDistanceToMario < 2500.0f) {
         o->oAction = KING_BOBOMB_ACT_THROW_BOMBS;
@@ -210,7 +218,7 @@ void king_bobomb_act_hit_ground(void) { // act 6
             cur_obj_become_intangible();
         }
     } else {
-        cur_obj_init_animation_with_sound(KING_BOBOMB_ANIM_WALKING);
+        cur_obj_init_animation_with_sound(KING_BOBOMB_ANIM_IDLE);
 
         if (cur_obj_rotate_yaw_toward(o->oAngleToMario, 0x800)) {
             o->oAction = KING_BOBOMB_ACT_ACTIVE;
@@ -244,12 +252,32 @@ void king_bobomb_act_stop_music(void) { // act 8
 }
 
 void king_bobomb_act_jump(void){
-    o->oAction = KING_BOBOMB_ACT_JUMP;
+    int radius = 1500;
+    if(o->oTimer == 0){
+        o->oKingBobombOldPosX = o->oPosX;
+        o->oKingBobombOldPosZ = o->oPosZ;
+        
+    }
+    if (cur_obj_check_grabbed_mario()) {
+        cur_obj_init_animation_and_extend_if_at_end(KING_BOBOMB_ANIM_JUMP);
+        o->oAction = KING_BOBOMB_ACT_GRABBED_MARIO;
+    }
+    
+    o->oPosX = (o->oKingBobombOldPosX*(1-2*(o->oTimer/100.0f)))+(o->oHomeX + sinf(o->oBuoyancy)*radius)*2*(o->oTimer/100.0f);
+    o->oPosZ = (o->oKingBobombOldPosZ*(1-2*(o->oTimer/100.0f)))+(o->oHomeZ + cosf(o->oBuoyancy)*radius)*2*(o->oTimer/100.0f);
+    o->oPosY = o->oHomeY + (25-((0.2 * o->oTimer-5)*(0.2 * o->oTimer-5)))*20;
+
+    if(o->oTimer == 50){
+        o->oAction = KING_BOBOMB_ACT_THROW_BOMBS;
+        cur_obj_init_animation_with_sound(KING_BOBOMB_ANIM_T_POSE);
+    }
+    
 }
 
 void king_bobomb_act_throw_bombs(void){
     o->oMoveAngleYaw = o->oAngleToMario;
     if (o->oTimer == 30 || o->oTimer == 60 || o->oTimer == 90){
+        cur_obj_init_animation_and_extend_if_at_end(KING_BOBOMB_ANIM_THROW_MARIO);
         struct Object *bomb1 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
         struct Object *bomb2 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
         struct Object *bomb3 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
@@ -260,10 +288,17 @@ void king_bobomb_act_throw_bombs(void){
     } else if (o->oTimer == 120){
         struct Object *bomb4 = spawn_object(o, MODEL_BLACK_BOBOMB,bhvBomb);
         bomb4->oBehParams = 1;
-    } else if (o->oTimer == 240) {
+    } else if (o->oTimer == 280) {
+        o->oBuoyancy = o->oPosX+o->oPosZ;
         o->oAction = KING_BOBOMB_ACT_JUMP;
     }
-
+    if(o->oDistanceToMario < 500){
+        o->oBuoyancy += 3;
+        o->oAction = KING_BOBOMB_ACT_JUMP;
+    }
+    if (cur_obj_check_grabbed_mario()) {
+        o->oAction = KING_BOBOMB_ACT_GRABBED_MARIO;
+    }
 
 }
 
@@ -392,16 +427,22 @@ struct SoundState sKingBobombSoundStates[] = {
 };
 
 void king_bobomb_move(void) {
-    cur_obj_update_floor_and_walls();
-
-    if (!o->oKingBobombIsJumping) {
-        cur_obj_move_standard(-78);
-    } else {
-        cur_obj_move_using_fvel_and_gravity();
-    }
-
     cur_obj_call_action_function(sKingBobombActions);
-    exec_anim_sound_state(sKingBobombSoundStates);
+
+    if(FindNearestBomb()){
+        o->oHealth--;
+        o->oAction = o->oHealth ? KING_BOBOMB_ACT_HIT_GROUND : KING_BOBOMB_ACT_DEATH;
+    }
+    // cur_obj_update_floor_and_walls();
+
+    // if (!o->oKingBobombIsJumping) {
+    //     cur_obj_move_standard(-78);
+    // } else {
+    //     cur_obj_move_using_fvel_and_gravity();
+    // }
+
+    // cur_obj_call_action_function(sKingBobombActions);
+    // exec_anim_sound_state(sKingBobombSoundStates);
 
     if (o->oDistanceToMario < 5000.0f) { //! oDrawingDistance?
         cur_obj_enable_rendering();
@@ -411,8 +452,7 @@ void king_bobomb_move(void) {
 }
 
 void bhv_king_bobomb_loop(void) {
-    o->oInteractionSubtype |= INT_SUBTYPE_GRABS_MARIO;
-    o->oAction = KING_BOBOMB_ACT_THROW_BOMBS;
+    //o->oInteractionSubtype |= INT_SUBTYPE_GRABS_MARIO;
     switch (o->oHeldState) {
         case HELD_FREE:
 
@@ -422,6 +462,8 @@ void bhv_king_bobomb_loop(void) {
             cur_obj_unrender_set_action_and_anim(6, 1);
             break;
         case HELD_THROWN:
+            o->oAction = o->oHealth ? KING_BOBOMB_ACT_HIT_GROUND : KING_BOBOMB_ACT_DEATH;
+            break;
         case HELD_DROPPED:
             cur_obj_get_thrown_or_placed(20.0f, 50.0f, 4);
             cur_obj_become_intangible();

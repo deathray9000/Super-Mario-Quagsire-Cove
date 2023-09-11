@@ -648,6 +648,8 @@
 #define /*0x104*/ oKingBobombStationaryTimer          OBJECT_FIELD_S32(0x1F)
 #define /*0x108*/ oKingBobombPlayerGrabEscapeCooldown OBJECT_FIELD_S32(0x20)
 #define /*0x10C*/ oKingBobombBlinkTimer               OBJECT_FIELD_S32(0x21)
+#define /*0x110*/ oKingBobombOldPosZ                  OBJECT_FIELD_F32(0x22)
+#define /*0x114*/ oKingBobombOldPosX                  OBJECT_FIELD_F32(0x49)
 
 /* Klepto */
 #define /*0x0F4*/ oKleptoDistanceToTarget      OBJECT_FIELD_F32(0x1B)
