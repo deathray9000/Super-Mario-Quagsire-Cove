@@ -213,7 +213,52 @@ s32 act_climbing_ladder(struct MarioState *m) {
     m->angleVel[1]  = 0;
 
     if (set_pole_position(m, 0.0f) == POLE_NONE) {
-        set_mario_animation(m, MARIO_ANIM_CLIMB_LADDER);
+        if (m->controller->stickY < 0) {
+            if (m->actionTimer < 20) {
+                set_mario_animation(m, MARIO_ANIM_LADDER_DL);
+            } else {
+                set_mario_animation(m, MARIO_ANIM_LADDER_DR);
+                if (m->actionTimer == 40) {
+                    m->actionTimer = 0;
+                    m->actionState = 40;
+                }
+            }
+
+            if (m->actionArg == 1) {
+                if (m->actionState >= 20){
+                    m->actionState -= 20;
+                }
+                set_anim_to_frame(m, m->actionState);
+            }
+            m->actionArg = 0;
+            m->actionTimer++;
+            m->actionState--;
+        } else if (m->controller->stickY > 0) {
+            m->actionArg = 1;
+            if (m->actionTimer < 20) {
+                set_mario_animation(m, MARIO_ANIM_LADDER_L);
+            } else {
+                set_mario_animation(m, MARIO_ANIM_LADDER_R);
+                if (m->actionTimer == 40) {
+                    m->actionTimer = 0;
+                    m->actionState = 40;
+                }
+            }
+
+            if (m->actionArg == 0) {
+                if (m->actionState >= 20){
+                    m->actionState -= 20;
+                }
+                set_anim_to_frame(m, m->actionState);
+            }
+            m->actionArg = 1;
+            m->actionTimer++;
+            m->actionState--;
+        } else if (!(m->actionTimer == 20 || m->actionTimer == 40)) {
+            m->actionTimer++;
+            m->actionState--;
+        }
+        
         play_climbing_sounds(m, 1);
     }
 

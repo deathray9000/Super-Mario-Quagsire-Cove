@@ -1631,6 +1631,7 @@ u32 interact_pole(struct MarioState *m, UNUSED u32 interactType, struct Object *
             m->faceAngle[1] = obj->oFaceAngleYaw;
             vec3s_set(marioObj->header.gfx.angle, 0, m->faceAngle[1], 0);
             set_mario_action(m, ACT_CLIMBING_LADDER, 0);
+            m->actionArg = 2;
         }
     }
 
