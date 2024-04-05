@@ -515,7 +515,7 @@ static void koopa_the_quick_act_show_init_text(void) {
 
         o->oKoopaTurningAwayFromWall = FALSE;
         o->oFlags |= OBJ_FLAG_ACTIVE_FROM_AFAR;
-    } else if (response == DIALOG_RESPONSE_NO) {
+    } else if (response == DIALOG_RESPONSE_NO || response == DIALOG_RESPONSE_IGNORED) {
         o->oAction = KOOPA_THE_QUICK_ACT_WAIT_BEFORE_RACE;
         o->oKoopaTheQuickInitTextboxCooldown = 60;
     }

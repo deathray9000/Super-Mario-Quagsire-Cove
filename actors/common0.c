@@ -107,3 +107,14 @@ UNUSED static const u64 binid_23 = 23;
 #include "og_pipe/model.inc.c"
 #include "og_pipe/collision.inc.c"
 UNUSED static const u64 binid_24 = 24;
+
+#include "star_statue/model.inc.c"
+UNUSED static const u64 binid_25 = 25;
+
+#include "silver_star/model.inc.c"
+UNUSED static const u64 binid_26 = 26;
+
+#include "quagsire/model.inc.c"
+#include "quagsire/anims/data.inc.c"
+#include "quagsire/anims/table.inc.c"
+UNUSED static const u64 binid_27 = 27;

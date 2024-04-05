@@ -16,11 +16,14 @@ static struct ObjectHitbox sFlag = {
 
 void bhv_Checkpoint_Flag_init(void) {
     obj_set_hitbox(o, &sFlag);
+
+    if (gWarpCheckpoint.levelID == gCurrLevelNum) {
+         o->oAnimState = 1;
+    }
 }
 
 void bhv_Checkpoint_Flag_loop(void) {
     if (o->oInteractStatus == INT_STATUS_INTERACTED) {
-        // cur_obj_init_animation(1);
         o->oAnimState = 1;
         o->oInteractStatus = 2;
     } else if (o->oInteractStatus == 3) {
@@ -28,18 +31,6 @@ void bhv_Checkpoint_Flag_loop(void) {
     } else {
         o->oInteractStatus = 0;
     }
-
-    if (o->oDistanceToMario <= 400.0f && o->oVelX <= 1) {
-        gWarpCheckpoint.actNum = gCurrActNum;
-        gWarpCheckpoint.courseNum = gCurrCourseNum;
-        gWarpCheckpoint.levelID = gCurrLevelNum;
-        gWarpCheckpoint.areaNum = BPARAM2;
-        gWarpCheckpoint.warpNode = BPARAM3;
-
-        o->oAnimState = 1;
-    }
-
-    o->oVelX += 1;  
 }
 
 Gfx *geo_flag_wave(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 *mtx) {

@@ -29,28 +29,32 @@ u8 Checkpoint_Flag_Bowser_flag_rgba16[] = {
 	#include "actors/Checkpoint_Flag/Bowser_flag.rgba16.inc.c"
 };
 
-Vtx Checkpoint_Flag_base_mesh_layer_1_vtx_0[10] = {
-	{{{0, 3, -38},0, {486, -557},{0x0, 0x5B, 0xA7, 0xFF}}},
-	{{{25, 14, -8},0, {1027, 463},{0x3B, 0x6F, 0xED, 0xFF}}},
-	{{{36, 3, -12},0, {1668, 302},{0x54, 0x5B, 0xE5, 0xFF}}},
-	{{{0, 14, -27},0, {486, 70},{0x0, 0x6F, 0xC2, 0xFF}}},
-	{{{-36, 3, -12},0, {-697, 302},{0xAC, 0x5B, 0xE5, 0xFF}}},
-	{{{-25, 14, -8},0, {-56, 463},{0xC5, 0x6F, 0xED, 0xFF}}},
-	{{{-22, 3, 31},0, {-245, 1692},{0xCC, 0x5B, 0x48, 0xFF}}},
-	{{{-16, 14, 22},0, {151, 1100},{0xDC, 0x6F, 0x32, 0xFF}}},
-	{{{22, 3, 31},0, {1217, 1692},{0x34, 0x5B, 0x48, 0xFF}}},
-	{{{16, 14, 22},0, {820, 1100},{0x24, 0x6F, 0x32, 0xFF}}},
+Vtx Checkpoint_Flag_base_mesh_layer_1_vtx_0[14] = {
+	{{{59, -15, -19},0, {-1226, 1398},{0x4D, 0x62, 0xE7, 0xFF}}},
+	{{{16, 14, 22},0, {-339, 561},{0x21, 0x72, 0x2E, 0xFF}}},
+	{{{37, -15, 50},0, {-764, -25},{0x2F, 0x62, 0x41, 0xFF}}},
+	{{{25, 14, -8},0, {-538, 1175},{0x36, 0x72, 0xEF, 0xFF}}},
+	{{{0, -15, -62},0, {-16, 2278},{0x0, 0x62, 0xAF, 0xFF}}},
+	{{{0, 14, -27},0, {-16, 1554},{0x0, 0x72, 0xC8, 0xFF}}},
+	{{{-59, -15, -19},0, {1194, 1398},{0xB3, 0x62, 0xE7, 0xFF}}},
+	{{{-25, 14, -8},0, {506, 1175},{0xCA, 0x72, 0xEF, 0xFF}}},
+	{{{-37, -15, 50},0, {732, -25},{0xD1, 0x62, 0x41, 0xFF}}},
+	{{{-16, 14, 22},0, {307, 561},{0xDF, 0x72, 0x2E, 0xFF}}},
+	{{{37, -15, 50},0, {732, 1139},{0x2F, 0x62, 0x41, 0xFF}}},
+	{{{16, 14, 22},0, {307, 543},{0x21, 0x72, 0x2E, 0xFF}}},
+	{{{-16, 14, 22},0, {-339, 543},{0xDF, 0x72, 0x2E, 0xFF}}},
+	{{{-37, -15, 50},0, {-764, 1139},{0xD1, 0x62, 0x41, 0xFF}}},
 };
 
 Gfx Checkpoint_Flag_base_mesh_layer_1_tri_0[] = {
-	gsSPVertex(Checkpoint_Flag_base_mesh_layer_1_vtx_0 + 0, 10, 0),
+	gsSPVertex(Checkpoint_Flag_base_mesh_layer_1_vtx_0 + 0, 14, 0),
 	gsSP2Triangles(0, 1, 2, 0, 0, 3, 1, 0),
 	gsSP2Triangles(4, 3, 0, 0, 4, 5, 3, 0),
 	gsSP2Triangles(6, 5, 4, 0, 6, 7, 5, 0),
 	gsSP2Triangles(8, 7, 6, 0, 8, 9, 7, 0),
-	gsSP2Triangles(2, 9, 8, 0, 2, 1, 9, 0),
-	gsSP2Triangles(9, 1, 3, 0, 3, 7, 9, 0),
-	gsSP1Triangle(3, 5, 7, 0),
+	gsSP2Triangles(5, 7, 9, 0, 5, 9, 1, 0),
+	gsSP2Triangles(1, 3, 5, 0, 10, 11, 12, 0),
+	gsSP1Triangle(10, 12, 13, 0),
 	gsSPEndDisplayList(),
 };
 

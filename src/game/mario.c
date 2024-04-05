@@ -405,6 +405,7 @@ s32 mario_get_floor_class(struct MarioState *m) {
                 break;
 
             case SURFACE_VERY_SLIPPERY:
+            case SURFACE_SLIDE:
             case SURFACE_ICE:
             case SURFACE_HARD_VERY_SLIPPERY:
             case SURFACE_NOISE_VERY_SLIPPERY_73:
@@ -483,6 +484,7 @@ u32 mario_get_terrain_sound_addend(struct MarioState *m) {
                     break;
 
                 case SURFACE_VERY_SLIPPERY:
+                case SURFACE_SLIDE:
                 case SURFACE_ICE:
                 case SURFACE_HARD_VERY_SLIPPERY:
                 case SURFACE_NOISE_VERY_SLIPPERY_73:
@@ -536,6 +538,7 @@ u32 mario_floor_is_slippery(struct MarioState *m) {
     }
 
     switch (mario_get_floor_class(m)) {
+        case SURFACE_SLIDE:
         case SURFACE_VERY_SLIPPERY: normY = COS10; break;
         case SURFACE_SLIPPERY:      normY = COS20; break;
         default:                    normY = COS38; break;
@@ -557,6 +560,7 @@ s32 mario_floor_is_slope(struct MarioState *m) {
     }
 
     switch (mario_get_floor_class(m)) {
+        case SURFACE_SLIDE:
         case SURFACE_VERY_SLIPPERY: normY = COS5;  break;
         case SURFACE_SLIPPERY:      normY = COS10; break;
         default:                    normY = COS15; break;
@@ -584,6 +588,7 @@ s32 mario_floor_is_steep(struct MarioState *m) {
     // This does not matter in vanilla game practice.
     if (!mario_facing_downhill(m, FALSE)) {
         switch (mario_get_floor_class(m)) {
+            case SURFACE_SLIDE:
             case SURFACE_VERY_SLIPPERY: normY = COS15; break;
             case SURFACE_SLIPPERY:      normY = COS20; break;
             default:                    normY = COS30; break;

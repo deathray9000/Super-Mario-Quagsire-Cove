@@ -41,6 +41,8 @@ struct SaveFile {
 
     u32 flags;
 
+    u8 CoinStars; // amount of 100 coin stars collected (for star statues)
+
     // Star flags for each course.
     // The most significant bit of the byte *following* each course is set if the
     // cannon is open.
@@ -184,6 +186,8 @@ void save_file_set_flags(u32 flags);
 void save_file_clear_flags(u32 flags);
 u32 save_file_get_flags(void);
 u32 save_file_get_star_flags(s32 fileIndex, s32 courseIndex);
+u8 save_file_get_coin_stars(s32 fileIndex);
+void save_file_set_coin_stars(s32 fileIndex);
 void save_file_set_star_flags(s32 fileIndex, s32 courseIndex, u32 starFlags);
 s32 save_file_get_course_coin_score(s32 fileIndex, s32 courseIndex);
 s32 save_file_is_cannon_unlocked(void);

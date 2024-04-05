@@ -3297,25 +3297,7 @@ static const Gfx intro_seg7_dl_0700ADC0[] = {
     gsSPEndDisplayList(),
 };
 
-// 0x0700B3A0 - 0x0700B420
-const Gfx intro_seg7_dl_main_logo[] = {
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_MODULATERGB, G_CC_MODULATERGB),
-    gsSPClearGeometryMode(G_LIGHTING),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsDPTileSync(),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, 5, G_TX_NOLOD),
-    gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
-    gsSPDisplayList(intro_seg7_dl_07008EA0),
-    gsSPDisplayList(intro_seg7_dl_07009E38),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
-    gsSPDisplayList(intro_seg7_dl_0700ADC0),
-    gsSPSetGeometryMode(G_LIGHTING),
-    gsSPEndDisplayList(),
-};
+#include "model.inc.c"
 
 // 0x0700B420 - 0x0700B460
 static const Vtx intro_seg7_vertex_copyright[] = {

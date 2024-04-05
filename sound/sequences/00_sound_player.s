@@ -359,6 +359,50 @@ sound_ref .sound_action_wooper_attacked
 sound_ref .sound_action_wooper_talking
 sound_ref .sound_action_noteblock
 sound_ref .sound_action_checkpoint
+sound_ref .sound_obj_pipe_rise
+sound_ref .sound_obj_pipe_lower
+sound_ref .sound_action_quag_attacked
+sound_ref .sound_action_quag_talking
+
+ .sound_action_quag_attacked:
+  chan_setbank 0
+  chan_setinstr 13
+  chan_setlayer 0, .layer_19B0
+  chan_end
+
+  .layer_19B0:
+  layer_note1 41, 0x3c, 127
+  layer_end
+
+   .sound_action_quag_talking:
+  chan_setbank 0
+  chan_setinstr 12
+  chan_setlayer 0, .layer_19B1
+  chan_end
+
+  .layer_19B1:
+  layer_note1 41, 0x3c, 127
+  layer_end
+
+  .sound_obj_pipe_lower:
+  chan_setbank 0
+  chan_setinstr 11
+  chan_setlayer 0, .layer_19AF
+  chan_end
+
+  .layer_19AF:
+  layer_note1 41, 0x3c, 157
+  layer_end
+
+ .sound_obj_pipe_rise:
+  chan_setbank 0
+  chan_setinstr 10
+  chan_setlayer 0, .layer_199F
+  chan_end
+
+  .layer_199F:
+  layer_note1 41, 0x3c, 157
+  layer_end
 
  .sound_action_checkpoint:
   chan_setbank 0

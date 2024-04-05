@@ -12,196 +12,207 @@
 #define SCRAM "scram--"
 #endif
 
-DEFINE_DIALOG(DIALOG_000, 1, 6, 30, 200, _("\
-Wow! You're smack in the\n\
-middle of the battlefield.\n\
-You'll find the Power\n\
-Stars that Bowser stole\n\
-inside the painting\n\
-worlds.\n\
-First, talk to the\n\
-Bob-omb Buddy. (Press [B]\n\
-to talk.) He'll certainly\n\
-help you out, and so will\n\
-his " COMRADES " in other\n\
-areas.\n\
-To read signs, stop, face\n\
-them and press [B]. Press [A]\n\
-or [B] to scroll ahead. You\n\
-can talk to some other\n\
-characters by facing them\n\
-and pressing [B]."))
+DEFINE_DIALOG(DIALOG_000, 1, 4, 95, 200, _("\
+Greetings Traveler,\n\
+I thank you for honouring\n\
+this shrine. As a reward,\n\
+I offer thee a trade.\n\
+100 coins for a Power\n\
+Star, what thou say?\n\
+\n\
+//yes////no"))
 
-DEFINE_DIALOG(DIALOG_001, 1, 4, 95, 200, _("\
-Watch out! If you wander\n\
-around here, you're liable\n\
-to be " PLASTERED " by a\n\
-water bomb!\n\
-Those enemy Bob-ombs love\n\
-to fight, and they're\n\
-always finding ways to\n\
-attack.\n\
-This meadow has become\n\
-a battlefield ever since\n\
-the Big Bob-omb got his\n\
-paws on the Power Star.\n\
-Can you recover the Star\n\
-for us? Cross the bridge\n\
-and go left up the path\n\
-to find the Big Bob-omb.\n\
-Please come back to see\n\
-me after you've retrieved\n\
-the Power Star!"))
+DEFINE_DIALOG(DIALOG_001, 1, 5, 95, 200, _("\
+Greetings Traveler,\n\
+I thank thee for honouring\n\
+this shrine. However, I\n\
+have no stars to offer\n\
+thee.\n\
+Seek out another of\n\
+my shrines if thy\n\
+wish to obtain another\n\
+Power Star."))
 
 DEFINE_DIALOG(DIALOG_002, 1, 4, 95, 200, _("\
-Hey, you! It's dangerous\n\
-ahead, so listen up! Take\n\
-my advice.\n\
-\n\
-Cross the two\n\
-bridges ahead, then\n\
-watch for falling\n\
-water bombs.\n\
-The Big Bob-omb at the\n\
-top of the mountain is\n\
-very powerful--don't let\n\
-him grab you!\n\
-We're Bob-omb Buddies,\n\
-and we're on your side.\n\
-You can talk to us\n\
-whenever you'd like to!"))
+As you wish Traveler.\n\
+I shall hold on to\n\
+this Power Star until\n\
+thy return."))
 
 DEFINE_DIALOG(DIALOG_003, 1, 5, 95, 200, _("\
-Thank you, Mario! The Big\n\
-Bob-omb is nothing but a\n\
-big dud now! But the\n\
-battle for the castle has\n\
-just begun.\n\
-Other enemies are holding\n\
-the other Power Stars. If\n\
-you recover more Stars,\n\
-you can open new doors\n\
-that lead to new worlds!\n\
-My Bob-omb Buddies are\n\
-waiting for you. Be sure\n\
-to talk to them--they'll\n\
-set up cannons for you."))
+I'm sorry Traveler, but\n\
+I can not give thee\n\
+credit. Come back when\n\
+thy a little, mmmmm,\n\
+richer."))
 
-DEFINE_DIALOG(DIALOG_004, 1, 3, 95, 200, _("\
-We're peace-loving\n\
-Bob-ombs, so we don't use\n\
-cannons.\n\
-But if you'd like\n\
-to blast off, we don't\n\
-mind. Help yourself.\n\
-We'll prepare all of the\n\
-cannons in this course for\n\
-you to use. Bon Voyage!"))
+DEFINE_DIALOG(DIALOG_004, 1, 5, 95, 200, _("\
+Greetings Traveler,\n\
+I thank thee for honouring\n\
+this shrine. However, I\n\
+have no stars to offer\n\
+thee.\n\
+In fact, it seems thy\n\
+have visited all my\n\
+shrines and obtained\n\
+all my Power Stars.\n\
+\n\
+I must acknowledge\n\
+thy success, but I\n\
+can do no more for\n\
+thee right now.\n\
+\n\
+May the stars shine\n\
+brightly upon thee,\n\
+and may their blessings\n\
+bring thee great fortune."))
 
-DEFINE_DIALOG(DIALOG_005, 1, 3, 30, 200, _("\
-Hey, Mario! Is it true\n\
-that you beat the Big\n\
-Bob-omb? Cool!\n\
-You must be strong. And\n\
-pretty fast. So, how fast\n\
-are you, anyway?\n\
-Fast enough to beat me...\n\
-Koopa the Quick? I don't\n\
-think so. Just try me.\n\
-How about a race to the\n\
-mountaintop, where the\n\
-Big Bob-omb was?\n\
-Whaddya say? When I say\n\
-『Go,』 let the race begin!\n\
-\n\
-Ready....\n\
-\n\
-//Go!////Don't Go"))
+DEFINE_DIALOG(DIALOG_005, 1, 5, 95, 200, _("\
+Traveler... I've given\n\
+thee a Power Star, yet\n\
+thou do not collect it?\n\
+I don't have anything\n\
+more to offer thee."))
 
-DEFINE_DIALOG(DIALOG_006, 1, 3, 30, 200, _("\
-Hey!!! Don't try to " SCAM_ME
-"You've gotta run\n\
-the whole course.\n\
-Later. Look me up when\n\
-you want to race for\n\
-real."))
+DEFINE_DIALOG(DIALOG_006, 1, 5, 95, 200, _("\
+Yo waddup. Welcome to the\n\
+slide demo for my major\n\
+hack Nuoh's Island.\n\
+There are 6 stars total,\n\
+3 per slide.\n\
+This is also my\n\
+submission to the\n\
+Simpleflips 2024\n\
+slide hack competition.\n\
+\n\
+This is also my second\n\
+ever released rom hack\n\
+so I hope you enjoy.\n\
+\n\
+\n\
+Oh before I let you go\n\
+I should mention some\n\
+key changes to Mario's\n\
+movement.\n\
+\n\
+If you don't care then\n\
+this first change is\n\
+for you. Pressing Z\n\
+during dialog will\n\
+instantly end it.\n\
+You can now ground\n\
+pound out of nearly\n\
+every airborne action\n\
+with dive being the\n\
+biggest exception.\n\
+The Mario Odyssey\n\
+ground pound dive has\n\
+also been added, along\n\
+with ground pound\n\
+jumps.\n\
+Jump kick has been\n\
+modified so that you\n\
+can wall jump and\n\
+ledge grab out of it\n\
+\n\
+Also, it no longer\n\
+blocks a triple jump\n\
+when you jump kick\n\
+out of a double jump.\n\
+\n\
+You can now roll out\n\
+while belly sliding\n\
+on a slide, so don't\n\
+be afraid to ground\n\
+pound dive.\n\
+Wall sliding has also\n\
+been added, but I don't\n\
+foresee this coming into\n\
+play for this hack\n\
+\n\
+That is all for now,\n\
+just crouch on or ground\n\
+pound into the pipe to\n\
+go to the first slide."))
 
-DEFINE_DIALOG(DIALOG_007, 1, 5, 30, 200, _("\
-Hufff...fff...pufff...\n\
-Whoa! You...really...are...\n\
-fast! A human blur!\n\
-Here you go--you've won\n\
-it, fair and square!"))
+DEFINE_DIALOG(DIALOG_007, 1, 5, 95, 200, _("\
+Hey did you know, if you\n\
+ground pound a sign, it\n\
+will break and give you\n\
+a blue coin? It's really\n\
+cool.\n\
+...\n\
+\n\
+\n\
+\n\
+\n\
+Please don't hurt me."))
 
-DEFINE_DIALOG(DIALOG_008, 1, 4, 30, 200, _("\
-BEWARE OF CHAIN CHOMP\n\
-Extreme Danger!\n\
-Get close and press [C]^\n\
-for a better look.\n\
-Scary, huh?\n\
-See the Red Coin on top\n\
-of the stake?\n\
+DEFINE_DIALOG(DIALOG_008, 1, 7, 95, 200, _("\
+Welcome to the Piranha\n\
+Slide. As said before,\n\
+there are 3 stars here.\n\
+Star 1 is simply at the\n\
+bottom of the slide.\n\
 \n\
-When you collect eight of\n\
-them, a Power Star will\n\
-appear in the meadow\n\
-across the bridge."))
+\n\
+Star 2 is killing all\n\
+5 THI Piranhas on the\n\
+slide. And Star 3 is the\n\
+100 coin Star.\n\
+\n\
+\n\
+\n\
+The song is a remix of\n\
+Super Mario Land 2:\n\
+Athletic Theme by\n\
+Hooded Edge originally\n\
+made for Super Mario\n\
+World rom hacks, ported\n\
+into sm64 by me.\n\
+With permission of course.\n\
+Link in hack description."))
 
-DEFINE_DIALOG(DIALOG_009, 1, 5, 30, 200, _("\
-Long time, no see! Wow,\n\
-have you gotten fast!\n\
-Have you been training\n\
-on the sly, or is it the\n\
-power of the Stars?\n\
-I've been feeling down\n\
-about losing the last\n\
-race. This is my home\n\
-course--how about a\n\
-rematch?\n\
-The goal is in\n\
-Windswept Valley.\n\
-Ready?\n\
-\n\
-//Go//// Don't Go"))
+DEFINE_DIALOG(DIALOG_009, 1, 5, 95, 200, _("\
+Enter the red pipe if you\n\
+want to head back to the\n\
+top of this slide. Enter\n\
+the green pipe to head to\n\
+the next slide."))
 
-DEFINE_DIALOG(DIALOG_010, 1, 4, 30, 200, _("\
-You've stepped on the\n\
-Wing Cap Switch. Wearing\n\
-the Wing Cap, you can\n\
-soar through the sky.\n\
-Now Wing Caps will pop\n\
-out of all the red blocks\n\
-you find.\n\
+DEFINE_DIALOG(DIALOG_010, 1, 7, 95, 200, _("\
+Hey, wondering where your\n\
+100 coin star is?\n\
 \n\
-Would you like to Save?\n\
 \n\
-//Yes////No"))
+\n\
+\n\
+\n\
+So am I, but from what I\n\
+hear, a great deity will\n\
+speak to those who are\n\
+worthy through that star\n\
+shrine. Maybe if you're\n\
+worthy, you can ask it\n\
+where your star is."))
 
-DEFINE_DIALOG(DIALOG_011, 1, 4, 30, 200, _("\
-You've just stepped on\n\
-the Metal Cap Switch!\n\
-The Metal Cap makes\n\
-Mario invincible.\n\
-Now Metal Caps will\n\
-pop out of all of the\n\
-green blocks you find.\n\
-\n\
-Would you like to Save?\n\
-\n\
-//Yes////No"))
+DEFINE_DIALOG(DIALOG_011, 1, 5, 95, 200, _("\
+Welcome to the Frosty\n\
+Slide. As said before,\n\
+there are 3 stars here.\n\
+Star 1 is simply at the\n\
+bottom of the slide.\n\
+Star 2 is collecting all\n\
+5 silver stars on the\n\
+slide. And Star 3 is the\n\
+100 coin Star."))
 
-DEFINE_DIALOG(DIALOG_012, 1, 4, 30, 200, _("\
-You've just stepped on\n\
-the Vanish Cap Switch.\n\
-The Vanish Cap makes\n\
-Mario disappear.\n\
-Now Vanish Caps will pop\n\
-from all of the blue\n\
-blocks you find.\n\
-\n\
-Would you like to Save?\n\
-\n\
-//Yes////No"))
+DEFINE_DIALOG(DIALOG_012, 1, 5, 95, 200, _("\
+Enter the red pipe if you\n\
+want to head back to the\n\
+top of this slide. Enter\n\
+the green pipe to head to\n\
+the end screen."))
 
 DEFINE_DIALOG(DIALOG_013, 1, 5, 30, 200, _("\
 You've collected 100\n\
@@ -219,46 +230,27 @@ Do you want to Save?\n\
 \n\
 //You Bet//Not Now"))
 
-DEFINE_DIALOG(DIALOG_015, 1, 4, 30, 200, _("\
-You can punch enemies to\n\
-knock them down. Press [A]\n\
-to jump, [B] to punch.\n\
-Press [A] then [B] to Kick.\n\
-To pick something up,\n\
-press [B], too. To throw\n\
-something you're holding,\n\
-press [B] again."))
-
-DEFINE_DIALOG(DIALOG_016, 1, 3, 30, 200, _("\
-Hop on the shiny shell and\n\
-ride wherever you want to\n\
-go! Shred those enemies!"))
-
-DEFINE_DIALOG(DIALOG_017, 1, 4, 30, 200, _("\
-I'm the Big Bob-omb, lord\n\
-of all blasting matter,\n\
-king of ka-booms the\n\
-world over!\n\
-How dare you scale my\n\
-mountain? By what right\n\
-do you set foot on my\n\
-imperial mountaintop?\n\
-You may have eluded my\n\
-guards, but you'll never\n\
-escape my grasp...\n\
+DEFINE_DIALOG(DIALOG_015, 1, 3, 95, 200, _("\
+Oh hi Mario, what are you\n\
+doing back here?\n\
 \n\
-...and you'll never take\n\
-away my Power Star. I\n\
-hereby challenge you,\n\
-Mario!\n\
-If you want the Star I\n\
-hold, you must prove\n\
-yourself in battle.\n\
+Actually, since you're here\n\
+I have some exciting\n\
+news!\n\
+...\n\
 \n\
-Can you pick me up from\n\
-the back and hurl me to\n\
-this royal turf? I think\n\
-that you cannot!"))
+\n\
+I'm a Chuckster!"))
+
+DEFINE_DIALOG(DIALOG_016, 1, 3, 95, 200, _("\
+Like you're not even\n\
+subscribed? Like, just\n\
+go and do it already!"))
+
+DEFINE_DIALOG(DIALOG_017, 1, 3, 95, 200, _("\
+Just crouch on or ground\n\
+pound into the pipe to\n\
+leave."))
 
 DEFINE_DIALOG(DIALOG_018, 1, 4, 30, 200, _("\
 I'm sleeping because...\n\

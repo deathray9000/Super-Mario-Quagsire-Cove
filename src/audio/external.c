@@ -77,15 +77,16 @@ enum DialogSpeakers {
     GRUNT,
     WIGLR,
     YOSHI,
-    WOOP
+    WOOP,   // Wooper speeking
+    QUAG    // quagsire speeking
 };
 
 #define _ 0xFF
 
 u8 sDialogSpeaker[] = {
     //       0      1      2      3      4      5      6      7      8      9
-    /* 0*/ _,     WOOP,  BOMB,  BOMB,  BOMB,  KOOPA, KOOPA, KOOPA, _,     KOOPA,
-    /* 1*/ _,     _,     _,     _,     _,     _,     _,     KBOMB, _,     _,
+    /* 0*/ _,     _,     _,     _,     _,     _,     QUAG,  _,     QUAG,  _,
+    /* 1*/ QUAG,  QUAG,  _,     _,     _,     QUAG,  QUAG,  _,     _,     _,
     /* 2*/ _,     BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1,
     /* 3*/ _,     _,     _,     _,     _,     _,     _,     TUXIE, _,     _,
     /* 4*/ _,     KOOPA, _,     _,     _,     _,     _,     BOMB,  _,     _,
@@ -119,6 +120,7 @@ s32 sDialogSpeakerVoice[] = {
     SOUND_OBJ_WIGGLER_TALK,
     SOUND_GENERAL_YOSHI_TALK,
     SOUND_ACTION_WOOPER_TALKING,
+    SOUND_ACTION_QUAG_TALKING,
 #if defined(VERSION_JP) || defined(VERSION_US)
     NO_SOUND,
     NO_SOUND,
@@ -267,11 +269,11 @@ u8 sBackgroundMusicDefaultVolume[] = {
     80,  // SEQ_EVENT_CUTSCENE_COLLECT_STAR
     80,  // SEQ_MENU_TITLE_SCREEN
     75,  // SEQ_LEVEL_GRASS
-    70,  // SEQ_LEVEL_INSIDE_CASTLE
+    70,  // SEQ_CLOUD
     75,  // SEQ_LEVEL_WATER
     75,  // SEQ_LEVEL_HOT
     75,  // SEQ_LEVEL_BOSS_KOOPA
-    70,  // SEQ_LEVEL_SNOW
+    75,  // SEQ_LEVEL_SNOW
     65,  // SEQ_LEVEL_SLIDE
     80,  // SEQ_LEVEL_SPOOKY
     65,  // SEQ_EVENT_PIRANHA_PLANT
@@ -299,6 +301,7 @@ u8 sBackgroundMusicDefaultVolume[] = {
     65,  // SEQ_MENU_FILE_SELECT
     0,   // SEQ_EVENT_CUTSCENE_LAKITU (not in JP)
     80,  // SEQ_ATHLETIC (not in JP)
+    80,  // SEQ_HARBOR (not in JP)
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sBackgroundMusicDefaultVolume) == SEQ_COUNT,
@@ -2155,9 +2158,9 @@ void play_dialog_sound(u8 dialogID) {
     }
 
     // "You've stepped on the (Wing|Metal|Vanish) Cap Switch"
-    if (dialogID == DIALOG_010
-     || dialogID == DIALOG_011
-     || dialogID == DIALOG_012) {
+    if (dialogID == DIALOG_018
+     || dialogID == DIALOG_019
+     || dialogID == DIALOG_020) {
         play_puzzle_jingle();
     }
 }

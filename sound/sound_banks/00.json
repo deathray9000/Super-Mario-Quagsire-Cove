@@ -59,6 +59,26 @@
             "release_rate": 208,
             "envelope": "envelope0",
             "sound": "09_checkpoint"
+        },
+        "inst10": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "0A_pipe_rise"
+        },
+        "inst11": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "0B_pipe_lower"
+        },
+        "inst12": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "0C_quag_talk"
+        },
+        "inst13": {
+            "release_rate": 208,
+            "envelope": "envelope0",
+            "sound": "0D_quag_hurt"
         }
     },
     "instrument_list": [
@@ -71,6 +91,10 @@
         "inst6",
         "inst7",
         "inst8",
-        "inst9"
+        "inst9",
+        "inst10",
+        "inst11",
+        "inst12",
+        "inst13"
     ]
 }

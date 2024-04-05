@@ -565,6 +565,10 @@ void bhv_normal_piranha_init(void);
 void bhv_normal_piranha_loop(void);
 void bhv_og_pipe_init(void);
 void bhv_og_pipe_loop(void);
+void bhv_StarStatue_init(void);
+void bhv_StarStatue_loop(void);
+void bhv_quagsire_loop(void);
+void bhv_quagsire_init(void);
 
 Gfx *geo_flag_wave(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
 

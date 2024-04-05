@@ -33,3 +33,6 @@
 #include "Checkpoint_Flag/geo.inc.c"
 #include "m_piranha/geo.inc.c"
 #include "og_pipe/geo.inc.c"
+#include "star_statue/geo.inc.c"
+#include "silver_star/geo.inc.c"
+#include "quagsire/geo.inc.c"

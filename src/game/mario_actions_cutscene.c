@@ -49,7 +49,7 @@ static s8 sPeachManualBlinkTime = 0;
 static s8 sPeachIsBlinking = FALSE;
 static s8 sPeachBlinkTimes[7] = { 2, 3, 2, 1, 2, 3, 2 };
 
-static u8 sStarsNeededForDialog[] = { 1, 3, 8, 30, 50, 70 };
+static u8 sStarsNeededForDialog[] = { 10, 15, 20, 30, 50, 70 };
 
 /**
  * Data for the jumbo star cutscene. It specifies the flight path after triple
@@ -417,6 +417,19 @@ s32 act_disappeared(struct MarioState *m) {
     return FALSE;
 }
 
+// set animation and forwardVel; when perform_air_step returns AIR_STEP_LANDED,
+// set the new action
+s32 launch_mario_until_land(struct MarioState *m, s32 endAction, s32 animation, f32 forwardVel) {
+    s32 airStepLanded;
+    mario_set_forward_vel(m, forwardVel);
+    set_mario_animation(m, animation);
+    airStepLanded = (perform_air_step(m, 0) == AIR_STEP_LANDED);
+    if (airStepLanded) {
+        set_mario_action(m, endAction, 0);
+    }
+    return airStepLanded;
+}
+
 s32 act_enter_pipe(struct MarioState *m) {
 
     if (m->prevAction == ACT_CROUCHING) {
@@ -445,10 +458,59 @@ s32 act_enter_pipe(struct MarioState *m) {
         }
 
         if (m->actionState >= 10) {
-            set_mario_action(m, ACT_DISAPPEARED, m->actionArg);
+            if (m->actionArg) {
+                m->actionArg--;
+                if ((m->actionArg & 0xFFFF) == 0) {
+                    level_trigger_warp(m, m->actionArg >> 16);
+                }
+            }
         }
         m->actionState += 1;
     }
+    return FALSE;
+}
+
+s32 act_exit_pipe(struct MarioState *m) {
+    u8 timer_delay;
+    if (m->actionState == 1) {
+        timer_delay = 15;
+    } else {
+        timer_delay = 0;
+    }
+
+    if (m->actionTimer == 0) {
+        set_mario_animation(m, MARIO_ANIM_IDLE_HEAD_CENTER);
+        if (m->actionState == 1) {
+            m->marioObj->header.gfx.pos[1] -= 300;
+        }
+    }
+
+    if (m->actionTimer == timer_delay) {
+        play_sound(SOUND_MENU_ENTER_PIPE, m->marioObj->header.gfx.cameraToObject);
+        m->pos[1] += 160;
+        m->marioObj->header.gfx.pos[1] = m->pos[1] - 250;
+    } else if (m->actionTimer < (timer_delay + 20)) {
+        m->marioObj->header.gfx.pos[1] += 10;
+    }
+
+    if (m->actionState == 0) {
+        if (m->actionTimer == 20) {
+            set_mario_action(m, ACT_IDLE, m->actionArg);
+        }
+    } else {
+        if (m->actionTimer >= (timer_delay + 25)) {
+            play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, 0);
+            if (launch_mario_until_land(m, ACT_JUMP_LAND_STOP, MARIO_ANIM_SINGLE_JUMP, 12.0f)) {
+                mario_set_forward_vel(m, 0.0f);
+                play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
+            }
+
+            if (m->actionTimer == (timer_delay + 25)) {
+                m->vel[1] += 30;
+            }
+        }
+    }
+    m->actionTimer += 1;
     return FALSE;
 }
 
@@ -489,7 +551,7 @@ s32 act_reading_automatic_dialog(struct MarioState *m) {
             disable_time_stop();
             if (gNeverEnteredCastle) {
                 gNeverEnteredCastle = FALSE;
-                play_cutscene_music(SEQUENCE_ARGS(0, SEQ_LEVEL_INSIDE_CASTLE));
+                play_cutscene_music(SEQUENCE_ARGS(0, SEQ_CLOUD));
             }
             if (m->prevAction == ACT_STAR_DANCE_WATER) {
                 set_mario_action(m, ACT_WATER_IDLE, 0); // 100c star?
@@ -660,7 +722,7 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
                 break;
         }
     } else if (m->actionState == ACT_STATE_STAR_DANCE_DO_SAVE && gDialogResponse != DIALOG_RESPONSE_NONE) {
-        if (gDialogResponse == DIALOG_RESPONSE_YES) {
+        if (gDialogResponse == DIALOG_RESPONSE_YES || gDialogResponse == DIALOG_RESPONSE_IGNORED) {
             save_file_do_save(gCurrSaveFileNum - 1);
         }
         m->actionState = ACT_STATE_STAR_DANCE_RETURN;
@@ -803,19 +865,6 @@ s32 act_eaten_by_bubba(struct MarioState *m) {
         level_trigger_warp(m, WARP_OP_DEATH);
     }
     return FALSE;
-}
-
-// set animation and forwardVel; when perform_air_step returns AIR_STEP_LANDED,
-// set the new action
-s32 launch_mario_until_land(struct MarioState *m, s32 endAction, s32 animation, f32 forwardVel) {
-    s32 airStepLanded;
-    mario_set_forward_vel(m, forwardVel);
-    set_mario_animation(m, animation);
-    airStepLanded = (perform_air_step(m, 0) == AIR_STEP_LANDED);
-    if (airStepLanded) {
-        set_mario_action(m, endAction, 0);
-    }
-    return airStepLanded;
 }
 
 s32 act_unlocking_key_door(struct MarioState *m) {
@@ -2736,6 +2785,7 @@ s32 mario_execute_cutscene_action(struct MarioState *m) {
         case ACT_FEET_STUCK_IN_GROUND:       cancel = act_feet_stuck_in_ground(m);       break;
         case ACT_PUTTING_ON_CAP:             cancel = act_putting_on_cap(m);             break;
         case ACT_ENTER_PIPE:                 cancel = act_enter_pipe(m);                 break;
+        case ACT_EXIT_PIPE:                  cancel = act_exit_pipe(m);                  break;
     }
     /* clang-format on */
 

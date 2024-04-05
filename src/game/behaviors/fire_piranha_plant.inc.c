@@ -64,7 +64,11 @@ static void fire_piranha_plant_act_hide(void) {
 
             if (GET_BPARAM2(o->oBehParams) != FIRE_PIRANHA_PLANT_BP_NORMAL && o->oHealth == 0) {
                 if (++sNumKilledFirePiranhaPlants == 5) {
-                    spawn_default_star(-6300.0f, -1850.0f, -6300.0f);
+                    struct Object *starObj = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStarSpawnCoordinates, o->oPosX, o->oPosY + 50, o->oPosZ, 0, 0, 0);
+                    SET_BPARAM1(starObj->oBehParams, GET_BPARAM1(o->oBehParams));
+                    vec3f_set(&starObj->oHomeVec, o->oPosX, o->oPosY + 300, o->oPosZ);
+                    starObj->oFaceAnglePitch = 0;
+                    starObj->oFaceAngleRoll = 0;
                 }
 
                 obj_die_if_health_non_positive();

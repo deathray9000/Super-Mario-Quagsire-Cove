@@ -3,8 +3,8 @@
     "00_sound_player": ["00", "01_terrain", "02_water", "03", "04", "05", "06", "07", "08_mario", "09", "0A_mario_peach"],
     "01_cutscene_collect_star": ["22"],
     "02_menu_title_screen": ["11"],
-    "03_level_grass": ["22"],
-    "04_level_inside_castle": ["25"],
+    "03_level_grass": ["0B"],
+    "04_cloud": ["25"],
     "05_level_water": ["13"],
     "06_level_hot": ["0F"],
     "07_level_boss_koopa": ["12"],
@@ -35,5 +35,6 @@
     "20_cutscene_ending": ["23"],
     "21_menu_file_select": ["24"],
     "22_cutscene_lakitu": {"ifdef": ["VERSION_US", "VERSION_EU", "VERSION_SH"], "banks": ["1B"]},
-    "23_athletic": ["25"]
+    "23_athletic": ["25"],
+    "24_harbor": ["25"]
 }

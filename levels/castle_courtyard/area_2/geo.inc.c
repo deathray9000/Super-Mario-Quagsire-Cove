@@ -3,12 +3,15 @@
 const GeoLayout castle_courtyard_area_2_geo[] = {
 	GEO_NODE_START(),
 	GEO_OPEN_NODE(),
-		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, -195, -7697, 888, castle_courtyard_dl_visual_2_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, -5195, -7697, 888, castle_courtyard_dl_Vine_1_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, -5195, -7697, 2790, castle_courtyard_dl_Vine_2_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, -2747, -7697, 4425, castle_courtyard_dl_Vine_3_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, -5195, -7697, 888, castle_courtyard_dl_visual_2_mesh_layer_1),
 		GEO_OPEN_NODE(),
 			GEO_DISPLAY_LIST(LAYER_TRANSPARENT, castle_courtyard_dl_visual_2_mesh_layer_5),
 		GEO_CLOSE_NODE(),
-		GEO_TRANSLATE_NODE_WITH_DL(LAYER_TRANSPARENT, 3833, -9140, 2500, castle_courtyard_dl_Water_mesh_layer_5),
-		GEO_TRANSLATE_NODE_WITH_DL(LAYER_TRANSPARENT, 6602, -9407, 1858, castle_courtyard_dl_Water_001_mesh_layer_5),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_TRANSPARENT, -1167, -9140, 2500, castle_courtyard_dl_Water_mesh_layer_5),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_TRANSPARENT, 1602, -9407, 1858, castle_courtyard_dl_Water_001_mesh_layer_5),
 	GEO_CLOSE_NODE(),
 	GEO_RETURN(),
 };

@@ -389,14 +389,15 @@ struct MacroPreset MacroObjectPresets[] = {
     {bhvYellowCoin,                     MODEL_YELLOW_COIN,                  0},  // macro_empty_365
 #endif
     {bhvNoteBlock, MODEL_NOTE_BLOCK, 0}, //macro_note_block
-    {bhvWooper, MODEL_WOOPER, 0}, //macro_note_block
+    {bhvWooper, MODEL_WOOPER, 0}, //macro_wooper
     {bhvPropeller, MODEL_PROPELLER, 0}, //macro_propeller
     {bhvBrokenSign, MODEL_BROKEN_SIGNPOST, 0}, // macro_broken_signpost
     {bhvCheckpoint_Flag, MODEL_CHECKPOINT_FLAG, 0}, // macro_checkpoint_flag
-    {bhvNormalPiranha, MODEL_M_PIRANHA, 0}, //macro_propeller
-    {bhvOGpipe, MODEL_OG_PIPE, 0}, //macro_propeller
+    {bhvNormalPiranha, MODEL_M_PIRANHA, 0}, //macro_m_piranha
+    {bhvOGpipe, MODEL_OG_PIPE, 0}, //macro_OG_PIPE
     {bhvBomb, MODEL_BLACK_BOBOMB, 0}, // macro_bomb
-
+    {bhvStarStatue, MODEL_STAR_STATUE, 0}, //macro_star_statue
+    {bhvQuagsire, MODEL_QUAGSIRE, 0}, //macro_quagsire
     };
 
 #endif // MACRO_PRESETS_H

@@ -69,7 +69,7 @@ void snufit_act_idle(void) {
     // if the game would not have already crashed.
     s32 marioDist = (s32)(o->oDistanceToMario / 10.0f);
 
-    if (o->oTimer > marioDist && o->oDistanceToMario < 800.0f) {
+    if (o->oTimer > (marioDist + 60) && o->oDistanceToMario < 800.0f) {
 
         // Controls an alternating scaling factor in a cos.
         o->oSnufitBodyScalePeriod

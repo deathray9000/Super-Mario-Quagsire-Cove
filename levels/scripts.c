@@ -204,6 +204,9 @@ const LevelScript script_func_global_1[] = {
     LOAD_MODEL_FROM_GEO(MODEL_M_PIRANHA,      m_piranha_geo),
     LOAD_MODEL_FROM_GEO(MODEL_OG_PIPE,      og_pipe_geo),
     LOAD_MODEL_FROM_GEO(MODEL_TREE,      tree_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_STAR_STATUE,      star_statue_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SILVER_STAR,      Silver_Star_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_QUAGSIRE,      quagsire_geo),
     RETURN(),
 };
 

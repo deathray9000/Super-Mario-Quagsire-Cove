@@ -601,6 +601,20 @@ u32 save_file_get_star_flags(s32 fileIndex, s32 courseIndex) {
 }
 #endif
 
+u8 save_file_get_coin_stars(s32 fileIndex) {
+    return gSaveBuffer.files[fileIndex][0].CoinStars;
+}
+
+void save_file_set_coin_stars(s32 fileIndex) {
+    u8 curNum = gSaveBuffer.files[fileIndex][0].CoinStars;
+    if (curNum == NULL) {
+        gSaveBuffer.files[fileIndex][0].CoinStars = 1;
+    } else {
+        gSaveBuffer.files[fileIndex][0].CoinStars = curNum + 1;
+    }
+    gSaveFileModified = TRUE;
+}
+
 /**
  * Add to the bitset of obtained stars in the specified course.
  * If course is COURSE_NONE, add to the bitset of obtained castle secret stars.

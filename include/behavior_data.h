@@ -548,5 +548,7 @@ extern const BehaviorScript bhvBrokenSign[];
 extern const BehaviorScript bhvCheckpoint_Flag[];
 extern const BehaviorScript bhvNormalPiranha[];
 extern const BehaviorScript bhvOGpipe[];
+extern const BehaviorScript bhvStarStatue[];
+extern const BehaviorScript bhvQuagsire[];
 
 #endif // BEHAVIOR_DATA_H

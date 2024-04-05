@@ -471,10 +471,10 @@
 #define MODEL_CHECKPOINT_FLAG             0x97        // checkpoint_flag_geo
 #define MODEL_M_PIRANHA                   0x98        // m_piranha_geo
 #define MODEL_OG_PIPE                     0x99        // og_pipe_geo
-// find me
-// find me
+#define MODEL_STAR_STATUE                 0x9A        // star_statue_geo
+#define MODEL_SILVER_STAR                 0x9B        // silver_star_geo
 #define MODEL_BURN_SMOKE_UNUSED           0x9C        // burn_smoke_geo - unused & duplicated
-// find me
+#define MODEL_QUAGSIRE                    0x9D        // Quagsire_geo
 #define MODEL_WHITE_PARTICLE_DL           0x9E        // white_particle_dl
 #define MODEL_SAND_DUST                   0x9F        // sand_seg3_dl_particle
 #define MODEL_WHITE_PARTICLE              0xA0        // white_particle_dl

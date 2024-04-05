@@ -236,7 +236,7 @@ void set_background_music(u16 a, u16 seqArgs, s16 fadeTimer) {
         }
 
 #ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
-        if (!gNeverEnteredCastle || seqArgs != SEQ_LEVEL_INSIDE_CASTLE)
+        if (!gNeverEnteredCastle || seqArgs != SEQ_CLOUD)
 #endif
         {
             play_music(SEQ_PLAYER_LEVEL, seqArgs, fadeTimer);

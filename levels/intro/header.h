@@ -10,7 +10,35 @@ extern const GeoLayout intro_geo_mario_head_dizzy[];
 extern const GeoLayout intro_geo_debug_level_select[];
 
 // leveldata
-extern const Gfx intro_seg7_dl_main_logo[];
+extern Lights1 logo_wood_lights;
+extern Lights1 logo_yellow_lights;
+extern Lights1 logo_green_lights;
+extern Lights1 logo_blue_lights;
+extern Lights1 logo_red_lights;
+extern Lights1 logo_light_blue_lights;
+extern u8 logo_AB9BB93_c_ci8[];
+extern u8 logo_AB9BB93_c_ci8_pal_rgba16[];
+extern Vtx logo_Logo_mesh_vtx_0[1414];
+extern Gfx logo_Logo_mesh_tri_0[];
+extern Vtx logo_Logo_mesh_vtx_1[356];
+extern Gfx logo_Logo_mesh_tri_1[];
+extern Vtx logo_Logo_mesh_vtx_2[162];
+extern Gfx logo_Logo_mesh_tri_2[];
+extern Vtx logo_Logo_mesh_vtx_3[155];
+extern Gfx logo_Logo_mesh_tri_3[];
+extern Vtx logo_Logo_mesh_vtx_4[59];
+extern Gfx logo_Logo_mesh_tri_4[];
+extern Vtx logo_Logo_mesh_vtx_5[262];
+extern Gfx logo_Logo_mesh_tri_5[];
+extern Gfx mat_logo_wood[];
+extern Gfx mat_revert_logo_wood[];
+extern Gfx mat_logo_yellow[];
+extern Gfx mat_logo_green[];
+extern Gfx mat_logo_blue[];
+extern Gfx mat_logo_red[];
+extern Gfx mat_logo_light_blue[];
+extern Gfx logo_Logo_mesh[];
+
 extern const Gfx intro_seg7_dl_copyright_trademark[];
 extern const f32 intro_seg7_table_scale_1[];
 extern const f32 intro_seg7_table_scale_2[];

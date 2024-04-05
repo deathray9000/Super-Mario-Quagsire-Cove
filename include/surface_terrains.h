@@ -12,7 +12,7 @@ enum SurfaceTypes {
     SURFACE_NEW_WATER_BOTTOM,           // 0x0003 // Custom water surface bottom marker
     SURFACE_0004,                       // 0x0004 // Unused, has no function and has parameters
     SURFACE_HANGABLE,                   // 0x0005 // Ceiling that Mario can climb on
-    SURFACE_0006,                       // 0x0006 // Unused
+    SURFACE_SLIDE,                      // 0x0006 // Same as SURFACE_VERY_SLIPPERY, but allows mario to roll out from a dive
     SURFACE_0007,                       // 0x0007 // Unused
     SURFACE_0008,                       // 0x0008 // Unused
     SURFACE_SLOW,                       // 0x0009 // Slow down Mario, unused
@@ -25,7 +25,7 @@ enum SurfaceTypes {
     SURFACE_0010,                       // 0x0010 // Unused
     SURFACE_0011,                       // 0x0011 // Unused
     SURFACE_INTANGIBLE,                 // 0x0012 // Intangible (Separates BBH mansion from merry-go-round, for room usage)
-    SURFACE_VERY_SLIPPERY,              // 0x0013 // Very slippery, mostly used for slides
+    SURFACE_VERY_SLIPPERY,              // 0x0013 // Very slippery, mostly used for vanilla slides
     SURFACE_SLIPPERY,                   // 0x0014 // Slippery
     SURFACE_NOT_SLIPPERY,               // 0x0015 // Non-slippery, climbable
     SURFACE_TTM_VINES,                  // 0x0016 // TTM vines, has no action defined
@@ -229,7 +229,7 @@ enum SurfaceTypes {
 
 #define SURFACE_IS_NEW_WATER(cmd)               (((cmd) == SURFACE_NEW_WATER) || ((cmd) == SURFACE_NEW_WATER_BOTTOM))
 #define SURFACE_IS_QUICKSAND(cmd)               ((((cmd) >= SURFACE_SHALLOW_QUICKSAND) && ((cmd) <= SURFACE_MOVING_QUICKSAND)) || ((cmd) == SURFACE_INSTANT_MOVING_QUICKSAND))
-#define SURFACE_IS_NOT_HARD(cmd)                (((cmd) != SURFACE_HARD) && !((cmd) >= SURFACE_HARD_SLIPPERY && ((cmd) <= SURFACE_HARD_NOT_SLIPPERY)))
+#define SURFACE_IS_NOT_HARD(cmd)                (((cmd) != SURFACE_SLIDE) && ((cmd) != SURFACE_HARD) && !((cmd) >= SURFACE_HARD_SLIPPERY && ((cmd) <= SURFACE_HARD_NOT_SLIPPERY)))
 #define SURFACE_IS_PAINTING_WOBBLE(cmd)         (((cmd) >= SURFACE_PAINTING_WOBBLE_A6) && ((cmd) <= SURFACE_PAINTING_WOBBLE_D2))
 #define SURFACE_IS_PAINTING_WOBBLE_LEFT(cmd)    ((((cmd) - SURFACE_PAINTING_WOBBLE_A6) % 3) == 0)
 #define SURFACE_IS_PAINTING_WOBBLE_MIDDLE(cmd)  ((((cmd) - SURFACE_PAINTING_WOBBLE_A7) % 3) == 0)
@@ -240,7 +240,8 @@ enum SurfaceTypes {
 #define SURFACE_IS_PAINTING_WARP_RIGHT(cmd)     ((((cmd) - SURFACE_PAINTING_WARP_D5  ) % 3) == 0)
 #define SURFACE_IS_INSTANT_WARP(cmd)            (((cmd) >= SURFACE_INSTANT_WARP_1B) && ((cmd) <= SURFACE_INSTANT_WARP_1E))
 #define SURFACE_IS_WARP(cmd)                    (((cmd) == SURFACE_LOOK_UP_WARP) || ((cmd) == SURFACE_WOBBLING_WARP) || SURFACE_IS_PAINTING_WARP(cmd) || SURFACE_IS_INSTANT_WARP(cmd))
-#define SURFACE_IS_UNSAFE(cmd)                  (((cmd) == SURFACE_BURNING) || SURFACE_IS_QUICKSAND(cmd) || SURFACE_IS_WARP(cmd))
+#define SURFACE_IS_SLIPPERY(cmd)                (((cmd) == SURFACE_SLIPPERY) || ((cmd) == SURFACE_VERY_SLIPPERY) || ((cmd) == SURFACE_SLIDE))
+#define SURFACE_IS_UNSAFE(cmd)                  (((cmd) == SURFACE_BURNING) || SURFACE_IS_QUICKSAND(cmd) || SURFACE_IS_WARP(cmd) || SURFACE_IS_SLIPPERY(cmd))
 
 enum SurfaceClass {
     SURFACE_CLASS_DEFAULT,

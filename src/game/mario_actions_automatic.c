@@ -228,14 +228,15 @@ s32 act_climbing_ladder(struct MarioState *m) {
                 if (m->actionState >= 20){
                     m->actionState -= 20;
                 }
-                set_anim_to_frame(m, m->actionState);
+                set_anim_to_frame(m, m->actionState-1);
+                m->actionState += 20;
             }
             m->actionArg = 0;
             m->actionTimer++;
             m->actionState--;
         } else if (m->controller->stickY > 0) {
             m->actionArg = 1;
-            if (m->actionTimer < 20) {
+            if (m->actionTimer > 20) {
                 set_mario_animation(m, MARIO_ANIM_LADDER_L);
             } else {
                 set_mario_animation(m, MARIO_ANIM_LADDER_R);
@@ -249,7 +250,8 @@ s32 act_climbing_ladder(struct MarioState *m) {
                 if (m->actionState >= 20){
                     m->actionState -= 20;
                 }
-                set_anim_to_frame(m, m->actionState);
+                set_anim_to_frame(m, m->actionState-1);
+                m->actionState += 20;
             }
             m->actionArg = 1;
             m->actionTimer++;

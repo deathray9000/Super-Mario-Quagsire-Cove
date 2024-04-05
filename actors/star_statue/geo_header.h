@@ -1,0 +1,15 @@
+extern const GeoLayout star_statue_geo[];
+extern Lights1 star_statue_gold_lights;
+extern Lights1 star_statue_eye_lights;
+extern u8 star_statue_body_rgba16[];
+extern u8 star_statue_eye_rgba16[];
+extern Vtx star_statue_Object_3_mesh_layer_1_vtx_0[583];
+extern Gfx star_statue_Object_3_mesh_layer_1_tri_0[];
+extern Vtx star_statue_Object_3_mesh_layer_5_vtx_0[141];
+extern Gfx star_statue_Object_3_mesh_layer_5_tri_0[];
+extern Gfx mat_star_statue_gold[];
+extern Gfx mat_star_statue_eye[];
+extern Gfx mat_revert_star_statue_eye[];
+extern Gfx star_statue_Object_3_mesh_layer_1[];
+extern Gfx star_statue_Object_3_mesh_layer_5[];
+extern Gfx star_statue_material_revert_render_settings[];

@@ -25,5 +25,9 @@ void wooper_idle(void);
 void wooper_stunned(void);
 void wooper_attacked(void);
 void wooper_mad(void);
+void quag_idle(void);
+void quag_stunned(void);
+void quag_attacked(void);
+void quag_mad(void);
 
 #endif // OBJ_BEHAVIORS_2_H

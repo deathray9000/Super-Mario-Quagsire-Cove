@@ -1056,13 +1056,13 @@ void render_dialog_triangle_next(s8 linesPerBox) {
 
 void handle_special_dialog_text(s16 dialogID) { // dialog ID tables, in order
     // King Bob-omb (Start), Whomp (Start), King Bob-omb (throw him out), Eyerock (Start), Wiggler (Start)
-    s16 dialogBossStart[] = { DIALOG_017, DIALOG_114, DIALOG_128, DIALOG_117, DIALOG_150 };
+    s16 dialogBossStart[] = { DIALOG_114, DIALOG_128, DIALOG_117, DIALOG_150 };
     // Koopa the Quick (BoB), Koopa the Quick (THI), Penguin Race, Fat Penguin Race (120 stars)
-    s16 dialogRaceSound[] = { DIALOG_005, DIALOG_009, DIALOG_055, DIALOG_164             };
+    s16 dialogRaceSound[] = { DIALOG_055, DIALOG_164             };
     // Red Switch, Green Switch, Blue Switch, 100 coins star, Bowser Red Coin Star
-    s16 dialogStarSound[] = { DIALOG_010, DIALOG_011, DIALOG_012, DIALOG_013, DIALOG_014 };
+    s16 dialogStarSound[] = { DIALOG_013, DIALOG_014 };
     // King Bob-omb (Start), Whomp (Defeated), King Bob-omb (Defeated, missing in JP), Eyerock (Defeated), Wiggler (Defeated)
-    s16 dialogBossStop[]  = { DIALOG_017, DIALOG_115, DIALOG_116, DIALOG_118, DIALOG_152 };
+    s16 dialogBossStop[]  = { DIALOG_115, DIALOG_116, DIALOG_118, DIALOG_152 };
     s16 i;
 
     for (i = 0; i < (s16) ARRAY_COUNT(dialogBossStart); i++) {
@@ -1151,6 +1151,7 @@ void render_dialog_entries(void) {
 
     switch (gDialogBoxState) {
         case DIALOG_STATE_OPENING:
+            gDialogResponse = DIALOG_RESPONSE_NONE;
             if (gDialogBoxOpenTimer == DEFAULT_DIALOG_BOX_ANGLE) {
                 play_dialog_sound(gDialogID);
                 play_sound(SOUND_MENU_MESSAGE_APPEAR, gGlobalSoundSource);
@@ -1177,9 +1178,10 @@ void render_dialog_entries(void) {
             if (gPlayer3Controller->buttonPressed & Z_TRIG) {
                     handle_special_dialog_text(gDialogID);
                     gDialogBoxState = DIALOG_STATE_CLOSING;
+                    gDialogResponse = DIALOG_RESPONSE_IGNORED;
             }
 
-            if (gPlayer3Controller->buttonPressed & (A_BUTTON | B_BUTTON | START_BUTTON | D_CBUTTONS | R_CBUTTONS | D_JPAD | R_JPAD)) {
+            if (gPlayer3Controller->buttonPressed & (A_BUTTON | B_BUTTON)) {
                 if (gLastDialogPageStrPos == -1) {
                     handle_special_dialog_text(gDialogID);
                     gDialogBoxState = DIALOG_STATE_CLOSING;
@@ -1206,7 +1208,9 @@ void render_dialog_entries(void) {
                 level_set_transition(0, NULL);
                 play_sound(SOUND_MENU_MESSAGE_DISAPPEAR, gGlobalSoundSource);
 
-                gDialogResponse = gDialogLineNum;
+               if (gDialogResponse != DIALOG_RESPONSE_IGNORED) {
+                    gDialogResponse = gDialogLineNum;
+               }
             }
 
             gDialogBoxOpenTimer = gDialogBoxOpenTimer + 10.0f;

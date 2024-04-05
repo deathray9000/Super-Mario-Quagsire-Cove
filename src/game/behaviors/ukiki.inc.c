@@ -512,7 +512,7 @@ void cage_ukiki_held_loop(void) {
             case UKIKI_TEXT_CAGE_TEXTBOX:
                 if (gDialogResponse != DIALOG_RESPONSE_NONE) {
                     set_mario_npc_dialog(MARIO_DIALOG_STOP);
-                    if (gDialogResponse == DIALOG_RESPONSE_YES) {
+                    if (gDialogResponse == DIALOG_RESPONSE_YES || gDialogResponse == DIALOG_RESPONSE_IGNORED) {
                         o->oInteractionSubtype |= INT_SUBTYPE_DROP_IMMEDIATELY;
                         o->oUkikiTextState = UKIKI_TEXT_GO_TO_CAGE;
                     } else {

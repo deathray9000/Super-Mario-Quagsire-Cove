@@ -14,7 +14,7 @@ enum SeqId {
     SEQ_EVENT_CUTSCENE_COLLECT_STAR,  // 0x01
     SEQ_MENU_TITLE_SCREEN,            // 0x02
     SEQ_LEVEL_GRASS,                  // 0x03
-    SEQ_LEVEL_INSIDE_CASTLE,          // 0x04
+    SEQ_CLOUD,                        // 0x04
     SEQ_LEVEL_WATER,                  // 0x05
     SEQ_LEVEL_HOT,                    // 0x06
     SEQ_LEVEL_BOSS_KOOPA,             // 0x07
@@ -45,7 +45,8 @@ enum SeqId {
     SEQ_EVENT_CUTSCENE_ENDING,        // 0x20
     SEQ_MENU_FILE_SELECT,             // 0x21
     SEQ_EVENT_CUTSCENE_LAKITU,        // 0x22 (not in JP)
-    SEQ_ATHLETIC,                     // 0x23
+    SEQ_ATHLETIC,                     // 0x23 (not in JP)
+    SEQ_HARBOR,                       // 0x24 (not in JP)
     SEQ_COUNT
 };
 

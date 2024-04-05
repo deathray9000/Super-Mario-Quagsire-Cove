@@ -1,0 +1,15 @@
+extern const GeoLayout Silver_Star_geo[];
+extern Lights1 Silver_Star_eye_lights;
+extern Lights1 Silver_Star_body_lights;
+extern u8 Silver_Star_eye_black_rgba16[];
+extern u8 Silver_Star_body_rgba16[];
+extern Vtx Silver_Star_star_mesh_layer_4_vtx_0[8];
+extern Gfx Silver_Star_star_mesh_layer_4_tri_0[];
+extern Vtx Silver_Star_star_mesh_layer_1_vtx_0[12];
+extern Gfx Silver_Star_star_mesh_layer_1_tri_0[];
+extern Gfx mat_Silver_Star_eye[];
+extern Gfx mat_revert_Silver_Star_eye[];
+extern Gfx mat_Silver_Star_body[];
+extern Gfx Silver_Star_star_mesh_layer_4[];
+extern Gfx Silver_Star_star_mesh_layer_1[];
+extern Gfx Silver_Star_material_revert_render_settings[];

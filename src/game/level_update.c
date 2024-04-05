@@ -279,6 +279,9 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
         case MARIO_SPAWN_PIPE:
             set_mario_action(m, ACT_EMERGE_FROM_PIPE, 0);
             break;
+        case MARIO_SPAWN_PIPE2:
+            set_mario_action(m, ACT_EXIT_PIPE, 0);
+            break;
         case MARIO_SPAWN_TELEPORT:
             set_mario_action(m, ACT_TELEPORT_FADE_IN, 0);
             break;
@@ -581,16 +584,7 @@ s16 music_unchanged_through_warp(s16 arg) {
  * Set the current warp type and destination level/area/node.
  */
 void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags) {
-    if (gMarioState->isDead == TRUE) {
-        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
-        gMarioState->numCoins -= 10;
-        if (gMarioState->numCoins < 0) {
-            gMarioState->numCoins = 0; 
-            gHudDisplay.coins = 0;
-        } else {
-            gHudDisplay.coins -= 10;
-        }
-    } else if (destWarpNode >= WARP_NODE_CREDITS_MIN) {
+    if (destWarpNode >= WARP_NODE_CREDITS_MIN) {
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
     } else if (destLevel != gCurrLevelNum) {
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
@@ -604,6 +598,33 @@ void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags)
     sWarpDest.areaIdx = destArea;
     sWarpDest.nodeId = destWarpNode;
     sWarpDest.arg = warpFlags;
+
+    if (gMarioState->isDead) { 
+        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
+        gMarioState->numCoins -= 1000;
+        if (gMarioState->numCoins < 0) {
+            gMarioState->numCoins = 0; 
+            gHudDisplay.coins = 0;
+        } else {
+            gHudDisplay.coins -= 1000;
+        }
+
+        if (gWarpCheckpoint.levelID != NULL) {
+            sWarpDest.levelNum = gWarpCheckpoint.levelID;
+            sWarpDest.areaIdx = gWarpCheckpoint.areaNum;
+            sWarpDest.nodeId = gWarpCheckpoint.warpNode;
+        }
+    } else { // remove this else statment after competition so coins and stage dont reset constantly
+        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
+        gMarioState->numCoins -= 1000;
+                if (gMarioState->numCoins < 0) {
+            gMarioState->numCoins = 0; 
+            gHudDisplay.coins = 0;
+        } else {
+            gHudDisplay.coins -= 1000;
+        }
+    }
+    
 #if defined(PUPPYCAM) || defined(PUPPYLIGHTS)
     s32 i = 0;
 #endif
@@ -740,8 +761,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 }
 #endif
                 sDelayedWarpTimer = 48;
-                if (gWarpCheckpoint.courseNum != COURSE_NONE && gSavedCourseNum == gLevelToCourseNumTable[(gCurrLevelNum) - 1]
-                                                                                    && gWarpCheckpoint.actNum == gCurrActNum) {
+                if (gWarpCheckpoint.courseNum != COURSE_NONE) {
                     sSourceWarpNodeId = gWarpCheckpoint.warpNode;
                 } else {
                     sSourceWarpNodeId = WARP_NODE_DEATH;
@@ -763,7 +783,11 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                         sSourceWarpNodeId = WARP_NODE_DEATH;
                     }
 #else
-                    sSourceWarpNodeId = WARP_NODE_DEATH;
+                    if (gWarpCheckpoint.courseNum != COURSE_NONE) {
+                        sSourceWarpNodeId = gWarpCheckpoint.warpNode;
+                    } else {
+                        sSourceWarpNodeId = WARP_NODE_DEATH;
+                    }
 #endif
                 }
 
@@ -1329,8 +1353,9 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
+	if (TRUE) return 0; // permanatly deactivates act select, remove after competition
 	
-    if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE || gMarioState->isDead == TRUE) {
+    if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE || gMarioState->isDead) {
         return FALSE;
     }
 
