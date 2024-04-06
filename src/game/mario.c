@@ -1903,7 +1903,7 @@ void init_mario_from_save_file(void) {
     gMarioState->controller = &gControllers[0];
     gMarioState->animList = &gMarioAnimsBuf;
 
-    gMarioState->numCoins = save_file_get_course_coin_score(gCurrSaveFileNum - 1, 0);
+    gMarioState->numCoins = save_file_get_num_coins(gCurrSaveFileNum - 1);
     gMarioState->numStars = save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
     gMarioState->numKeys = 0;
 

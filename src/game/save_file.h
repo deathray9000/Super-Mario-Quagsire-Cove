@@ -42,6 +42,7 @@ struct SaveFile {
     u32 flags;
 
     u8 CoinStars; // amount of 100 coin stars collected (for star statues)
+    s16 numCoins; // current amount of coins mario has collected
 
     // Star flags for each course.
     // The most significant bit of the byte *following* each course is set if the
@@ -209,6 +210,8 @@ void save_file_move_cap_to_default_location(void);
 void disable_warp_checkpoint(void);
 void check_if_should_set_warp_checkpoint(struct WarpNode *warpNode);
 s32 check_warp_checkpoint(struct WarpNode *warpNode);
+s16 save_file_get_num_coins(s32 fileIndex);
+void save_file_set_num_coins(s32 fileIndex, s16 numCoins);
 
 #if MULTILANG
 enum EuLanguages {

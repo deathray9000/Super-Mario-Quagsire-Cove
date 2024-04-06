@@ -281,6 +281,7 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
             break;
         case MARIO_SPAWN_PIPE2:
             set_mario_action(m, ACT_EXIT_PIPE, 0);
+            m->pos[1] += 160;
             break;
         case MARIO_SPAWN_TELEPORT:
             set_mario_action(m, ACT_TELEPORT_FADE_IN, 0);
@@ -601,27 +602,18 @@ void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags)
 
     if (gMarioState->isDead) { 
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
-        gMarioState->numCoins -= 1000;
+        gMarioState->numCoins -= 10;
         if (gMarioState->numCoins < 0) {
             gMarioState->numCoins = 0; 
             gHudDisplay.coins = 0;
         } else {
-            gHudDisplay.coins -= 1000;
+            gHudDisplay.coins -= 10;
         }
 
         if (gWarpCheckpoint.levelID != NULL) {
             sWarpDest.levelNum = gWarpCheckpoint.levelID;
             sWarpDest.areaIdx = gWarpCheckpoint.areaNum;
             sWarpDest.nodeId = gWarpCheckpoint.warpNode;
-        }
-    } else { // remove this else statment after competition so coins and stage dont reset constantly
-        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
-        gMarioState->numCoins -= 1000;
-                if (gMarioState->numCoins < 0) {
-            gMarioState->numCoins = 0; 
-            gHudDisplay.coins = 0;
-        } else {
-            gHudDisplay.coins -= 1000;
         }
     }
     

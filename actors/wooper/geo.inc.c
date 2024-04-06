@@ -28,6 +28,26 @@ const GeoLayout Wooper_Switch_opt3[] = {
 	GEO_CLOSE_NODE(),
 	GEO_RETURN(),
 };
+const GeoLayout Wooper_Switch_opt4[] = {
+	GEO_NODE_START(),
+	GEO_OPEN_NODE(),
+		GEO_TRANSLATE_ROTATE(LAYER_OPAQUE, 0, 23, -16, -61, 0, 0),
+		GEO_OPEN_NODE(),
+			GEO_ANIMATED_PART(LAYER_OPAQUE, 0, 0, 0, Wooper_Head_mesh_layer_1_mat_override_face_blink_3),
+		GEO_CLOSE_NODE(),
+	GEO_CLOSE_NODE(),
+	GEO_RETURN(),
+};
+const GeoLayout Wooper_Switch_opt5[] = {
+	GEO_NODE_START(),
+	GEO_OPEN_NODE(),
+		GEO_TRANSLATE_ROTATE(LAYER_OPAQUE, 0, 23, -16, -61, 0, 0),
+		GEO_OPEN_NODE(),
+			GEO_ANIMATED_PART(LAYER_OPAQUE, 0, 0, 0, Wooper_Head_mesh_layer_1_mat_override_face1_blink_4),
+		GEO_CLOSE_NODE(),
+	GEO_CLOSE_NODE(),
+	GEO_RETURN(),
+};
 const GeoLayout wooper_geo[] = {
 	GEO_NODE_START(),
 	GEO_OPEN_NODE(),
@@ -57,7 +77,7 @@ const GeoLayout wooper_geo[] = {
 							GEO_CLOSE_NODE(),
 						GEO_CLOSE_NODE(),
 					GEO_CLOSE_NODE(),
-					GEO_SWITCH_CASE(4, geo_switch_anim_state),
+					GEO_SWITCH_CASE(7, geo_switch_anim_state),
 					GEO_OPEN_NODE(),
 						GEO_NODE_START(),
 						GEO_OPEN_NODE(),
@@ -69,6 +89,8 @@ const GeoLayout wooper_geo[] = {
 						GEO_BRANCH(1, Wooper_Switch_opt1),
 						GEO_BRANCH(1, Wooper_Switch_opt2),
 						GEO_BRANCH(1, Wooper_Switch_opt3),
+						GEO_BRANCH(1, Wooper_Switch_opt4),
+						GEO_BRANCH(1, Wooper_Switch_opt5),
 					GEO_CLOSE_NODE(),
 					GEO_TRANSLATE_ROTATE(LAYER_OPAQUE, 0, 2, 5, -134, 1, 4),
 					GEO_OPEN_NODE(),

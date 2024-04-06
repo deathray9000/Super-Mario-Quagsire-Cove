@@ -21,21 +21,22 @@ struct ObjectHitbox sExclamationBoxHitbox = {
 };
 
 struct ExclamationBoxContents sExclamationBoxContents[] = {
-    { EXCLAMATION_BOX_BP_WING_CAP,         0, 0, MODEL_MARIOS_WING_CAP,  bhvWingCap               },
-    { EXCLAMATION_BOX_BP_METAL_CAP,        0, 0, MODEL_MARIOS_METAL_CAP, bhvMetalCap              },
-    { EXCLAMATION_BOX_BP_VANISH_CAP,       0, 0, MODEL_MARIOS_CAP,       bhvVanishCap             },
-    { EXCLAMATION_BOX_BP_KOOPA_SHELL,      0, 0, MODEL_KOOPA_SHELL,      bhvKoopaShell            },
-    { EXCLAMATION_BOX_BP_COINS_1,          0, 0, MODEL_YELLOW_COIN,      bhvSingleCoinGetsSpawned },
-    { EXCLAMATION_BOX_BP_COINS_3,          0, 0, MODEL_NONE,             bhvThreeCoinsSpawn       },
-    { EXCLAMATION_BOX_BP_COINS_10,         0, 0, MODEL_NONE,             bhvTenCoinsSpawn         },
-    { EXCLAMATION_BOX_BP_1UP_WALKING,      0, 0, MODEL_1UP,              bhv1upWalking            },
-    { EXCLAMATION_BOX_BP_STAR_1,           0, 0, MODEL_STAR,             bhvSpawnedStar           },
-    { EXCLAMATION_BOX_BP_1UP_RUNNING_AWAY, 0, 0, MODEL_1UP,              bhv1upRunningAway        },
-    { EXCLAMATION_BOX_BP_STAR_2,           0, 1, MODEL_STAR,             bhvSpawnedStar           },
-    { EXCLAMATION_BOX_BP_STAR_3,           0, 2, MODEL_STAR,             bhvSpawnedStar           },
-    { EXCLAMATION_BOX_BP_STAR_4,           0, 3, MODEL_STAR,             bhvSpawnedStar           },
-    { EXCLAMATION_BOX_BP_STAR_5,           0, 4, MODEL_STAR,             bhvSpawnedStar           },
-    { EXCLAMATION_BOX_BP_STAR_6,           0, 5, MODEL_STAR,             bhvSpawnedStar           },
+    { EXCLAMATION_BOX_BP_WING_CAP,         0, 0, MODEL_MARIOS_WING_CAP,  bhvWingCap               }, // 0x00
+    { EXCLAMATION_BOX_BP_METAL_CAP,        0, 0, MODEL_MARIOS_METAL_CAP, bhvMetalCap              }, // 0x01
+    { EXCLAMATION_BOX_BP_VANISH_CAP,       0, 0, MODEL_MARIOS_CAP,       bhvVanishCap             }, // 0x02
+    { EXCLAMATION_BOX_BP_KOOPA_SHELL,      0, 0, MODEL_KOOPA_SHELL,      bhvKoopaShell            }, // 0x03
+    { EXCLAMATION_BOX_BP_COINS_1,          0, 0, MODEL_YELLOW_COIN,      bhvSingleCoinGetsSpawned }, // 0x04
+    { EXCLAMATION_BOX_BP_COINS_3,          0, 0, MODEL_NONE,             bhvThreeCoinsSpawn       }, // 0x05
+    { EXCLAMATION_BOX_BP_COINS_10,         0, 0, MODEL_NONE,             bhvTenCoinsSpawn         }, // 0x06
+    { EXCLAMATION_BOX_BP_1UP_WALKING,      0, 0, MODEL_1UP,              bhv1upWalking            }, // 0x07
+    { EXCLAMATION_BOX_BP_STAR_1,           0, 0, MODEL_STAR,             bhvSpawnedStar           }, // 0x08
+    { EXCLAMATION_BOX_BP_1UP_RUNNING_AWAY, 0, 0, MODEL_1UP,              bhv1upRunningAway        }, // 0x09
+    { EXCLAMATION_BOX_BP_STAR_2,           0, 1, MODEL_STAR,             bhvSpawnedStar           }, // 0x0A
+    { EXCLAMATION_BOX_BP_STAR_3,           0, 2, MODEL_STAR,             bhvSpawnedStar           }, // 0x0B
+    { EXCLAMATION_BOX_BP_STAR_4,           0, 3, MODEL_STAR,             bhvSpawnedStar           }, // 0x0C
+    { EXCLAMATION_BOX_BP_STAR_5,           0, 4, MODEL_STAR,             bhvSpawnedStar           }, // 0x0D
+    { EXCLAMATION_BOX_BP_STAR_6,           0, 5, MODEL_STAR,             bhvSpawnedStar           }, // 0x0E
+    { EXCLAMATION_BOX_BP_PROPELLER_MUSH,   0, 0, MODEL_PROPELLER,        bhvPropeller             }, // 0x0F
     { EXCLAMATION_BOX_BP_NULL,             0, 0, MODEL_NONE,             NULL                     }
 };
 
@@ -143,7 +144,7 @@ void exclamation_box_act_explode(void) {
     spawn_mist_particles_variable(0, 0, 46.0f);
     spawn_triangle_break_particles(20, MODEL_CARTOON_STAR, 0.3f, o->oAnimState);
     create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
-    if (o->oBehParams2ndByte < EXCLAMATION_BOX_BP_COINS_1) {
+    if (o->oBehParams2ndByte < EXCLAMATION_BOX_BP_COINS_1 || o->oBehParams2ndByte == EXCLAMATION_BOX_BP_PROPELLER_MUSH) {
         o->oAction = EXCLAMATION_BOX_ACT_WAIT_FOR_RESPAWN;
         cur_obj_hide();
     } else {

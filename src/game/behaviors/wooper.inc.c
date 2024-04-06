@@ -64,6 +64,25 @@ void bhv_wooper_loop(void) {
             wooper_idle();
             break;
         }
+
+    if (o->oGoombaBlinkTimer == o->oGoombaWalkTimer) {
+        if (o->oAnimState == 0) {
+            o->oAnimState = 4;
+        }
+        if (o->oAnimState == 1) {
+            o->oAnimState = 5;
+        }
+    } else if (o->oGoombaBlinkTimer == o->oGoombaWalkTimer + 10) {
+        if (o->oAnimState == 4) {
+            o->oAnimState = 0;
+        }
+        if (o->oAnimState == 5) {
+            o->oAnimState = 1;
+        }
+        o->oGoombaBlinkTimer = 0;
+        o->oGoombaWalkTimer = random_linear_offset(30, 50) + 10;
+    }
+    o->oGoombaBlinkTimer++;
 };
 
 void wooper_idle(void) {

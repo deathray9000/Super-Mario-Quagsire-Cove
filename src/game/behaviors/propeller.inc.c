@@ -17,6 +17,8 @@ void bhv_propeller_init(void) {
     o->oHomeY = o->oPosY;
     o->oHomeZ = o->oPosZ;
     obj_set_hitbox(o, &sProbox);
+
+    cur_obj_scale(0.75f);
 }
 
 void bhv_propeller_loop(void) {

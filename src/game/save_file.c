@@ -292,6 +292,8 @@ static void restore_save_file_data(s32 fileIndex, s32 srcSlot) {
 }
 
 void save_file_do_save(s32 fileIndex) {
+    save_file_set_num_coins(fileIndex, gMarioState->numCoins);
+
     if (gSaveFileModified) {
         // Compute checksum
         add_save_block_signature(&gSaveBuffer.files[fileIndex][0],
@@ -640,6 +642,13 @@ s32 save_file_get_course_coin_score(s32 fileIndex, s32 courseIndex) {
 }
 #endif
 
+s16 save_file_get_num_coins(s32 fileIndex) {
+    return gSaveBuffer.files[fileIndex][0].numCoins;
+}
+
+void save_file_set_num_coins(s32 fileIndex, s16 numCoins) {
+    gSaveBuffer.files[fileIndex][0].numCoins = numCoins;
+}
 /**
  * Return TRUE if the cannon is unlocked in the current course.
  */

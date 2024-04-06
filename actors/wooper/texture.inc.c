@@ -23,3 +23,13 @@ u8 Wooper_face3_rgba16[] = {
 	#include "actors/wooper/face3.rgba16.inc.c"
 };
 
+Gfx Wooper_face0_blink_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 Wooper_face0_blink_rgba16[] = {
+	#include "actors/wooper/face0_blink.rgba16.inc.c"
+};
+
+Gfx Wooper_face1_blink_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 Wooper_face1_blink_rgba16[] = {
+	#include "actors/wooper/face1_blink.rgba16.inc.c"
+};
+

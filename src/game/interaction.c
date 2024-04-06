@@ -749,7 +749,7 @@ u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *
                 gWarpCheckpoint.actNum = gCurrActNum;
                 gWarpCheckpoint.courseNum = gCurrCourseNum;
                 gWarpCheckpoint.levelID = gCurrLevelNum;
-                gWarpCheckpoint.areaNum = BPARAM3;
+                gWarpCheckpoint.areaNum = gCurrentArea->index;
                 gWarpCheckpoint.warpNode = BPARAM2;
             }
             o->oInteractStatus = INT_STATUS_INTERACTED;
@@ -956,6 +956,7 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
         if (!(GET_BPARAM3(obj->oBehParams) == 1)) {
             m->interactObj       = obj;
             m->usedObj           = obj;
+            obj->oInteractStatus = INT_STATUS_INTERACTED;
 
             if (m->action == ACT_CROUCHING || m->action == ACT_GROUND_POUND_LAND) {
                 m->marioObj->header.gfx.pos[0] = obj->oPosX;
@@ -964,7 +965,7 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
 
                 return set_mario_action(m, ACT_ENTER_PIPE, (WARP_OP_WARP_OBJECT << 16) + 2);
             }
-        } 
+        }
     } else {
         if (m->action != ACT_EMERGE_FROM_PIPE) {
             obj->oInteractStatus = INT_STATUS_INTERACTED;

@@ -36,7 +36,6 @@ void bobomb_act_explode(void) {
 
         bobomb_spawn_coin();
         create_respawner(MODEL_BLACK_BOBOMB, bhvBobomb, 3000);
-        spawn_object(o, MODEL_BLACK_BOBOMB, bhvBomb);
 
         o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
     }

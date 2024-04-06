@@ -47,7 +47,9 @@ void bhv_quagsire_loop(void) {
             o->oFaceAngleYaw = o->oAngleToMario;
             
             if (!cur_obj_init_animation_and_check_if_near_end(4)) {
-                o->oAnimState = 4;
+                if (o->oAnimState != 5) {
+                    o->oAnimState = 4;
+                }
             } else {
                 o->oAnimState = 0;
                 o->oInteractStatus = 5;
@@ -87,14 +89,16 @@ void bhv_quagsire_loop(void) {
             break;
         }
 
-        if (o->oTimer % 75 == 10) {
+        if (o->oTimer == o->oGoombaWalkTimer) {
             if (o->oAnimState != 6) {
                 o->oAnimState++;
             }
-        } else if (o->oTimer % 75 == 20) {
+        } else if (o->oTimer == o->oGoombaWalkTimer + 10) {
             if (o->oAnimState % 2 == 1) {
                 o->oAnimState--;
             }
+            o->oTimer = 0;
+            o->oGoombaWalkTimer = random_linear_offset(30, 50) + 10;
         }
 };
 

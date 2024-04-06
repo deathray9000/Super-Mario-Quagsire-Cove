@@ -487,7 +487,9 @@ s32 act_exit_pipe(struct MarioState *m) {
 
     if (m->actionTimer == timer_delay) {
         play_sound(SOUND_MENU_ENTER_PIPE, m->marioObj->header.gfx.cameraToObject);
-        m->pos[1] += 160;
+        if (m->actionState == 1) {
+            m->pos[1] += 150;
+        }
         m->marioObj->header.gfx.pos[1] = m->pos[1] - 250;
     } else if (m->actionTimer < (timer_delay + 20)) {
         m->marioObj->header.gfx.pos[1] += 10;
