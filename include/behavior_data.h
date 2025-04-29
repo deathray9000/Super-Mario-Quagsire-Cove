@@ -550,5 +550,9 @@ extern const BehaviorScript bhvNormalPiranha[];
 extern const BehaviorScript bhvOGpipe[];
 extern const BehaviorScript bhvStarStatue[];
 extern const BehaviorScript bhvQuagsire[];
+extern const BehaviorScript bhvStuffwell[];
+extern const BehaviorScript bhvPowerFlowers[];
+extern const BehaviorScript bhvCosmicManager[];
+extern const BehaviorScript bhvCosmicMario[];
 
 #endif // BEHAVIOR_DATA_H

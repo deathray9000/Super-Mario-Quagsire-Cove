@@ -1,5 +1,5 @@
 // hidden_star.inc.c
-// silver star
+// silver_star.inc.c
 
 void bhv_hidden_star_init(void) {
     s16 remainingTriggers = count_objects_with_behavior(bhvHiddenStarTrigger);
@@ -41,9 +41,9 @@ void bhv_hidden_star_loop(void) {
                 spawn_mist_particles();
                 o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
             } else if (o->oSubAction > 40) {
-                 o->oHomeZ -= 0.05f;
+                o->oHomeZ -= 0.05f;
             } else if (o->oSubAction > 20) {
-                 o->oHomeX -= 7.5f;
+                o->oHomeX -= 7.5f;
             } else {
                 o->oHomeY = 1200;
             }

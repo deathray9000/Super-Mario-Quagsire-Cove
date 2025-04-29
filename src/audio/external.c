@@ -85,8 +85,8 @@ enum DialogSpeakers {
 
 u8 sDialogSpeaker[] = {
     //       0      1      2      3      4      5      6      7      8      9
-    /* 0*/ _,     _,     _,     _,     _,     _,     QUAG,  _,     QUAG,  _,
-    /* 1*/ QUAG,  QUAG,  _,     _,     _,     QUAG,  QUAG,  _,     _,     _,
+    /* 0*/ _,     _,     _,     _,     _,     _,     _,     QUAG,  QUAG,  QUAG,
+    /* 1*/ WOOP,  _,     _,     _,     _,     QUAG,  QUAG,  _,     _,     _,
     /* 2*/ _,     BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1,
     /* 3*/ _,     _,     _,     _,     _,     _,     _,     TUXIE, _,     _,
     /* 4*/ _,     KOOPA, _,     _,     _,     _,     _,     BOMB,  _,     _,
@@ -302,6 +302,10 @@ u8 sBackgroundMusicDefaultVolume[] = {
     0,   // SEQ_EVENT_CUTSCENE_LAKITU (not in JP)
     80,  // SEQ_ATHLETIC (not in JP)
     80,  // SEQ_HARBOR (not in JP)
+    80,  // SEQ_MINOR_BOSS (not in JP)
+    80,  // SEQ_AUTUMN (not in JP)
+    80,  // SEQ_COSMIC_MARIO (not in JP)
+    80,  // SEQ_DUSK_BEACH (not in JP)
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sBackgroundMusicDefaultVolume) == SEQ_COUNT,

@@ -824,3 +824,7 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/bomb.inc.c"
 #include "behaviors/star_statue.inc.c"
 #include "behaviors/quagsire.inc.c"
+#include "behaviors/Stuffwell.inc.c"
+#include "behaviors/power_flowers.inc.c"
+#include "behaviors/cosmic_manager.inc.c"
+#include "behaviors/cosmic_mario.inc.c"

@@ -790,6 +790,7 @@ s32 common_death_handler(struct MarioState *m, s32 animation, s32 frameToDeathWa
     stop_and_set_height_to_floor(m);
 #ifdef PREVENT_DEATH_LOOP
     m->isDead = TRUE;
+    save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
 #endif
     return animFrame;
 }

@@ -16,3 +16,4 @@
 #include "treasure_chest/geo.inc.c"
 #include "swoop/geo.inc.c"
 #include "scuttlebug/geo.inc.c"
+#include "cosmic_mario/geo.inc.c"

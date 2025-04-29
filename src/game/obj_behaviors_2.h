@@ -29,5 +29,10 @@ void quag_idle(void);
 void quag_stunned(void);
 void quag_attacked(void);
 void quag_mad(void);
+void Stuffwell_Normal(f32 waterLevel);
+void Stuffwell_Launched(f32 waterLevel);
+void Stuffwell_Attacked(void);
+void Stuffwell_Talking(void);
+void Stuffwell_Underwater(f32 waterLevel);
 
 #endif // OBJ_BEHAVIORS_2_H

@@ -139,5 +139,8 @@ extern const Gfx scuttlebug_seg6_dl_06014338[];
 extern const Gfx scuttlebug_seg6_dl_06014378[];
 extern const struct Animation *const scuttlebug_seg6_anims_06015064[];
 
+// comsic mario
+#include "cosmic_mario/geo_header.h"
+#include "cosmic_mario/anim_header.h"
 
 #endif

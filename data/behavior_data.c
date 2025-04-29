@@ -6125,7 +6125,7 @@ const BehaviorScript bhvWooper[] = {
 
 const BehaviorScript bhvPropeller[] = {
     BEGIN(OBJ_LIST_LEVEL),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
     CALL_NATIVE(bhv_propeller_init),
     SET_HOME(),
     BEGIN_LOOP(),
@@ -6200,5 +6200,46 @@ const BehaviorScript bhvQuagsire[] = {
     SET_HOME(),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_quagsire_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvStuffwell[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    LOAD_ANIMATIONS(oAnimations, Stuffwell_anims),
+    CALL_NATIVE(bhv_Stuffwell_init),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_Stuffwell_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvPowerFlowers[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
+    LOAD_ANIMATIONS(oAnimations, power_flowers_anims),
+    CALL_NATIVE(bhv_power_flowers_init),
+    SET_HOME(),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_power_flowers_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvCosmicManager[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
+    CALL_NATIVE(bhv_cosmic_manager_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_cosmic_manager_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvCosmicMario[] = {
+    BEGIN(OBJ_LIST_LEVEL),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
+    LOAD_ANIMATIONS(oAnimations, cosmic_mario_anims),
+    CALL_NATIVE(bhv_cosmic_mario_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_cosmic_mario_loop),
     END_LOOP(),
 };

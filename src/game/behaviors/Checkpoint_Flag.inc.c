@@ -17,7 +17,7 @@ static struct ObjectHitbox sFlag = {
 void bhv_Checkpoint_Flag_init(void) {
     obj_set_hitbox(o, &sFlag);
 
-    if (gWarpCheckpoint.levelID == gCurrLevelNum) {
+    if (gWarpCheckpoint.levelID == gCurrLevelNum && gWarpCheckpoint.warpNode == GET_BPARAM2(o->oBehParams) && gWarpCheckpoint.areaNum == gCurrentArea->index) {
          o->oAnimState = 1;
     }
 }
@@ -30,6 +30,10 @@ void bhv_Checkpoint_Flag_loop(void) {
         o->oInteractStatus = 2;
     } else {
         o->oInteractStatus = 0;
+    }
+
+    if (gWarpCheckpoint.warpNode != GET_BPARAM2(o->oBehParams)) {
+        o->oAnimState = 0;
     }
 }
 

@@ -9,5 +9,5 @@ shared-path: []
 skybox-bin: ccm
 texture-bin: snow
 effects: true
-actor-bins: [group7, group16]
+actor-bins: [group7, group13]
 common-bin: [common0]

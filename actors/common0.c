@@ -118,3 +118,13 @@ UNUSED static const u64 binid_26 = 26;
 #include "quagsire/anims/data.inc.c"
 #include "quagsire/anims/table.inc.c"
 UNUSED static const u64 binid_27 = 27;
+
+#include "stuffwell/model.inc.c"
+#include "stuffwell/anims/data.inc.c"
+#include "stuffwell/anims/table.inc.c"
+UNUSED static const u64 binid_28 = 28;
+
+#include "power_flowers/model.inc.c"
+#include "power_flowers/anims/data.inc.c"
+#include "power_flowers/anims/table.inc.c"
+UNUSED static const u64 binid_29 = 29;

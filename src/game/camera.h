@@ -86,14 +86,40 @@
 #define AREA_BOWSER_3           LEVEL_AREA_INDEX(LEVEL_BOWSER_3, 1)
 #define AREA_TTM_OUTSIDE        LEVEL_AREA_INDEX(LEVEL_TTM, 1)
 
-#define CAM_MODE_MARIO_ACTIVE           0x01
-#define CAM_MODE_LAKITU_WAS_ZOOMED_OUT  0x02
-#define CAM_MODE_MARIO_SELECTED         0x04
+#define CAM_MODE_MARIO_ACTIVE           0x01   // bit 1
+#define CAM_MODE_LAKITU_WAS_ZOOMED_OUT  0x02   // bit 2
+#define CAM_MODE_MARIO_SELECTED         0x04   // bit 3
+#define CAM_MODE_CENTER                 0x08   // bit 4
+#define CAM_MODE_SWAP                   0x10   // bit 5
+#define CAM_MODE_DISABLE_COLLISION      0x20   // bit 6
+#define CAM_MODE_SMOOTH_DEFAULT         0x80   // bit 7
+#define CAM_MODE_RIGID_SPEED_SLOWEST    0x100  // bit 8   if both this and bit 9 are active, it sets it to slow (30 degrees).
+#define CAM_MODE_RIGID_SPEED_FAST       0x200  // bit 9   if neither this and bit 8 are active, it sets it to normal (45 degrees) which is default.
+#define CAM_MODE_X_INVERTED             0x400  // bit 10
+// #define CAM_MODE_BIT_11                 0x800  // bit 11
+// #define CAM_MODE_BIT_12                 0x1000 // bit 12
+// #define CAM_MODE_BIT_13                 0x2000 // bit 13
+// #define CAM_MODE_BIT_14                 0x4000 // bit 14
+#define CAM_MODE_INIT                   0x8000 // bit 15
+
+#ifdef REONUCAM
+struct ReonucamState {
+    u8 speed;
+    u8 waterCamOverride;
+    u8 flyingCamOverride;
+    u8 keepCliffCam;
+    //u16 rButtonCounter;
+    //u16 rButtonCounter2;
+};
+extern struct ReonucamState gReonucamState;
+#endif
 
 enum CameraSelection {
     CAM_SELECTION_NONE,
     CAM_SELECTION_MARIO,
     CAM_SELECTION_FIXED,
+    CAM_SELECTION_CENTER,
+    CAM_SELECTION_SWAP,
 };
 
 enum CameraAngle {

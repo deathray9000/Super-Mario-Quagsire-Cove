@@ -28,13 +28,13 @@
 
 #ifdef BREATH_METER
 // #ifdef DISABLE_LIVES
-// #define HUD_BREATH_METER_X         64
-// #define HUD_BREATH_METER_Y        200
-// #define HUD_BREATH_METER_HIDDEN_Y 300
+#define HUD_BREATH_METER_X         64
+#define HUD_BREATH_METER_Y        200
+#define HUD_BREATH_METER_HIDDEN_Y 300
 // #else
-#define HUD_BREATH_METER_X         40
-#define HUD_BREATH_METER_Y         32
-#define HUD_BREATH_METER_HIDDEN_Y -20
+// #define HUD_BREATH_METER_X         40
+// #define HUD_BREATH_METER_Y         32
+// #define HUD_BREATH_METER_HIDDEN_Y -20
 // #endif
 #endif
 
@@ -81,6 +81,22 @@ void print_fps(s32 x, s32 y) {
 }
 
 // ------------ END OF FPS COUNER -----------------
+
+s16 sPowerUpHudTimer = 100;
+
+struct PowerUpHUD {
+    s16 x;
+    s16 y;
+    s8 pointer;
+    f32 scale;
+};
+
+static struct PowerUpHUD sPowerUpHUD = {
+    20,
+    20,
+    0,
+    0.6f,
+};
 
 struct PowerMeterHUD {
     s8 animation;
@@ -162,6 +178,180 @@ void render_power_meter_health_segment(s16 numHealthWedges) {
     gSP1Triangle(gDisplayListHead++, 0, 1, 2, 0);
     gSP1Triangle(gDisplayListHead++, 0, 2, 3, 0);
 }
+
+void render_hud_power_up_hud(s8 position, u8 fill) {
+
+    Mtx *mtx = alloc_display_list(sizeof(Mtx));
+    Mtx *scale = alloc_display_list(sizeof(Mtx));
+    
+    guTranslate(mtx, sPowerUpHUD.x + (position * 41 * sPowerUpHUD.scale), sPowerUpHUD.y, 0);
+
+    guScale(scale, sPowerUpHUD.scale, sPowerUpHUD.scale, 0);
+
+    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(mtx++), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_PUSH);
+
+    gSPMatrix(gDisplayListHead++, VIRTUAL_TO_PHYSICAL(scale++), G_MTX_MODELVIEW | G_MTX_MUL | G_MTX_NOPUSH);
+
+    if (sPowerUpHUD.scale == 0.65f && position == sPowerUpHUD.pointer) {
+        gSPDisplayList(gDisplayListHead++, &dl_power_up_hud_base_selected);
+    } else {
+        gSPDisplayList(gDisplayListHead++, &dl_power_up_hud_base);
+    }
+
+    gSPDisplayList(gDisplayListHead++, &dl_power_up_hud_segments_begin);
+
+    Texture *(*PowerUpLUT)[] = segmented_to_virtual(&power_up_hud_segments_lut);
+
+    gDPPipeSync(gDisplayListHead++);
+
+    if (fill) {
+        gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, (*PowerUpLUT)[position]);
+    } else {
+        switch (position) {
+            case 0: 
+            case 4: 
+                gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, (*PowerUpLUT)[5]);
+                break;
+            case 1: 
+            case 2: 
+                gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, (*PowerUpLUT)[7]);
+                break;
+            case 3:
+                gDPSetTextureImage(gDisplayListHead++, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, (*PowerUpLUT)[6]);
+                break;
+        }
+    }
+    
+
+    gDPLoadSync(gDisplayListHead++);
+    gDPLoadBlock(gDisplayListHead++, G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES));
+
+    gSP1Triangle(gDisplayListHead++, 0, 1, 2, 0);
+    gSP1Triangle(gDisplayListHead++, 0, 2, 3, 0);
+
+    gSPDisplayList(gDisplayListHead++, &dl_power_up_hud_segments_end);
+
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+}
+
+u8 power_up_hud_not_empty() {
+    s8 Power_Up_State = save_file_get_power_up(gCurrSaveFileNum - 1, 0);
+    switch (sPowerUpHUD.pointer) {
+        case 0:
+            if (Power_Up_State == 1) {
+                return FALSE;
+            } else {
+                return save_file_get_power_up(gCurrSaveFileNum - 1, 1) != 0;
+            }
+            break;
+        case 1:
+            if (Power_Up_State == 2) {
+                return FALSE;
+            } else {
+                return save_file_get_power_up(gCurrSaveFileNum - 1, 2) != 0;
+            }
+            break;
+        case 2:
+            if (Power_Up_State == 3) {
+                return FALSE;
+            } else {
+                return save_file_get_power_up(gCurrSaveFileNum - 1, 3) != 0;
+            }
+            break;
+        case 3:
+            if (Power_Up_State == 4) {
+                return FALSE;
+            } else {
+                return save_file_get_power_up(gCurrSaveFileNum - 1, 4) != 0;
+            }
+            break;
+        case 4:
+            // life mushroom is special, set up with proper flag later
+            if (Power_Up_State == 5) {
+                return FALSE;
+            } else {
+                return save_file_get_power_up(gCurrSaveFileNum - 1, 5) != 0;
+            }
+            break;
+    }
+
+    return FALSE;
+}
+
+#define POWER_UP_HUD_MAX_TIME 100
+void power_up_hud_handler() {
+
+    if (gPlayer1Controller->buttonPressed & U_JPAD && !(sPowerUpHudTimer > 150)) {
+        if (sPowerUpHudTimer > POWER_UP_HUD_MAX_TIME) {
+            sPowerUpHudTimer = 0;
+        } else {
+            if (power_up_hud_not_empty()) {
+                gMarioState->STOR_State = sPowerUpHUD.pointer + 1;
+                sPowerUpHudTimer = POWER_UP_HUD_MAX_TIME + 100;
+            }
+        }
+    }
+
+    if (sPowerUpHudTimer <= POWER_UP_HUD_MAX_TIME) {
+        sPowerUpHUD.scale = 0.65f;
+        if (gPlayer1Controller->buttonPressed & D_JPAD) {
+            sPowerUpHudTimer = POWER_UP_HUD_MAX_TIME + 10;
+        }
+        if (gPlayer1Controller->buttonPressed & L_JPAD) {
+            sPowerUpHudTimer = 0;
+            // save_file_set_power_up(gCurrSaveFileNum - 1, 1, 5);
+            // save_file_set_power_up(gCurrSaveFileNum - 1, 2, 5);
+            // save_file_set_power_up(gCurrSaveFileNum - 1, 3, 5);
+            // save_file_set_power_up(gCurrSaveFileNum - 1, 4, 5);
+            // save_file_set_power_up(gCurrSaveFileNum - 1, 5, 5);
+            if (sPowerUpHUD.pointer != 0) {
+                sPowerUpHUD.pointer--;
+            }
+            
+        }
+        if (gPlayer1Controller->buttonPressed & R_JPAD) {
+            sPowerUpHudTimer = 0;
+            if (sPowerUpHUD.pointer != 4) {
+                sPowerUpHUD.pointer++;
+            }
+        }
+
+        print_text((sPowerUpHUD.x + 38), sPowerUpHUD.y + 16, "*"); // 'X' glyph
+
+        switch (sPowerUpHUD.pointer) {
+            case 0:
+                print_text_fmt_int(sPowerUpHUD.x + 53, sPowerUpHUD.y + 16, "%d", save_file_get_power_up(gCurrSaveFileNum - 1, 1));
+                break;
+            case 1:
+                print_text_fmt_int(sPowerUpHUD.x + 53, sPowerUpHUD.y + 16, "%d", save_file_get_power_up(gCurrSaveFileNum - 1, 2));
+                break;
+            case 2:
+                print_text_fmt_int(sPowerUpHUD.x + 53, sPowerUpHUD.y + 16, "%d", save_file_get_power_up(gCurrSaveFileNum - 1, 3));
+                break;
+            case 3:
+                print_text_fmt_int(sPowerUpHUD.x + 53, sPowerUpHUD.y + 16, "%d", save_file_get_power_up(gCurrSaveFileNum - 1, 4));
+                break;
+            case 4:
+                print_text_fmt_int(sPowerUpHUD.x + 53, sPowerUpHUD.y + 16, "%d", save_file_get_power_up(gCurrSaveFileNum - 1, 5));
+                break;
+        }
+    } else {
+        sPowerUpHUD.scale = 0.6f;
+    }
+    
+    render_hud_power_up_hud(0, (save_file_get_power_up(gCurrSaveFileNum - 1, 1) != 0));
+    render_hud_power_up_hud(1, (save_file_get_power_up(gCurrSaveFileNum - 1, 2) != 0));
+    render_hud_power_up_hud(2, (save_file_get_power_up(gCurrSaveFileNum - 1, 3) != 0));
+    render_hud_power_up_hud(3, (save_file_get_power_up(gCurrSaveFileNum - 1, 4) != 0));
+    render_hud_power_up_hud(4, (save_file_get_power_up(gCurrSaveFileNum - 1, 5) != 0));
+
+    if (!(sPowerUpHudTimer > 105)) {
+        sPowerUpHudTimer++;
+    } else if (sPowerUpHudTimer > 150) {
+        sPowerUpHudTimer--;
+    }
+}
+#undef POWER_UP_HUD_MAX_TIME
 
 /**
  * Renders power meter display lists.
@@ -598,6 +788,12 @@ void render_hud(void) {
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_TIMER) {
             render_hud_timer();
         }
+        
+
+        // TODO re-enable power up hud
+        // if (sCurrPlayMode != PLAY_MODE_PAUSED) {
+        //    power_up_hud_handler();
+        // }
 
         if (gSurfacePoolError & NOT_ENOUGH_ROOM_FOR_SURFACES) print_text(10, 40, "SURFACE POOL FULL");
         if (gSurfacePoolError & NOT_ENOUGH_ROOM_FOR_NODES) print_text(10, 60, "SURFACE NODE POOL FULL");

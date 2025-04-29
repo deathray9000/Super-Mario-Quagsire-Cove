@@ -493,7 +493,17 @@ struct MarioState {
            Angle moveYaw;
            Angle ceilYaw;
            Angle wallYaw;
-           u8  propel : 1;
+           u8 propel : 1;
+           u8 STOR_State;
+
+        //    u8 STOR_prop;
+        //    u8 STOR_F_FLower;
+        //    u8 STOR_Bubble_FLower;
+        //    u8 STOR_Boomer_FLower;
+        //    u8 STOR_Deluxe;
+
+        //    u8 Power_Up_State;
+
     // -- HackerSM64 MarioState fields end --
 };
 

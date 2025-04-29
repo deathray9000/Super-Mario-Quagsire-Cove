@@ -422,4 +422,12 @@ extern Gfx Silver_Star_material_revert_render_settings[];
 #include "quagsire/geo_header.h"
 #include "quagsire/anim_header.h"
 
+//stuffwell
+#include "stuffwell/geo_header.h"
+#include "stuffwell/anim_header.h"
+
+//power_flower
+#include "power_flowers/geo_header.h"
+#include "power_flowers/anim_header.h"
+
 #endif

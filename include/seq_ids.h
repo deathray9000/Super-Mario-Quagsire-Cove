@@ -47,6 +47,10 @@ enum SeqId {
     SEQ_EVENT_CUTSCENE_LAKITU,        // 0x22 (not in JP)
     SEQ_ATHLETIC,                     // 0x23 (not in JP)
     SEQ_HARBOR,                       // 0x24 (not in JP)
+    SEQ_MINOR_BOSS,                   // 0x25 (not in JP)
+    SEQ_AUTUMN,                       // 0x26 (not in JP)
+    SEQ_COSMIC_MARIO,                 // 0x27 (not in JP)
+    SEQ_DUSK_BEACH,                   // 0x28 (not in JP)
     SEQ_COUNT
 };
 

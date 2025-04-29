@@ -21,9 +21,8 @@ void bhv_quagsire_init(void) {
 };
 
 void bhv_quagsire_loop(void) {
-
     switch (o->oInteractStatus) {
-        case INT_STATUS_HIT_MINE:
+        case INT_STATUS_HIT_MINE: // code for when attacked from the side (punched, dive, slide kick, etc)
             o->oPosY = o->oHomeY;
             cur_obj_play_sound_2(SOUND_ACTION_QUAG_ATTACKED);
             o->oInteractStatus = 3;
@@ -42,7 +41,7 @@ void bhv_quagsire_loop(void) {
         case 4:
             quag_mad();
             break;
-        case INT_STATUS_INTERACTED:
+        case INT_STATUS_INTERACTED: // code that inits that talking phase, and plays the non-looping talking animation
             o->oPosY = o->oHomeY;
             o->oFaceAngleYaw = o->oAngleToMario;
             
@@ -55,51 +54,40 @@ void bhv_quagsire_loop(void) {
                 o->oInteractStatus = 5;
                 cur_obj_init_animation(0);
             }
-        case 5:
+            // no break so that this code falls through and activates the dialog
+        case 5: // actual dialog code
             if (cur_obj_update_dialog_with_cutscene(MARIO_DIALOG_LOOK_FRONT, DIALOG_FLAG_NONE, CUTSCENE_DIALOG, GET_BPARAM2(o->oBehParams))) {
                 o->oInteractStatus = 0;
                 o->oAnimState = 0;
                 cur_obj_init_animation(0);
 
-                if (GET_BPARAM1(o->oBehParams) == 1) {
-                    gMarioState->faceAngle[1] = DEGREES(90);
-
-                    gMarioState->pos[0] = o->oPosX + 150;
-                    gMarioState->pos[2] = o->oPosZ;
-
-                    o->oIntangibleTimer = 10;
-
-                    drop_and_set_mario_action(gMarioState, ACT_SHOT_FROM_CANNON, 0);
-                    gMarioState->forwardVel = 40.0f;
-                    gMarioState->vel[1] = 40.0f;
-                    gMarioState->pos[1] += 50;
-                    
-                }
+                // if the npc should do something (throw or just kill mario, explode, open a cannon, spawn a star, etc)
+                // after being spoken too, then this is where that code should go
             } 
             break;
-        case INT_STATUS_WAS_ATTACKED:
+        case INT_STATUS_WAS_ATTACKED: // code for when attacked from above (jump, ground pound, twirl, etc)
             o->oPosY = o->oHomeY;
             cur_obj_play_sound_2(SOUND_ACTION_QUAG_ATTACKED);
             o->oInteractStatus = 2;
             o->oAnimState = 6;
             cur_obj_init_animation(0);
             break;
-        case 0:
+        case 0: // defualt
             quag_idle();
             break;
         }
 
-        if (o->oTimer == o->oGoombaWalkTimer) {
-            if (o->oAnimState != 6) {
-                o->oAnimState++;
-            }
-        } else if (o->oTimer == o->oGoombaWalkTimer + 10) {
-            if (o->oAnimState % 2 == 1) {
-                o->oAnimState--;
-            }
-            o->oTimer = 0;
-            o->oGoombaWalkTimer = random_linear_offset(30, 50) + 10;
+    if (o->oTimer == o->oGoombaWalkTimer) { // blink timer
+        if (o->oAnimState != 6) {
+            o->oAnimState++;
         }
+    } else if (o->oTimer == o->oGoombaWalkTimer + 10) {
+        if (o->oAnimState % 2 == 1) {
+            o->oAnimState--;
+        }
+        o->oTimer = 0;
+        o->oGoombaWalkTimer = random_linear_offset(30, 50) + 10;
+    }
 };
 
 void quag_idle(void) {
@@ -150,7 +138,7 @@ void quag_mad(void) {
 
         if (o->oVelX == 3) {
             cur_obj_play_sound_2(SOUND_ACTION_QUAG_ATTACKED);
-        } else if (o->oVelX == 34) {
+        } else if (o->oVelX == 34) { // executes once mad animation is completed (set the value after == to the animations length + 3)
                 o->oInteractStatus = 0;
                 o->oAnimState = 0;
                 cur_obj_init_animation(0);

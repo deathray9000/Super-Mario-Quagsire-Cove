@@ -63,6 +63,14 @@ void *languageTable[][3] = {
 #endif
 };
 
+#ifdef REONUCAM
+u8 textCamInfoSlowest[] = { TEXT_CAM_INFO_SLOWEST };
+u8 textCamInfoSlow[] = { TEXT_CAM_INFO_SLOW };
+u8 textCamInfoMedium[] = { TEXT_CAM_INFO_MEDIUM };
+u8 textCamInfoFast[] = { TEXT_CAM_INFO_FAST};
+u8 textCamInfoFastest[] = { TEXT_CAM_INFO_FASTEST };
+#endif
+
 extern u8 gLastCompletedCourseNum;
 extern u8 gLastCompletedStarNum;
 
@@ -70,7 +78,8 @@ enum DialogBoxState {
     DIALOG_STATE_OPENING,
     DIALOG_STATE_VERTICAL,
     DIALOG_STATE_HORIZONTAL,
-    DIALOG_STATE_CLOSING
+    DIALOG_STATE_CLOSING,
+    DIALOG_STATE_CAMERA
 };
 
 enum DialogBoxPageState {
@@ -1468,6 +1477,49 @@ void reset_red_coins_collected(void) {
     gRedCoinsCollected = 0;
 }
 
+#ifdef REONUCAM
+void render_reonucam_speed_setting(s8 index) {
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    switch (gReonucamState.speed) {
+        case 0:
+            print_generic_string(84, 136, textCamInfoSlowest);
+            break;
+        case 1:
+            print_generic_string(84, 136, textCamInfoSlow);
+            break;
+        case 2:
+            print_generic_string(84, 136, textCamInfoMedium);
+            break;
+        case 3:
+            print_generic_string(84, 136, textCamInfoFast);
+            break;
+        case 4:
+            print_generic_string(84, 136, textCamInfoFastest);
+            break;
+    }
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+
+    if (index==2) {
+        if (gPlayer1Controller->buttonPressed & (R_JPAD | A_BUTTON)) {
+            if (gReonucamState.speed < 4) {
+                gReonucamState.speed += 1;
+            } else {
+                gReonucamState.speed = 0;
+            }
+            save_file_set_camera_speed(gReonucamState.speed);
+        } else if (gPlayer1Controller->buttonPressed & (L_JPAD | B_BUTTON)) {
+            if (gReonucamState.speed > 0) {
+                gReonucamState.speed -= 1;
+            } else {
+                gReonucamState.speed = 4;
+            }
+            save_file_set_camera_speed(gReonucamState.speed);
+        }
+    }
+}
+#endif
+
 void change_dialog_camera_angle(void) {
     if (cam_select_alt_mode(0) == CAM_SELECTION_MARIO) {
         gDialogCameraAngleIndex = CAM_SELECTION_MARIO;
@@ -1535,20 +1587,23 @@ void render_pause_red_coins(void) {
 /// By default, not needed as puppycamera has an option, but should you wish to revert that, you are legally allowed.
 
 #if defined(WIDE) && !defined(PUPPYCAM)
-void render_widescreen_setting(void) {
+void render_widescreen_setting(s8 index) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
     if (!gConfig.widescreen) {
-        print_generic_string(10, 20, textCurrRatio43);
-        print_generic_string(10,  7, textPressL);
+        print_generic_string(84, 61, textCurrRatio43);
+        //print_generic_string(109, 76, textPressL);
     } else {
-        print_generic_string(10, 20, textCurrRatio169);
-        print_generic_string(10,  7, textPressL);
+        print_generic_string(84, 61, textCurrRatio169);
+        //print_generic_string(109, 76, textPressL);
     }
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-    if (gPlayer1Controller->buttonPressed & L_TRIG){
-        gConfig.widescreen ^= 1;
-        save_file_set_widescreen_mode(gConfig.widescreen);
+
+    if (index==7) { 
+        if (gPlayer1Controller->buttonPressed & (R_JPAD | L_JPAD | B_BUTTON | A_BUTTON)){
+            gConfig.widescreen ^= 1;
+            save_file_set_widescreen_mode(gConfig.widescreen);
+        }
     }
 }
 #endif
@@ -1637,36 +1692,167 @@ void render_pause_my_score_coins(void) {
 #define TXT2_X 119
 #define Y_VAL7 2
 
-void render_pause_camera_options(s16 x, s16 y, s8 *index, s16 xIndex) {
+void render_pause_camera_options(s16 x, s16 y, s8 index) {
     u8 textLakituMario[] = { TEXT_LAKITU_MARIO };
     u8 textLakituStop[] = { TEXT_LAKITU_STOP };
-    u8 textNormalUpClose[] = { TEXT_NORMAL_UPCLOSE };
-    u8 textNormalFixed[] = { TEXT_NORMAL_FIXED };
-
-    handle_menu_scrolling(MENU_SCROLL_HORIZONTAL, index, 1, 2);
+    u8 textLakituCenter[] = { TEXT_LAKITU_CENTER };
+    u8 textLakituSwap[] = { TEXT_LAKITU_SWAP };
+    u8 textCamColOn[] = { TEXT_CAMERA_COL_ON };
+    u8 textCamColOff[] = { TEXT_CAMERA_COL_OFF };
+    u8 textCamSmoothYes[] = { TEXT_CAM_SMOOTH_YES };
+    u8 textCamSmoothNo[] = { TEXT_CAM_SMOOTH_NO };
+    u8 textCamRigidSlowest[] = { TEXT_CAM_RIGID_SLOWEST };
+    u8 textCamRigidSlow[] = { TEXT_CAM_RIGID_SLOW };
+    u8 textCamRigidNormal[] = { TEXT_CAM_RIGID_NORMAL };
+    u8 textCamRigidFast[] = { TEXT_CAM_RIGID_FAST };
+    u8 textCamInvertedX[] = { TEXT_CAM_INVERTED_X };
+    u8 textCamNormalX[] = { TEXT_CAM_NORMAL_X };
+ 
+    //u8 textNormalUpClose[] = { TEXT_NORMAL_UPCLOSE };
+    //u8 textNormalFixed[] = { TEXT_NORMAL_FIXED };
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
 
-    print_generic_string(x +     14, y +  2, textLakituMario);
-    print_generic_string(x + TXT1_X, y - 13, LANGUAGE_ARRAY(textNormalUpClose));
-    print_generic_string(x +    124, y +  2, textLakituStop);
-    print_generic_string(x + TXT2_X, y - 13, LANGUAGE_ARRAY(textNormalFixed));
+    if (sSelectionFlags & CAM_MODE_MARIO_SELECTED) {
+        print_generic_string(x + 10, y +  58, textLakituMario);
+        //print_generic_string(x + TXT1_X, y - 13, LANGUAGE_ARRAY(textNormalUpClose));
+    } else if (sSelectionFlags & CAM_MODE_CENTER) {
+        print_generic_string(x + 10, y + 58, textLakituCenter);
+    } else if (sSelectionFlags & CAM_MODE_SWAP) {
+        print_generic_string(x + 10, y + 58, textLakituSwap);
+    } else {
+        print_generic_string(x + 10, y + 58, textLakituStop);
+        //print_generic_string(x + TXT2_X, y - 13, LANGUAGE_ARRAY(textNormalFixed));
+    }
 
-    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
-    create_dl_translation_matrix(MENU_MTX_PUSH, ((*index - 1) * xIndex) + x, y + Y_VAL7, 0);
-    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
-    gSPDisplayList(gDisplayListHead++, dl_draw_triangle);
-    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+    if (sSelectionFlags & CAM_MODE_DISABLE_COLLISION) { 
+        print_generic_string(x + 10, y - 2, textCamColOff);
+    } else {
+        print_generic_string(x + 10, y - 2, textCamColOn);
+    }
 
-    switch (*index) {
-        case CAM_SELECTION_MARIO:
-            cam_select_alt_mode(CAM_SELECTION_MARIO);
+    if (sSelectionFlags & CAM_MODE_SMOOTH_DEFAULT) { 
+        print_generic_string(x + 10, y + 13, textCamSmoothYes);
+    } else {
+        print_generic_string(x + 10, y + 13, textCamSmoothNo);
+    }
+
+    if (sSelectionFlags & CAM_MODE_X_INVERTED) { 
+        print_generic_string(x + 10, 76, textCamInvertedX);
+    } else {
+        print_generic_string(x + 10, 76, textCamNormalX);
+    }
+
+    if (sSelectionFlags & CAM_MODE_RIGID_SPEED_FAST && sSelectionFlags & CAM_MODE_RIGID_SPEED_SLOWEST) { 
+        print_generic_string(x + 10, y + 28, textCamRigidSlow);
+    } else if (sSelectionFlags & CAM_MODE_RIGID_SPEED_FAST) {
+        print_generic_string(x + 10, y + 28, textCamRigidFast);
+    } else if (sSelectionFlags & CAM_MODE_RIGID_SPEED_SLOWEST) {
+        print_generic_string(x + 10, y + 28, textCamRigidSlowest);
+    } else {
+        print_generic_string(x + 10, y + 28, textCamRigidNormal);
+    }
+
+    switch (index) {
+        case 3:
+            if (gPlayer1Controller->buttonPressed & (R_JPAD | A_BUTTON)) {
+                if (sSelectionFlags & CAM_MODE_RIGID_SPEED_FAST && sSelectionFlags & CAM_MODE_RIGID_SPEED_SLOWEST) { 
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_SLOWEST;
+
+                } else if (sSelectionFlags & CAM_MODE_RIGID_SPEED_FAST) {
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_SLOWEST;
+
+                } else if (sSelectionFlags & CAM_MODE_RIGID_SPEED_SLOWEST) {
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_SLOWEST;
+
+                } else { // if set to normal
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_SLOWEST;
+                }
+                save_file_set_camera_selection_flags(sSelectionFlags);
+            } else if (gPlayer1Controller->buttonPressed & (L_JPAD | B_BUTTON)) {
+                if (sSelectionFlags & CAM_MODE_RIGID_SPEED_FAST && sSelectionFlags & CAM_MODE_RIGID_SPEED_SLOWEST) { 
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_SLOWEST;
+
+                } else if (sSelectionFlags & CAM_MODE_RIGID_SPEED_FAST) {
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_SLOWEST;
+
+                } else if (sSelectionFlags & CAM_MODE_RIGID_SPEED_SLOWEST) {
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags &= ~CAM_MODE_RIGID_SPEED_SLOWEST;
+                    
+                } else { // if set to normal
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_FAST;
+                    sSelectionFlags |= CAM_MODE_RIGID_SPEED_SLOWEST;
+                }
+                save_file_set_camera_selection_flags(sSelectionFlags);
+            }
             break;
-        case CAM_SELECTION_FIXED:
-            cam_select_alt_mode(CAM_SELECTION_FIXED);
+        case 4:
+            if (gPlayer1Controller->buttonPressed & (L_JPAD | B_BUTTON | R_JPAD | A_BUTTON)) {
+                if (sSelectionFlags & CAM_MODE_SMOOTH_DEFAULT) {
+                    sSelectionFlags &= ~CAM_MODE_SMOOTH_DEFAULT;
+                } else {
+                    sSelectionFlags |= CAM_MODE_SMOOTH_DEFAULT;
+                }
+                save_file_set_camera_selection_flags(sSelectionFlags);
+            }
+            break;
+        case 5:
+            if (gPlayer1Controller->buttonPressed & (L_JPAD | B_BUTTON | R_JPAD | A_BUTTON)) {
+                if (sSelectionFlags & CAM_MODE_DISABLE_COLLISION) {
+                    sSelectionFlags &= ~CAM_MODE_DISABLE_COLLISION;
+                } else {
+                    sSelectionFlags |= CAM_MODE_DISABLE_COLLISION;
+                }
+                save_file_set_camera_selection_flags(sSelectionFlags);
+            }
+            break;
+        case 6:
+            if (gPlayer1Controller->buttonPressed & (L_JPAD | B_BUTTON | R_JPAD | A_BUTTON)) {
+                if (sSelectionFlags & CAM_MODE_X_INVERTED) {
+                    sSelectionFlags &= ~CAM_MODE_X_INVERTED;
+                } else {
+                    sSelectionFlags |= CAM_MODE_X_INVERTED;
+                }
+                save_file_set_camera_selection_flags(sSelectionFlags);
+            }
+            break;
+        case 1:
+            if (gPlayer1Controller->buttonPressed & (R_JPAD | A_BUTTON)) {
+                if (sSelectionFlags & CAM_MODE_MARIO_SELECTED) {
+                    cam_select_alt_mode(CAM_SELECTION_FIXED);
+                } else if (sSelectionFlags & CAM_MODE_CENTER) {
+                    cam_select_alt_mode(CAM_SELECTION_SWAP);
+                } else if (sSelectionFlags & CAM_MODE_SWAP) {
+                    cam_select_alt_mode(CAM_SELECTION_MARIO);
+                } else {
+                    cam_select_alt_mode(CAM_SELECTION_CENTER);
+                }
+
+                save_file_set_camera_selection_flags(sSelectionFlags);
+            } else if (gPlayer1Controller->buttonPressed & (L_JPAD | B_BUTTON)) {
+                if (sSelectionFlags & CAM_MODE_MARIO_SELECTED) {
+                    cam_select_alt_mode(CAM_SELECTION_SWAP);
+                } else if (sSelectionFlags & CAM_MODE_CENTER) {
+                    cam_select_alt_mode(CAM_SELECTION_FIXED);
+                } else if (sSelectionFlags & CAM_MODE_SWAP) {
+                    cam_select_alt_mode(CAM_SELECTION_CENTER);
+                } else {
+                    cam_select_alt_mode(CAM_SELECTION_MARIO);
+                }
+
+                save_file_set_camera_selection_flags(sSelectionFlags);
+            }
             break;
     }
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 
 #define X_VAL8 4
@@ -1675,18 +1861,20 @@ void render_pause_camera_options(s16 x, s16 y, s8 *index, s16 xIndex) {
 void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
     u8 textContinue[] = { TEXT_CONTINUE };
     u8 textExitCourse[] = { TEXT_EXIT_COURSE };
-    u8 textCameraAngleR[] = { TEXT_CAMERA_ANGLE_R };
+    //u8 textCameraAngleR[] = { TEXT_CAMERA_ANGLE_R };
+    u8 textSaveGame[] = { TEXT_SAVE_GAME };
 
     handle_menu_scrolling(MENU_SCROLL_VERTICAL, index, 1, 3);
 
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
 
+    print_generic_string(x + 10, y - 17, LANGUAGE_ARRAY(textSaveGame));
     print_generic_string(x + 10, y - 2, LANGUAGE_ARRAY(textContinue));
-    print_generic_string(x + 10, y - 17, LANGUAGE_ARRAY(textExitCourse));
+    print_generic_string(x + 10, y - 33, LANGUAGE_ARRAY(textExitCourse));
 
     if (*index != MENU_OPT_CAMERA_ANGLE_R) {
-        print_generic_string(x + 10, y - 33, LANGUAGE_ARRAY(textCameraAngleR));
+        //print_generic_string(x + 10, y - 33, LANGUAGE_ARRAY(textCameraAngleR));
         gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 
         create_dl_translation_matrix(MENU_MTX_PUSH, x - X_VAL8, (y - ((*index - 1) * yIndex)) - Y_VAL8, 0);
@@ -1696,9 +1884,20 @@ void render_pause_course_options(s16 x, s16 y, s8 *index, s16 yIndex) {
         gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
     }
 
-    if (*index == MENU_OPT_CAMERA_ANGLE_R) {
-        render_pause_camera_options(x - 42, y - 42, &gDialogCameraAngleIndex, 110);
-    }
+    // if (*index == MENU_OPT_CAMERA_ANGLE_R) {
+    //     render_pause_camera_options(x - 42, y - 42, &gDialogCameraAngleIndex, 110);
+    // }
+}
+
+void render_camera_options(s16 x, s16 y, s8 *index, s16 yIndex) {
+    handle_menu_scrolling(MENU_SCROLL_VERTICAL, index, 1, 7);
+
+    create_dl_translation_matrix(MENU_MTX_PUSH, x - X_VAL8, (y - ((*index - 5) * yIndex)) - Y_VAL8, 0);
+
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    gSPDisplayList(gDisplayListHead++, dl_draw_triangle);
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+
 }
 
 void render_pause_castle_menu_box(s16 x, s16 y) {
@@ -1717,6 +1916,14 @@ void render_pause_castle_menu_box(s16 x, s16 y) {
     create_dl_translation_matrix(MENU_MTX_PUSH, x - 9, y - 101, 0);
     create_dl_rotation_matrix(MENU_MTX_NOPUSH, 270.0f, 0, 0, 1.0f);
     gSPDisplayList(gDisplayListHead++, dl_draw_triangle);
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+}
+
+void render_pause_camera_menu_box(s16 x, s16 y) {
+    create_dl_translation_matrix(MENU_MTX_PUSH, x - 68, y + 26, 0);
+    create_dl_scale_matrix(MENU_MTX_NOPUSH, 1.35f, 1.4f, 1.0f);
+    gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, 105);
+    gSPDisplayList(gDisplayListHead++, dl_draw_text_bg_box);
     gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
 }
 
@@ -1742,7 +1949,7 @@ void print_hud_pause_colorful_str(void) {
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
 
-    print_hud_lut_string(HUD_LUT_GLOBAL, 123, 81, textPause);
+    print_hud_lut_string(HUD_LUT_GLOBAL, 123, 40, textPause);
 
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_end);
 }
@@ -1852,12 +2059,54 @@ void render_pause_castle_main_strings(s16 x, s16 y) {
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 
+static void render_page_display(void) {
+    u8 textRTRIG[] = { TEXT_R_TRIG };
+    u8 textLTRIG[] = { TEXT_L_TRIG };
+    u8 textPageMain[] = { TEXT_PAGE_MAIN };
+    u8 textPageStar[] = { TEXT_PAGE_STAR };
+    u8 textPageSettings[] = { TEXT_PAGE_CAM };
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+
+    print_generic_string(30, 120, textLTRIG);
+    print_generic_string(260, 120, textRTRIG);
+
+    switch (gDialogBoxState) { 
+        case DIALOG_STATE_VERTICAL:
+            print_generic_string(30, 105, textPageSettings);
+            print_generic_string(260, 105, textPageStar);
+            break;
+        case DIALOG_STATE_HORIZONTAL:
+            print_generic_string(30, 105, textPageMain);
+            print_generic_string(260, 105, textPageSettings);
+            break;
+        case DIALOG_STATE_CAMERA:
+            print_generic_string(30, 105, textPageStar);
+            print_generic_string(260, 105, textPageMain);
+            break;
+    }
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+
+    create_dl_translation_matrix(MENU_MTX_PUSH, 22, 130, 0);
+    create_dl_rotation_matrix(MENU_MTX_NOPUSH, 180.0f, 0, 0, 1.0f);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    gSPDisplayList(gDisplayListHead++, dl_draw_triangle);
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+
+    create_dl_translation_matrix(MENU_MTX_PUSH, 300, 115, 0);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    gSPDisplayList(gDisplayListHead++, dl_draw_triangle);
+    gSPPopMatrix(gDisplayListHead++, G_MTX_MODELVIEW);
+}
+
 s8 gCourseCompleteCoinsEqual = FALSE;
 s32 gCourseDoneMenuTimer = 0;
 s32 gCourseCompleteCoins = 0;
 s8 gHudFlash = HUD_FLASH_NONE;
 
-s32 render_pause_courses_and_castle(void) {
+s32 render_pause_courses_and_castle(void) { // ===============================================================================
     s16 index;
 
 #ifdef PUPPYCAM
@@ -1871,45 +2120,58 @@ s32 render_pause_courses_and_castle(void) {
             level_set_transition(-1, NULL);
             play_sound(SOUND_MENU_PAUSE_OPEN, gGlobalSoundSource);
 
-            if (gCurrCourseNum >= COURSE_MIN
-             && gCurrCourseNum <= COURSE_MAX) {
-                change_dialog_camera_angle();
-                gDialogBoxState = DIALOG_STATE_VERTICAL;
-            } else {
-                highlight_last_course_complete_stars();
-                gDialogBoxState = DIALOG_STATE_HORIZONTAL;
-            }
+            change_dialog_camera_angle();
+            gDialogBoxState = DIALOG_STATE_VERTICAL;
             break;
 
         case DIALOG_STATE_VERTICAL:
             shade_screen();
             render_pause_my_score_coins();
+            print_hud_pause_colorful_str();
             render_pause_red_coins();
 #ifndef DISABLE_EXIT_COURSE
 #ifdef EXIT_COURSE_WHILE_MOVING
+            render_pause_course_options(99, 93, &gDialogLineNum, 15);
+#else
             if ((gMarioStates[0].action & (ACT_FLAG_SWIMMING | ACT_FLAG_METAL_WATER | ACT_FLAG_PAUSE_EXIT))
              || (gMarioStates[0].pos[1] <= gMarioStates[0].floorHeight)) {
-#else
-            if (gMarioStates[0].action & ACT_FLAG_PAUSE_EXIT) {
-#endif
+            //if (gMarioStates[0].action & ACT_FLAG_PAUSE_EXIT) {
+
                 render_pause_course_options(99, 93, &gDialogLineNum, 15);
             }
 #endif
+#endif
+        
+            if (gPlayer3Controller->buttonPressed & (A_BUTTON)) {
+                if (gDialogLineNum == MENU_OPT_SAVE_GAME) {
+                    index = gDialogLineNum;
+                    play_sound(SOUND_MENU_STAR_SOUND_OKEY_DOKEY, gGlobalSoundSource);
+                    save_file_do_save(gCurrSaveFileNum - 1);
+                } else {
+                    level_set_transition(0, NULL);
+                    play_sound(SOUND_MENU_PAUSE_CLOSE, gGlobalSoundSource);
+                    gDialogBoxState = DIALOG_STATE_OPENING;
+                    gMenuMode = MENU_MODE_NONE;
 
-            if (gPlayer3Controller->buttonPressed & (A_BUTTON | START_BUTTON)) {
+                    if (gDialogLineNum == MENU_OPT_EXIT_COURSE) {
+                        index = gDialogLineNum;
+                    } else { // MENU_OPT_CONTINUE or MENU_OPT_CAMERA_ANGLE_R
+                        index = MENU_OPT_DEFAULT;
+                    }
+
+                    return index;
+                }
+            }
+
+            if (gPlayer3Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
                 level_set_transition(0, NULL);
                 play_sound(SOUND_MENU_PAUSE_CLOSE, gGlobalSoundSource);
                 gDialogBoxState = DIALOG_STATE_OPENING;
                 gMenuMode = MENU_MODE_NONE;
-
-                if (gDialogLineNum == MENU_OPT_EXIT_COURSE) {
-                    index = gDialogLineNum;
-                } else { // MENU_OPT_CONTINUE or MENU_OPT_CAMERA_ANGLE_R
-                    index = MENU_OPT_DEFAULT;
-                }
-
+                index = MENU_OPT_DEFAULT;
                 return index;
             }
+
             break;
 
         case DIALOG_STATE_HORIZONTAL:
@@ -1918,7 +2180,7 @@ s32 render_pause_courses_and_castle(void) {
             render_pause_castle_menu_box(160, 143);
             render_pause_castle_main_strings(104, 60);
 
-            if (gPlayer3Controller->buttonPressed & (A_BUTTON | START_BUTTON | Z_TRIG)) {
+            if (gPlayer3Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
                 level_set_transition(0, NULL);
                 play_sound(SOUND_MENU_PAUSE_CLOSE, gGlobalSoundSource);
                 gMenuMode = MENU_MODE_NONE;
@@ -1927,10 +2189,30 @@ s32 render_pause_courses_and_castle(void) {
                 return MENU_OPT_DEFAULT;
             }
             break;
-    }
+        case DIALOG_STATE_CAMERA:
+            shade_screen();
+            print_hud_pause_colorful_str();
+            render_pause_camera_menu_box(136, 143);
+            render_camera_options(74, 93, &gDialogLineNum, 15);
 #if defined(WIDE) && !defined(PUPPYCAM)
-        render_widescreen_setting();
+            render_widescreen_setting(gDialogLineNum);
 #endif
+#ifdef REONUCAM
+            render_reonucam_speed_setting(gDialogLineNum);
+#endif
+            render_pause_camera_options(74, 93, gDialogLineNum);
+
+            if (gPlayer3Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
+                level_set_transition(0, NULL);
+                play_sound(SOUND_MENU_PAUSE_CLOSE, gGlobalSoundSource);
+                gDialogBoxState = DIALOG_STATE_OPENING;
+                gMenuMode = MENU_MODE_NONE;
+                index = MENU_OPT_DEFAULT;
+                return index;
+            }
+            break;
+    }
+
     if (gDialogTextAlpha < 250) {
         gDialogTextAlpha += 25;
     }
@@ -1942,8 +2224,40 @@ s32 render_pause_courses_and_castle(void) {
 
     puppycam_render_option_text();
 #endif
+    render_page_display();
+    if (gPlayer1Controller->buttonPressed & R_TRIG){
+        switch (gDialogBoxState) {
+            case DIALOG_STATE_VERTICAL:
+                highlight_last_course_complete_stars();
+                gDialogBoxState = DIALOG_STATE_HORIZONTAL;
+                break;
+            case DIALOG_STATE_HORIZONTAL:
+                gDialogLineNum = 1;
+                gDialogBoxState = DIALOG_STATE_CAMERA;
+                break;
+            case DIALOG_STATE_CAMERA:
+                gDialogLineNum = 1;
+                gDialogBoxState = DIALOG_STATE_VERTICAL;
+                break;
+        }
+    } else if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        switch (gDialogBoxState) {
+            case DIALOG_STATE_VERTICAL:
+                gDialogLineNum = 1;
+                gDialogBoxState = DIALOG_STATE_CAMERA;
+                break;
+            case DIALOG_STATE_HORIZONTAL:
+                gDialogLineNum = 1;
+                gDialogBoxState = DIALOG_STATE_VERTICAL;
+                break;
+            case DIALOG_STATE_CAMERA:
+                highlight_last_course_complete_stars();
+                gDialogBoxState = DIALOG_STATE_HORIZONTAL;
+                break;
+        }
+    }
     return MENU_OPT_NONE;
-}
+} // =========================================================================================================================
 
 #define TXT_HISCORE_X 109
 #define TXT_HISCORE_Y  36

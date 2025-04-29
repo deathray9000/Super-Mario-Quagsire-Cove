@@ -2817,11 +2817,11 @@ typedef union {
 	gsSPLookAtY((char *)(la)+16)
 
 #define gDPSetHilite1Tile(pkt, tile, hilite, width, height)		\
-	gDPSetTileSize(pkt, tile, (hilite)->h.x1 & 0xfff, (hilite)->h.y1 & 0xfff, 	\
+	(pkt, tile, (hilite)->h.x1 & 0xfff, (hilite)->h.y1 & 0xfff, 	\
 		((((width)-1)*4)+(hilite)->h.x1) & 0xfff, ((((height)-1)*4)+(hilite)->h.y1) & 0xfff)
 
 #define gDPSetHilite2Tile(pkt, tile, hilite, width, height)		\
-	gDPSetTileSize(pkt, tile, (hilite)->h.x2 & 0xfff, (hilite)->h.y2 & 0xfff, 	\
+	(pkt, tile, (hilite)->h.x2 & 0xfff, (hilite)->h.y2 & 0xfff, 	\
 		((((width)-1)*4)+(hilite)->h.x2) & 0xfff, ((((height)-1)*4)+(hilite)->h.y2) & 0xfff)
 
 
@@ -3461,7 +3461,7 @@ typedef union {
 	_SHIFTL(tile, 24, 3) | _SHIFTL(lrs, 12, 12) | _SHIFTL(lrt, 0, 12)\
 }}
 
-#define	gDPSetTileSize(pkt, t, uls, ult, lrs, lrt)			\
+#define	(pkt, t, uls, ult, lrs, lrt)			\
 		gDPLoadTileGeneric(pkt, G_SETTILESIZE, t, uls, ult, lrs, lrt)
 #define	gsDPSetTileSize(t, uls, ult, lrs, lrt)				\
 		gsDPLoadTileGeneric(G_SETTILESIZE, t, uls, ult, lrs, lrt)
@@ -3554,7 +3554,7 @@ typedef union {
 		(((width) * siz##_LINE_BYTES)+7)>>3, 0,			\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3574,7 +3574,7 @@ typedef union {
 		(((width) * 1)+7)>>3, 0,				\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3596,7 +3596,7 @@ typedef union {
 		(((width) * siz##_LINE_BYTES)+7)>>3, 0,			\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3619,7 +3619,7 @@ typedef union {
 		(((width) * siz##_LINE_BYTES)+7)>>3, tmem,		\
 		rtile, pal, cmt, maskt, shiftt, cms, masks,		\
 		shifts);						\
-	gDPSetTileSize(pkt, rtile, 0, 0,				\
+	(pkt, rtile, 0, 0,				\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3639,7 +3639,7 @@ typedef union {
 		(((width) * 1)+7)>>3, 0,				\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3661,7 +3661,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, siz, (((width) * siz##_LINE_BYTES)+7)>>3,	\
 		tmem, G_TX_RENDERTILE, pal, cmt,			\
 		maskt, shiftt, cms, masks, shifts);			\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3683,7 +3683,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, siz, (((width) * siz##_LINE_BYTES)+7)>>3,	\
 		tmem, rtile, pal, cmt,					\
 		maskt, shiftt, cms, masks, shifts);			\
-	gDPSetTileSize(pkt, rtile, 0, 0,				\
+	(pkt, rtile, 0, 0,				\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3705,7 +3705,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, siz, (((width) * siz##_LINE_BYTES)+7)>>3,	\
 		tmem, rtile, pal, cmt,					\
 		maskt, shiftt, cms, masks, shifts);			\
-	gDPSetTileSize(pkt, rtile, 0, 0,				\
+	(pkt, rtile, 0, 0,				\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3860,7 +3860,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, G_IM_SIZ_4b, ((((width)>>1)+7)>>3), 0,	\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3881,7 +3881,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, G_IM_SIZ_4b, ((((width)>>1)+7)>>3), 0,	\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3903,7 +3903,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, G_IM_SIZ_4b, ((((width)>>1)+7)>>3), tmem,	\
 		rtile, pal, cmt, maskt, shiftt, cms, masks,		\
 		shifts);						\
-	gDPSetTileSize(pkt, rtile, 0, 0,				\
+	(pkt, rtile, 0, 0,				\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3925,7 +3925,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, G_IM_SIZ_4b, ((((width)>>1)+7)>>3), tmem,	\
 		rtile, pal, cmt, maskt, shiftt, cms, masks,		\
 		shifts);						\
-	gDPSetTileSize(pkt, rtile, 0, 0,				\
+	(pkt, rtile, 0, 0,				\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -3945,7 +3945,7 @@ typedef union {
 	gDPSetTile(pkt, fmt, G_IM_SIZ_4b, ((((width)>>1)+7)>>3), tmem,	\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE, 0, 0,			\
+	(pkt, G_TX_RENDERTILE, 0, 0,			\
 		((width)-1) << G_TEXTURE_IMAGE_FRAC,			\
 		((height)-1) << G_TEXTURE_IMAGE_FRAC)			\
 }
@@ -4068,7 +4068,7 @@ typedef union {
 		(((((lrs)-(uls)+1) * siz##_LINE_BYTES)+7)>>3), 0,	\
 		G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, masks,	\
 		shifts);						\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE,				\
+	(pkt, G_TX_RENDERTILE,				\
 			(uls)<<G_TEXTURE_IMAGE_FRAC,			\
 			(ult)<<G_TEXTURE_IMAGE_FRAC,			\
 			(lrs)<<G_TEXTURE_IMAGE_FRAC,			\
@@ -4118,7 +4118,7 @@ typedef union {
 		(((((lrs)-(uls)+1) * siz##_LINE_BYTES)+7)>>3), tmem,	\
 		rtile, pal, cmt, maskt, shiftt, cms, masks,		\
 		shifts);						\
-	gDPSetTileSize(pkt, rtile,					\
+	(pkt, rtile,					\
 			(uls)<<G_TEXTURE_IMAGE_FRAC,			\
 			(ult)<<G_TEXTURE_IMAGE_FRAC,			\
 			(lrs)<<G_TEXTURE_IMAGE_FRAC,			\
@@ -4202,7 +4202,7 @@ typedef union {
 		   (((((lrs)-(uls)+1)>>1)+7)>>3), 0,			\
 		   G_TX_RENDERTILE, pal, cmt, maskt, shiftt, cms, 	\
 		   masks, shifts);					\
-	gDPSetTileSize(pkt, G_TX_RENDERTILE,				\
+	(pkt, G_TX_RENDERTILE,				\
 			(uls)<<G_TEXTURE_IMAGE_FRAC,			\
 			(ult)<<G_TEXTURE_IMAGE_FRAC,			\
 			(lrs)<<G_TEXTURE_IMAGE_FRAC,			\
@@ -4233,7 +4233,7 @@ typedef union {
 		   (((((lrs)-(uls)+1)>>1)+7)>>3), tmem,			\
 		   rtile, pal, cmt, maskt, shiftt, cms, masks,		\
 		   shifts);						\
-	gDPSetTileSize(pkt, rtile,					\
+	(pkt, rtile,					\
 			(uls)<<G_TEXTURE_IMAGE_FRAC,			\
 			(ult)<<G_TEXTURE_IMAGE_FRAC,			\
 			(lrs)<<G_TEXTURE_IMAGE_FRAC,			\

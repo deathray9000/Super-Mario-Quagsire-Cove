@@ -405,6 +405,7 @@
 #define MODEL_SKEETER                     0x69        // skeeter_geo
 #define MODEL_SWOOP                       0x6A        // swoop_geo
 #define MODEL_SCUTTLEBUG                  0x6B        // scuttlebug_geo
+#define MODEL_COSMIC_MARIO                0x6C        // cosmic_mario_geo      
 
 // group 14
 #define MODEL_PIRANHA_PLANT               0x64        // piranha_plant_geo
@@ -425,11 +426,14 @@
 #define MODEL_BIG_CHILL_BULLY             0x65        // chilly_chief_big_geo
 #define MODEL_MONEYBAG                    0x66        // moneybag_geo
 
-// group 17 original
-#define MODEL_MR_I_IRIS                   0x66        // mr_i_iris_geo
-#define MODEL_MR_I_BODY                   0x67        // mr_i_geo
+// group 17 multi_defined
+//#define MODEL_SWOOP                     0x6A        // swoop_geo
+//#define MODEL_SCUTTLEBUG                0x6B        // scuttlebug_geo
+//#define MODEL_COSMIC_MARIO              0x6C        // cosmic_mario_geo   
+#define MODEL_MR_I_IRIS                   0x6D        // mr_i_iris_geo
+#define MODEL_MR_I_BODY                   0x6E        // mr_i_geo
 #define MODEL_MR_I MODEL_MR_I_BODY // backwards compatibility
-#define MODEL_DORRIE                      0x68        // dorrie_geo
+#define MODEL_DORRIE                      0x6F        // dorrie_geo
 
 // other models
 #define MODEL_YELLOW_COIN                 0x74        // yellow_coin_geo
@@ -486,9 +490,9 @@
 #define MODEL_IDLE_WATER_WAVE             0xA6        // idle_water_wave_geo
 #define MODEL_WATER_SPLASH                0xA7        // water_splash_geo
 #define MODEL_BUBBLE                      0xA8        // bubble_geo
-// find me
+#define MODEL_STUFFWELL                   0xA9        // stuffwell_geo
 #define MODEL_PURPLE_MARBLE               0xAA        // purple_marble_geo
-// find me
+#define MODEL_POWER_FLOWERS               0xAB        // power_flower_geo
 #define MODEL_UNKNOWN_AC                  0xAC        // according to an special preset, it was the original id of the castle floor trap
 #define MODEL_WF_SLIDING_PLATFORM         0xAD        // wf_geo_000A98
 #define MODEL_WF_SMALL_BOMP               0xAE        // wf_geo_000A00

@@ -207,6 +207,8 @@ const LevelScript script_func_global_1[] = {
     LOAD_MODEL_FROM_GEO(MODEL_STAR_STATUE,      star_statue_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SILVER_STAR,      Silver_Star_geo),
     LOAD_MODEL_FROM_GEO(MODEL_QUAGSIRE,      quagsire_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_STUFFWELL,      Stuffwell_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_POWER_FLOWERS,      power_flowers_geo),
     RETURN(),
 };
 
@@ -326,6 +328,7 @@ const LevelScript script_func_global_14[] = {
     LOAD_MODEL_FROM_GEO(MODEL_SKEETER,                 skeeter_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SWOOP,                   swoop_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SCUTTLEBUG,              scuttlebug_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_COSMIC_MARIO,            cosmic_mario_geo),
     RETURN(),
 };
 

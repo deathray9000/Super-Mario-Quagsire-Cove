@@ -36,3 +36,5 @@
 #include "star_statue/geo.inc.c"
 #include "silver_star/geo.inc.c"
 #include "quagsire/geo.inc.c"
+#include "stuffwell/geo.inc.c"
+#include "power_flowers/geo.inc.c"

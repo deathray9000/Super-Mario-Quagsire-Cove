@@ -1,4 +1,4 @@
-// star_statue.c.inc
+// star_statue.inc.c
 
 static struct ObjectHitbox sStatbox = {
     /* interactType:      */ INTERACT_TEXT,
@@ -20,7 +20,7 @@ void bhv_StarStatue_init(void) {
         o->oAction = 1;
     } 
     
-    if (save_file_get_coin_stars(gCurrSaveFileNum) == 2) {
+    if (save_file_get_coin_stars(gCurrSaveFileNum - 1) == 2) {
         o->oAction = 4;
     }
 };
@@ -97,9 +97,9 @@ void bhv_StarStatue_loop(void) {
         u8 currentStarFlags = save_file_get_star_flags((gCurrSaveFileNum - 1), COURSE_NUM_TO_INDEX(GET_BPARAM1(o->oBehParams) / 7));
 
         if (currentStarFlags & (1 << (GET_BPARAM1(o->oBehParams) % 7))) {
-            save_file_set_coin_stars(gCurrSaveFileNum);
+            save_file_set_coin_stars(gCurrSaveFileNum - 1);
 
-            if (save_file_get_coin_stars(gCurrSaveFileNum) == 2) {
+            if (save_file_get_coin_stars(gCurrSaveFileNum - 1 ) == 2) {
                 o->oAction = 4;
             } else {
                 o->oAction = 1;

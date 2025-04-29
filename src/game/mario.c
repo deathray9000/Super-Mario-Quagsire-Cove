@@ -1480,8 +1480,8 @@ void update_mario_health(struct MarioState *m) {
             m->healCounter--;
         }
         if (m->hurtCounter > 0) {
-            if (m->flags & MARIO_PROPELLER) {
-                m->flags &= ~MARIO_PROPELLER;
+            if (save_file_get_power_up(gCurrSaveFileNum - 1, 0) != 0) {
+                save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
                 m->hurtCounter = 0;
             } else {
                 m->health -= 0x40;
@@ -1832,11 +1832,7 @@ void init_mario(void) {
 
     gMarioState->invincTimer = 0;
 
-   if (gMarioState->flags & MARIO_PROPELLER && gMarioState->isDead == FALSE) {
-        gMarioState->flags = (MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD | MARIO_PROPELLER);
-    } else {
-        gMarioState->flags = (MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD);
-    }
+    gMarioState->flags = (MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD);
 
     gMarioState->forwardVel = 0.0f;
     gMarioState->squishTimer = 0;
@@ -1852,6 +1848,15 @@ void init_mario(void) {
     gMarioState->usedObj = NULL;
 
     gMarioState->waterLevel = find_water_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
+    gMarioState->STOR_State = 0;
+
+    // gMarioState->STOR_prop = 3;
+    // gMarioState->STOR_F_FLower = 12;
+    // gMarioState->STOR_Bubble_FLower = 4;
+    // gMarioState->STOR_Boomer_FLower = 7;
+    // gMarioState->STOR_Deluxe = 0;
+
+    // gMarioState->Power_Up_State = 0;
 
     gMarioState->area = gCurrentArea;
     gMarioState->marioObj = gMarioObject;
@@ -1923,6 +1928,7 @@ void init_mario_from_save_file(void) {
 
     gHudDisplay.coins = gMarioState->numCoins;
     gHudDisplay.wedges = 8;
+    
 }
 
 u32 check_powerup_state(struct MarioState *m) {
@@ -1931,7 +1937,7 @@ u32 check_powerup_state(struct MarioState *m) {
     }
 
     if (gPlayer1Controller->buttonPressed & L_TRIG && !(m->input & INPUT_B_DOWN)) {    
-        if (m->flags & MARIO_PROPELLER && m->propel == TRUE) {
+        if (save_file_get_power_up(gCurrSaveFileNum - 1, 0) == 1 && m->propel == TRUE) {
             play_sound(SOUND_PROPELLER, m->marioObj->header.gfx.cameraToObject); 
             m->vel[1] = 80.0f;
             m->propel = FALSE;

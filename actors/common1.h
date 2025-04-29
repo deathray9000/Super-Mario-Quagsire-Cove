@@ -334,3 +334,10 @@ extern Gfx broken_signpost_sign_mesh_layer_1[];
 extern Gfx broken_signpost_material_revert_render_settings[];
 
 #endif
+
+// power_up_hud
+extern const Texture *const power_up_hud_segments_lut[];
+extern const Gfx dl_power_up_hud_base[];
+extern const Gfx dl_power_up_hud_base_selected[];
+extern const Gfx dl_power_up_hud_segments_begin[];
+extern const Gfx dl_power_up_hud_segments_end[];

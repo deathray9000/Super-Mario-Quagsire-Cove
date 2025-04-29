@@ -1,3 +1,4 @@
+// Snufit.inc.c
 
 /**
  * Behavior file for bhvSnufit and bhvSnufitBalls.

@@ -1,3 +1,4 @@
+// Goomba.inc.c
 
 /**
  * Behavior for bhvGoomba and bhvGoombaTripletSpawner,

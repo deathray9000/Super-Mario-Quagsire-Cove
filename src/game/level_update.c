@@ -598,7 +598,13 @@ void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags)
     sWarpDest.levelNum = destLevel;
     sWarpDest.areaIdx = destArea;
     sWarpDest.nodeId = destWarpNode;
-    sWarpDest.arg = warpFlags;
+    if (warpFlags == WARP_FLAG_FORCE_LEVEL_CHANGE) {
+        sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
+        sWarpDest.arg = WARP_FLAGS_NONE;
+    } else {
+        sWarpDest.arg = warpFlags;
+    }
+    
 
     if (gMarioState->isDead) { 
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
@@ -753,15 +759,16 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 }
 #endif
                 sDelayedWarpTimer = 48;
-                if (gWarpCheckpoint.courseNum != COURSE_NONE) {
-                    sSourceWarpNodeId = gWarpCheckpoint.warpNode;
-                } else {
+                // if (gWarpCheckpoint.courseNum != COURSE_NONE) {
+                //     sSourceWarpNodeId = gWarpCheckpoint.warpNode;
+                // } else {
                     sSourceWarpNodeId = WARP_NODE_DEATH;
-                }
+                //}
                 play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, sDelayedWarpTimer, 0x00, 0x00, 0x00);
                 play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
 #ifdef PREVENT_DEATH_LOOP
                 m->isDead = TRUE;
+                save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
 #endif
                 break;
 
@@ -775,11 +782,11 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                         sSourceWarpNodeId = WARP_NODE_DEATH;
                     }
 #else
-                    if (gWarpCheckpoint.courseNum != COURSE_NONE) {
-                        sSourceWarpNodeId = gWarpCheckpoint.warpNode;
-                    } else {
+                    // if (gWarpCheckpoint.courseNum != COURSE_NONE) {
+                    //     sSourceWarpNodeId = gWarpCheckpoint.warpNode;
+                    // } else {
                         sSourceWarpNodeId = WARP_NODE_DEATH;
-                    }
+                    //}
 #endif
                 }
 
@@ -1062,11 +1069,11 @@ s32 play_mode_paused(void) {
         gCameraMovementFlags &= ~CAM_MOVE_PAUSE_SCREEN;
         set_play_mode(PLAY_MODE_NORMAL);
 #ifndef DISABLE_EXIT_COURSE
-    } else { // MENU_OPT_EXIT_COURSE
+    } else if (gMenuOptSelectIndex != MENU_OPT_SAVE_GAME) { // MENU_OPT_EXIT_COURSE
         if (gDebugLevelSelect) {
             fade_into_special_warp(WARP_SPECIAL_LEVEL_SELECT, 1);
         } else {
-            initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAGS_NONE);
+            initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_FORCE_LEVEL_CHANGE);
             fade_into_special_warp(WARP_SPECIAL_NONE, 0);
             gSavedCourseNum = COURSE_NONE;
         }
@@ -1345,6 +1352,7 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
+	if (gCurrLevelNum == LEVEL_CCM) return 0;
 	if (TRUE) return 0; // permanatly deactivates act select, remove after competition
 	
     if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE || gMarioState->isDead) {

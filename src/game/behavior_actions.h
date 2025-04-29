@@ -569,10 +569,25 @@ void bhv_StarStatue_init(void);
 void bhv_StarStatue_loop(void);
 void bhv_quagsire_loop(void);
 void bhv_quagsire_init(void);
+void bhv_Stuffwell_loop(void);
+void bhv_Stuffwell_init(void);
+void bhv_power_flowers_init(void);
+void bhv_power_flowers_loop(void);
+void bhv_cosmic_manager_loop(void);
+void bhv_cosmic_manager_init(void);
+void bhv_cosmic_mario_loop(void);
+void bhv_cosmic_mario_init(void);
 
+
+// checkpoint_flag
 Gfx *geo_flag_wave(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
 
+// propeller mushroom
 Gfx *geo_prop_blade(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
+
+// stuffwell
+Gfx *geo_stuffwell_blink(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
+Gfx *geo_stuffwell_mouth(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
 
 Gfx *geo_move_mario_part_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
 

@@ -569,7 +569,11 @@ static void big_boo_spawn_ghost_hunt_star(void) {
 }
 
 static void big_boo_spawn_balcony_star(void) {
-    spawn_default_star(700.0f, 3200.0f, 1900.0f);
+    struct Object *starObj = spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStarSpawnCoordinates, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
+    SET_BPARAM1(starObj->oBehParams, GET_BPARAM1(o->oBehParams));
+    vec3f_set(&starObj->oHomeVec, o->oHomeX, o->oHomeY + 200, o->oHomeZ);
+    starObj->oFaceAnglePitch = 0;
+    starObj->oFaceAngleRoll = 0;
 }
 
 static void big_boo_spawn_merry_go_round_star(void) {

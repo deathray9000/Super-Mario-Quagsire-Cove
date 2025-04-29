@@ -130,10 +130,24 @@ u32 get_mario_cap_flag(struct Object *capObject) {
     } else if (script == bhvVanishCap) {
         return MARIO_VANISH_CAP;
     } else if (script == bhvPropeller) {
-        return MARIO_PROPELLER;
+        return 10;
+    } else if (script == bhvPowerFlowers) {
+        return 11 + capObject->oAnimState;
     }
 
     return 0;
+}
+
+static void give_aerial_i_frames(struct MarioState *m) {
+    if (m->action == ACT_FORWARD_AIR_KB          || m->action == ACT_BACKWARD_AIR_KB || 
+        m->action == ACT_HARD_BACKWARD_AIR_KB    || m->action == ACT_HARD_FORWARD_AIR_KB ||
+        m->action == ACT_HARD_BACKWARD_GROUND_KB || m->action == ACT_HARD_FORWARD_GROUND_KB || 
+        m->action == ACT_BACKWARD_GROUND_KB      || m->action == ACT_FORWARD_GROUND_KB ||
+        m->action == ACT_SOFT_BACKWARD_GROUND_KB || m->action == ACT_SOFT_FORWARD_GROUND_KB) {
+        if (m->actionArg > 0) {
+            m->invincTimer = 30;
+        }
+    }
 }
 
 /**
@@ -953,7 +967,7 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
             }
         }
     } else if (obj->behavior == segmented_to_virtual(bhvOGpipe)) { 
-        if (!(GET_BPARAM3(obj->oBehParams) == 1)) {
+        if (GET_BPARAM3(obj->oBehParams) == 0) {
             m->interactObj       = obj;
             m->usedObj           = obj;
             obj->oInteractStatus = INT_STATUS_INTERACTED;
@@ -1429,12 +1443,13 @@ u32 interact_hit_from_below(struct MarioState *m, UNUSED u32 interactType, struc
 
 u32 interact_bounce_top2(struct MarioState *m, UNUSED u32 interactType, struct Object *o) {
 
-     if (m->pos[1] >= o->oPosY && m->action != ACT_LEDGE_GRAB && m->action != ACT_LEDGE_CLIMB_SLOW_1) {
-        o->oInteractStatus = INT_STATUS_INTERACTED;
-        set_mario_action(m, ACT_DOUBLE_JUMP, 0);
-        m->vel[1] += 22;
-     }
-     return FALSE;
+    if (m->pos[1] >= o->oPosY && m->action != ACT_LEDGE_GRAB && m->action != ACT_LEDGE_CLIMB_SLOW_1) {
+       o->oInteractStatus = INT_STATUS_INTERACTED;
+       give_aerial_i_frames(m);
+       set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+       m->vel[1] += 22;
+    }
+    return FALSE;
 }
 
 u32 interact_bounce_top(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
@@ -1702,7 +1717,7 @@ u32 interact_cap(struct MarioState *m, UNUSED u32 interactType, struct Object *o
     u16 capMusic = 0;
     u16 capTime = 0;
 
-    if (m->action != ACT_GETTING_BLOWN && capFlag != 0) {
+    if (m->action != ACT_GETTING_BLOWN && capFlag != 0 && capFlag < 10) {
         m->interactObj = obj;
         obj->oInteractStatus = INT_STATUS_INTERACTED;
 
@@ -1734,6 +1749,49 @@ u32 interact_cap(struct MarioState *m, UNUSED u32 interactType, struct Object *o
         }
 
         return TRUE;
+    } else if (capFlag != 0) {
+        obj->oInteractStatus = INT_STATUS_INTERACTED;
+        s8 Power_Up_State = save_file_get_power_up(gCurrSaveFileNum - 1, 0);
+
+        switch (capFlag)
+        {
+        case 10:
+            // propeller
+            if (Power_Up_State == 1) { 
+                save_file_set_power_up(gCurrSaveFileNum - 1, 1, 1);
+            } else {
+                save_file_set_power_up(gCurrSaveFileNum - 1, 0, 1);
+            }
+            break;
+        case 11:
+            // fire
+            if (Power_Up_State == 2) { 
+                save_file_set_power_up(gCurrSaveFileNum - 1, 2, 1);
+            } else {
+                save_file_set_power_up(gCurrSaveFileNum - 1, 0, 2);
+            }
+            break;
+        case 12:
+            // bubble
+            if (Power_Up_State == 1) { 
+                save_file_set_power_up(gCurrSaveFileNum - 1, 3, 1);
+            } else {
+                save_file_set_power_up(gCurrSaveFileNum - 1, 0, 1);
+            }
+            break;
+        case 13:
+            // boomer
+            if (Power_Up_State == 1) { 
+                save_file_set_power_up(gCurrSaveFileNum - 1, 4, 1);
+            } else {
+                save_file_set_power_up(gCurrSaveFileNum - 1, 0, 1);
+            }
+            break;
+        case 14:
+            // treat life mushroom differant, set up flag for it later
+            save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
+            break;
+        }
     }
 
     return FALSE;
@@ -1825,7 +1883,7 @@ u32 mario_can_talk(struct MarioState *m, u32 arg) {
     return FALSE;
 }
 
-#define READ_MASK (INPUT_A_PRESSED | INPUT_B_PRESSED)
+#define READ_MASK (INPUT_A_PRESSED)
 #ifdef EASIER_DIALOG_TRIGGER
 #define SIGN_RANGE DEGREES(90)
 #else
@@ -1895,64 +1953,126 @@ u32 check_npc_talk(struct MarioState *m, struct Object *obj) {
 
     if (interaction & INT_HIT_FROM_ABOVE || interaction & INT_GROUND_POUND_OR_TWIRL) {
         obj->oInteractStatus = INT_STATUS_WAS_ATTACKED;
+        obj->oSubAction = 0;
         m->vel[1] = 30.0f;
+        give_aerial_i_frames(m);
 
         if (m->action == ACT_TRIPLE_JUMP) {
             return set_mario_action(m, ACT_JUMP, 0);
-        } else if (m->prevAction == ACT_DOUBLE_JUMP || m->action == ACT_DOUBLE_JUMP) {
+        } else if (m->action == ACT_DOUBLE_JUMP || (m->prevAction == ACT_DOUBLE_JUMP && m->action == ACT_JUMP_KICK)) {
             set_mario_action(m, ACT_TRIPLE_JUMP, 0);
             if (!(m->input & INPUT_A_DOWN)) {
                 m->vel[1] -= 30;
             }
             return FALSE;
-        } else if (m->prevAction == ACT_JUMP || m->action == ACT_JUMP) {
-            return set_mario_action(m, ACT_DOUBLE_JUMP, 0);
         } else {
-            return set_mario_action(m, ACT_JUMP, 0);
+            return set_mario_action(m, ACT_DOUBLE_JUMP, 0);
         }
     }
 
     if (interaction & (INT_PUNCH | INT_KICK | INT_TRIP | INT_SLIDE_KICK | INT_FAST_ATTACK_OR_SHELL)) {
+        obj->oInteractStatus = INT_STATUS_HIT_MINE;
+        obj->oSubAction = 0;
         m->interactObj = obj;
         m->usedObj     = obj;
 
         m->faceAngle[1] = mario_obj_angle_to_object(m, m->interactObj);;
-        obj->oInteractStatus = INT_STATUS_HIT_MINE;
         m->forwardVel = -8;
         return set_mario_action(m, ACT_BACKWARD_GROUND_KB, 0);;
     }
 
+    if (obj->oPosY < 10.0f + obj->oFloorHeight) {
 #ifdef EASIER_DIALOG_TRIGGER
-    if (
-        mario_can_talk(m, TRUE)
-        && abs_angle_diff(mario_obj_angle_to_object(m, obj), m->faceAngle[1]) <= SIGN_RANGE
-    ) {
+        if (
+            mario_can_talk(m, TRUE)
+            && abs_angle_diff(mario_obj_angle_to_object(m, obj), m->faceAngle[1]) <= SIGN_RANGE
+        ) {
 #ifdef DIALOG_INDICATOR
-        if (obj->behavior == segmented_to_virtual(bhvYoshi)) {
-            spawn_object_relative(ORANGE_NUMBER_A, 0, 256, 64, obj, MODEL_NUMBER, bhvOrangeNumber);
-        } else if (obj->behavior == segmented_to_virtual(bhvQuagsire)) {
-            spawn_object_relative(ORANGE_NUMBER_A, 0, 200, 0, obj, MODEL_NUMBER, bhvOrangeNumber);
-        } else {
-            spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  0, obj, MODEL_NUMBER, bhvOrangeNumber);
-        }
+            if (obj->behavior == segmented_to_virtual(bhvYoshi)) {
+                spawn_object_relative(ORANGE_NUMBER_A, 0, 256, 64, obj, MODEL_NUMBER, bhvOrangeNumber);
+            } else if (obj->behavior == segmented_to_virtual(bhvQuagsire)) {
+                spawn_object_relative(ORANGE_NUMBER_A, 0, 200, 0, obj, MODEL_NUMBER, bhvOrangeNumber);
+            } else {
+                spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  0, obj, MODEL_NUMBER, bhvOrangeNumber);
+            }
 #endif
-        if (m->input & READ_MASK) {
+            if (m->input & READ_MASK) {
 #else
-    if ((m->input & READ_MASK) && mario_can_talk(m, 1)) {
-        s16 facingDYaw = mario_obj_angle_to_object(m, obj) - m->faceAngle[1];
-        if (facingDYaw >= -SIGN_RANGE && facingDYaw <= SIGN_RANGE) {
+        if ((m->input & READ_MASK) && mario_can_talk(m, 1)) {
+            s16 facingDYaw = mario_obj_angle_to_object(m, obj) - m->faceAngle[1];
+            if (facingDYaw >= -SIGN_RANGE && facingDYaw <= SIGN_RANGE) {
 #endif
-            obj->oInteractStatus = INT_STATUS_INTERACTED;
+                obj->oInteractStatus = INT_STATUS_INTERACTED;
 
-            m->interactObj = obj;
-            m->usedObj     = obj;
+                m->interactObj = obj;
+                m->usedObj     = obj;
 
-            push_mario_out_of_object(m, obj, -10.0f);
-            return set_mario_action(m, ACT_WAITING_FOR_DIALOG, 0);
+                obj->oSubAction = 0;
+                push_mario_out_of_object(m, obj, -10.0f);
+                return set_mario_action(m, ACT_WAITING_FOR_DIALOG, 0);
+            }
         }
     }
 
     push_mario_out_of_object(m, obj, -10.0f);
+    return FALSE;
+}
+
+u32 check_Stuffwell(struct MarioState *m, struct Object *obj) { 
+    u32 interaction = determine_interaction(m, obj);
+
+    // if (interaction & INT_HIT_FROM_ABOVE || interaction & INT_GROUND_POUND_OR_TWIRL) {
+    //     obj->oInteractStatus = INT_STATUS_WAS_ATTACKED;
+    //     obj->oSubAction = 0;
+    //     m->vel[1] = 30.0f;
+    //     give_aerial_i_frames(m);
+
+    //     if (m->action == ACT_TRIPLE_JUMP) {
+    //         return set_mario_action(m, ACT_JUMP, 0);
+    //     } else if (m->action == ACT_DOUBLE_JUMP || (m->prevAction == ACT_DOUBLE_JUMP && m->action == ACT_JUMP_KICK)) {
+    //         set_mario_action(m, ACT_TRIPLE_JUMP, 0);
+    //         if (!(m->input & INPUT_A_DOWN)) {
+    //             m->vel[1] -= 30;
+    //         }
+    //         return FALSE;
+    //     } else {
+    //         return set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+    //     }
+    // }
+
+    if (interaction & (INT_PUNCH | INT_KICK | INT_TRIP | INT_SLIDE_KICK | INT_FAST_ATTACK_OR_SHELL)) {
+        obj->oInteractStatus = INT_STATUS_HIT_MINE;
+        obj->oSubAction = 0;
+        return FALSE;
+    }
+
+    if (obj->oPosY < 10.0f + obj->oFloorHeight) {
+#ifdef EASIER_DIALOG_TRIGGER
+        if (
+            mario_can_talk(m, TRUE)
+            && abs_angle_diff(mario_obj_angle_to_object(m, obj), m->faceAngle[1]) <= SIGN_RANGE
+        ) {
+#ifdef DIALOG_INDICATOR
+            spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  0, obj, MODEL_NUMBER, bhvOrangeNumber);
+#endif
+            if (m->input & READ_MASK) {
+#else
+        if ((m->input & READ_MASK) && mario_can_talk(m, 1)) {
+            s16 facingDYaw = mario_obj_angle_to_object(m, obj) - m->faceAngle[1];
+            if (facingDYaw >= -SIGN_RANGE && facingDYaw <= SIGN_RANGE) {
+#endif
+                obj->oInteractStatus = INT_STATUS_INTERACTED;
+
+                m->interactObj = obj;
+                m->usedObj     = obj;
+
+                obj->oSubAction = 0;
+                push_mario_out_of_object(m, obj, -10.0f);
+                return set_mario_action(m, ACT_WAITING_FOR_DIALOG, 0);
+            }
+        }
+    }
+
     return FALSE;
 }
 
@@ -1963,6 +2083,8 @@ u32 interact_text(struct MarioState *m, UNUSED u32 interactType, struct Object *
         interact = check_read_sign(m, obj);
     } else if (obj->oInteractionSubtype & INT_SUBTYPE_NPC) {
         interact = check_npc_talk(m, obj);
+    } else if (obj->behavior == segmented_to_virtual(bhvStuffwell)) {
+        interact = check_Stuffwell(m, obj);
     } else {
         push_mario_out_of_object(m, obj, 2.0f);
     }
@@ -2085,6 +2207,7 @@ void mario_handle_special_floors(struct MarioState *m) {
         
         if (floorType == SURFACE_DEATH_PLANE && m->pos[1] < m->floorHeight + 2048.0f) {
             m->isDead = TRUE;
+            save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
         }
 
         switch (floorType) {

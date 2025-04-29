@@ -41,8 +41,17 @@ struct SaveFile {
 
     u32 flags;
 
-    u8 CoinStars; // amount of 100 coin stars collected (for star statues)
+    u8 CoinStars; // amount of 100 coin stars collected (for star statues and other star merchants)
     s16 numCoins; // current amount of coins mario has collected
+
+    u8 num_Propeller;
+    u8 num_Fire;
+    u8 num_Bubble;
+    u8 num_Boomer;
+    u8 num_Deluxe;
+
+    u8 Power_Up_State;
+
 
     // Star flags for each course.
     // The most significant bit of the byte *following* each course is set if the
@@ -67,8 +76,12 @@ struct MainMenuSaveData {
     // on the high score screen.
     u32 coinScoreAges[NUM_SAVE_FILES];
     u8 soundMode: 2;
+    s16 CamSelectionFlags;
 #ifdef WIDE
     u8 wideMode: 1;
+#endif
+#ifdef REONUCAM
+    u8 cameraSpeedSetting: 3;
 #endif
 
 #if MULTILANG
@@ -189,6 +202,8 @@ u32 save_file_get_flags(void);
 u32 save_file_get_star_flags(s32 fileIndex, s32 courseIndex);
 u8 save_file_get_coin_stars(s32 fileIndex);
 void save_file_set_coin_stars(s32 fileIndex);
+u8 save_file_get_power_up(s32 fileIndex, s8 position);
+void save_file_set_power_up(s32 fileIndex, s8 position, s8 change);
 void save_file_set_star_flags(s32 fileIndex, s32 courseIndex, u32 starFlags);
 s32 save_file_get_course_coin_score(s32 fileIndex, s32 courseIndex);
 s32 save_file_is_cannon_unlocked(void);
@@ -204,6 +219,12 @@ u32 save_file_get_sound_mode(void);
 #ifdef WIDE
 u32 save_file_get_widescreen_mode(void);
 void save_file_set_widescreen_mode(u8 mode);
+#endif
+#ifdef REONUCAM
+u8 save_file_get_camera_speed(void);
+void save_file_set_camera_speed(u8 speed);
+s16 save_file_get_camera_selection_flags(void);
+void save_file_set_camera_selection_flags(s16 flags);
 #endif
 void save_file_move_cap_to_default_location(void);
 

@@ -1,0 +1,8 @@
+#include "anim_hurt.inc.c"
+#include "anim_idle.inc.c"
+#include "anim_walk.inc.c"
+#include "anim_water_idle.inc.c"
+#include "anim_stand_up.inc.c"
+#include "anim_Open.inc.c"
+#include "anim_launched.inc.c"
+#include "anim_launched_land.inc.c"

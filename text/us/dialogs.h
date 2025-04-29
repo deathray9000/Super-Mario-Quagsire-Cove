@@ -75,17 +75,17 @@ I don't have anything\n\
 more to offer thee."))
 
 DEFINE_DIALOG(DIALOG_006, 1, 5, 95, 200, _("\
-Yo waddup. Welcome to the\n\
-slide demo for my major\n\
-hack Nuoh's Island.\n\
-There are 6 stars total,\n\
-3 per slide.\n\
+Yo waddup. Bill Board\n\
+here, to welcome you\n\
+to Cosmolite 64. I\n\
+gotta message here\n\
+from the creator saying:\n\
+There are 2 stars total.\n\
 This is also my\n\
 submission to the\n\
-Simpleflips 2024\n\
-slide hack competition.\n\
-\n\
-This is also my second\n\
+mario jams element\n\
+competition.\n\
+This is also my third\n\
 ever released rom hack\n\
 so I hope you enjoy.\n\
 \n\
@@ -113,90 +113,97 @@ jumps.\n\
 Jump kick has been\n\
 modified so that you\n\
 can wall jump and\n\
-ledge grab out of it\n\
+ledge grab out of it.\n\
 \n\
 Also, it no longer\n\
 blocks a triple jump\n\
 when you jump kick\n\
 out of a double jump.\n\
 \n\
-You can now roll out\n\
-while belly sliding\n\
-on a slide, so don't\n\
-be afraid to ground\n\
-pound dive.\n\
 Wall sliding has also\n\
-been added, but I don't\n\
-foresee this coming into\n\
-play for this hack\n\
+been added, making wall\n\
+jumps easier and more\n\
+consitent. Firsties are\n\
+Still a thing.\n\
+Also shout outs to\n\
+Reonu for making\n\
+Reonu Cam, which\n\
+this hack uses.\n\
 \n\
+Oh and the pause menu\n\
+has been updated to\n\
+now include multiple\n\
+ways to alter camera\n\
+controls.\n\
 That is all for now,\n\
-just crouch on or ground\n\
-pound into the pipe to\n\
-go to the first slide."))
+just keep going ahead\n\
+to find the level."))
 
 DEFINE_DIALOG(DIALOG_007, 1, 5, 95, 200, _("\
-Hey did you know, if you\n\
-ground pound a sign, it\n\
-will break and give you\n\
-a blue coin? It's really\n\
-cool.\n\
-...\n\
-\n\
-\n\
-\n\
-\n\
-Please don't hurt me."))
+Mario, thanks for coming\n\
+on such short notice.\n\
+Thankfully, we managed\n\
+to get the whole team\n\
+out safely.\n\
+Unfortunately, that\n\
+traitor is still down\n\
+there harvesting the\n\
+power of the cosmolite\n\
+ore deposits.\n\
+I'm afraid that if you\n\
+don't go and get the\n\
+power stars back from\n\
+him, he'll do more\n\
+then cause earthquakes."))
 
-DEFINE_DIALOG(DIALOG_008, 1, 7, 95, 200, _("\
-Welcome to the Piranha\n\
-Slide. As said before,\n\
-there are 3 stars here.\n\
-Star 1 is simply at the\n\
-bottom of the slide.\n\
-\n\
-\n\
-Star 2 is killing all\n\
-5 THI Piranhas on the\n\
-slide. And Star 3 is the\n\
-100 coin Star.\n\
-\n\
-\n\
-\n\
-The song is a remix of\n\
-Super Mario Land 2:\n\
-Athletic Theme by\n\
-Hooded Edge originally\n\
-made for Super Mario\n\
-World rom hacks, ported\n\
-into sm64 by me.\n\
-With permission of course.\n\
-Link in hack description."))
+DEFINE_DIALOG(DIALOG_008, 1, 6, 95, 200, _("\
+I can't believe we\n\
+trusted that boo!\n\
+He promised us safe\n\
+passage to the rare\n\
+earth element called\n\
+cosmolite.\n\
+But all he wanted\n\
+was for us to give\n\
+him a power star so\n\
+that he could become\n\
+more powerful."))
 
 DEFINE_DIALOG(DIALOG_009, 1, 5, 95, 200, _("\
-Enter the red pipe if you\n\
-want to head back to the\n\
-top of this slide. Enter\n\
-the green pipe to head to\n\
-the next slide."))
+I'm still suprised\n\
+he caused that much\n\
+damage to the cave\n\
+system with that\n\
+earthquake..."))
 
-DEFINE_DIALOG(DIALOG_010, 1, 7, 95, 200, _("\
-Hey, wondering where your\n\
-100 coin star is?\n\
+DEFINE_DIALOG(DIALOG_010, 1, 5, 95, 200, _("\
+whoa, your the Mario!\n\
+I've heard so much\n\
+about your adventures!\n\
+You and Luigi are\n\
+Amazing!\n\
+Oh? Why am I here?\n\
+Well, dad say's I'm\n\
+old enough to join\n\
+him on his adventures.\n\
 \n\
+Although I got stuck\n\
+with setting up the\n\
+tents while they\n\
+explored the cave.\n\
 \n\
-\n\
-\n\
-\n\
-So am I, but from what I\n\
-hear, a great deity will\n\
-speak to those who are\n\
-worthy through that star\n\
-shrine. Maybe if you're\n\
-worthy, you can ask it\n\
-where your star is."))
+It's not much, but\n\
+all adventures have\n\
+to start somewhere!"))
 
 DEFINE_DIALOG(DIALOG_011, 1, 5, 95, 200, _("\
+Cosmolite is based on\n\
+the metal of the same\n\
+name from the Terraria\n\
+Calamity Mod.\n\
+"))
+
+DEFINE_DIALOG(DIALOG_012, 1, 5, 95, 200, _("\
 Welcome to the Frosty\n\
 Slide. As said before,\n\
 there are 3 stars here.\n\
@@ -206,13 +213,6 @@ Star 2 is collecting all\n\
 5 silver stars on the\n\
 slide. And Star 3 is the\n\
 100 coin Star."))
-
-DEFINE_DIALOG(DIALOG_012, 1, 5, 95, 200, _("\
-Enter the red pipe if you\n\
-want to head back to the\n\
-top of this slide. Enter\n\
-the green pipe to head to\n\
-the end screen."))
 
 DEFINE_DIALOG(DIALOG_013, 1, 5, 30, 200, _("\
 You've collected 100\n\

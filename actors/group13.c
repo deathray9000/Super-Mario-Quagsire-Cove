@@ -46,3 +46,8 @@ UNUSED static const u64 binid_7 = 7;
 #include "scuttlebug/anims/data.inc.c"
 #include "scuttlebug/anims/table.inc.c"
 UNUSED static const u64 binid_8 = 8;
+
+#include "cosmic_mario/model.inc.c"
+#include "cosmic_mario/anims/data.inc.c"
+#include "cosmic_mario/anims/table.inc.c"
+UNUSED static const u64 binid_9 = 9;

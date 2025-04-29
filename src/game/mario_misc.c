@@ -353,12 +353,7 @@ Gfx *geo_switch_mario_stand_run(s32 callContext, struct GraphNode *node, UNUSED 
     struct MarioState *m = &gMarioStates[0];
 
     if (callContext == GEO_CONTEXT_RENDER) {
-        // assign result. 0 if moving, 1 if stationary.
-        if (m->flags & MARIO_PROPELLER) {
-            switchCase->selectedCase = 1;
-        } else {
-            switchCase->selectedCase = 0;
-        }
+        switchCase->selectedCase = save_file_get_power_up(gCurrSaveFileNum - 1, 0);
     }
     return NULL;
 }

@@ -90,3 +90,6 @@ UNUSED static const u64 binid_22 = 22;
 
 #include "broken_signpost/model.inc.c"
 UNUSED static const u64 binid_23 = 23;
+
+#include "power_up_hud/model.inc.c"
+UNUSED static const u64 binid_24 = 24;

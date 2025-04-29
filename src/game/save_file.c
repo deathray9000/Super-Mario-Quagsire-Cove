@@ -294,7 +294,7 @@ static void restore_save_file_data(s32 fileIndex, s32 srcSlot) {
 void save_file_do_save(s32 fileIndex) {
     save_file_set_num_coins(fileIndex, gMarioState->numCoins);
 
-    if (gSaveFileModified) {
+    //if (gSaveFileModified) {
         // Compute checksum
         add_save_block_signature(&gSaveBuffer.files[fileIndex][0],
                                  sizeof(gSaveBuffer.files[fileIndex][0]), SAVE_FILE_MAGIC);
@@ -307,7 +307,7 @@ void save_file_do_save(s32 fileIndex) {
         write_eeprom_data(&gSaveBuffer.files[fileIndex], sizeof(gSaveBuffer.files[fileIndex]));
 
         gSaveFileModified = FALSE;
-    }
+    //}
 
     save_main_menu_data();
 }
@@ -617,6 +617,82 @@ void save_file_set_coin_stars(s32 fileIndex) {
     gSaveFileModified = TRUE;
 }
 
+u8 save_file_get_power_up(s32 fileIndex, s8 position) {
+    switch (position)
+    {
+        case 0:
+            return gSaveBuffer.files[fileIndex][0].Power_Up_State;
+            break;
+        case 1:
+            return gSaveBuffer.files[fileIndex][0].num_Propeller;
+            break;
+        case 2:
+            return gSaveBuffer.files[fileIndex][0].num_Fire;
+            break;
+        case 3:
+            return gSaveBuffer.files[fileIndex][0].num_Bubble;
+            break;
+        case 4:
+            return gSaveBuffer.files[fileIndex][0].num_Boomer;
+            break;    
+        case 5:
+            return gSaveBuffer.files[fileIndex][0].num_Deluxe;
+            break;
+    }
+}
+
+void save_file_set_power_up(s32 fileIndex, s8 position, s8 change) {
+    u8 curNum = gSaveBuffer.files[fileIndex][0].Power_Up_State;
+    switch (position)
+    {
+        case 0:
+            gSaveBuffer.files[fileIndex][0].Power_Up_State = change;
+            break;
+        case 1:
+            curNum = gSaveBuffer.files[fileIndex][0].num_Propeller;
+            if (curNum == NULL) {
+                gSaveBuffer.files[fileIndex][0].num_Propeller = change;
+            } else {
+                gSaveBuffer.files[fileIndex][0].num_Propeller = curNum + change;
+            }
+            break;
+        case 2:
+            curNum = gSaveBuffer.files[fileIndex][0].num_Fire;
+            if (curNum == NULL) {
+                gSaveBuffer.files[fileIndex][0].num_Fire = change;
+            } else {
+                gSaveBuffer.files[fileIndex][0].num_Fire = curNum + change;
+            }
+            break;
+        case 3:
+            curNum = gSaveBuffer.files[fileIndex][0].num_Bubble;
+            if (curNum == NULL) {
+                gSaveBuffer.files[fileIndex][0].num_Bubble = change;
+            } else {
+                gSaveBuffer.files[fileIndex][0].num_Bubble = curNum + change;
+            }
+            break;
+        case 4:
+            curNum = gSaveBuffer.files[fileIndex][0].num_Boomer;
+            if (curNum == NULL) {
+                gSaveBuffer.files[fileIndex][0].num_Boomer = change;
+            } else {
+                gSaveBuffer.files[fileIndex][0].num_Boomer = curNum + change;
+            }
+            break;    
+        case 5:
+            curNum = gSaveBuffer.files[fileIndex][0].num_Deluxe;
+            if (curNum == NULL) {
+                gSaveBuffer.files[fileIndex][0].num_Deluxe = change;
+            } else {
+                gSaveBuffer.files[fileIndex][0].num_Deluxe = curNum + change;
+            }
+            break;   
+    }
+
+    gSaveFileModified = TRUE;
+}
+
 /**
  * Add to the bitset of obtained stars in the specified course.
  * If course is COURSE_NONE, add to the bitset of obtained castle secret stars.
@@ -735,6 +811,38 @@ void save_file_set_widescreen_mode(u8 mode) {
 
 u32 save_file_get_sound_mode(void) {
     return gSaveBuffer.menuData.soundMode;
+}
+
+#ifdef REONUCAM
+void save_file_set_camera_speed(u8 speed) {
+    gSaveBuffer.menuData.cameraSpeedSetting = speed;
+    gMainMenuDataModified = TRUE;
+    save_main_menu_data();
+}
+
+u8 save_file_get_camera_speed(void) {
+    return gSaveBuffer.menuData.cameraSpeedSetting;
+}
+
+#endif
+
+s16 save_file_get_camera_selection_flags(void) {
+    if (!(gSaveBuffer.menuData.CamSelectionFlags & CAM_MODE_INIT)) {
+        gSaveBuffer.menuData.CamSelectionFlags |= CAM_MODE_INIT;
+        gSaveBuffer.menuData.CamSelectionFlags |= CAM_MODE_MARIO_SELECTED;
+    }
+
+    return gSaveBuffer.menuData.CamSelectionFlags;
+}
+
+void save_file_set_camera_selection_flags(s16 flags) {
+    if (flags & CAM_MODE_MARIO_ACTIVE) {
+        flags &= ~CAM_MODE_MARIO_ACTIVE;
+    }
+
+    gSaveBuffer.menuData.CamSelectionFlags = flags;
+    gMainMenuDataModified = TRUE;
+    save_main_menu_data();
 }
 
 void save_file_move_cap_to_default_location(void) {
