@@ -1,6 +1,7 @@
 #include <PR/ultratypes.h>
 
 #include "sm64.h"
+#include "actors/group0.h"
 #include "actors/common0.h"
 #include "actors/group11.h"
 #include "actors/group17.h"
@@ -45,7 +46,7 @@
 #include "save_file.h"
 #include "seq_ids.h"
 #include "spawn_sound.h"
-#include "puppylights.h"
+#include "mario_coop.h"
 
 //! TODO: remove static
 
@@ -522,24 +523,30 @@ static void obj_set_squished_action(void) {
 }
 
 static s32 obj_die_if_above_lava_and_health_non_positive(void) {
-    if (o->oMoveFlags & OBJ_MOVE_UNDERWATER_ON_GROUND) {
+    if (o->oMoveFlags & OBJ_MOVE_MASK_IN_WATER) {
         if (o->oGravity + o->oBuoyancy > 0.0f
-            || find_water_level(o->oPosX, o->oPosZ) - o->oPosY < 150.0f) {
+            || find_water_level(o->oPosX, o->oPosZ) - o->oPosY < 10.0f) {
             return FALSE;
         }
-    } else if (!(o->oMoveFlags & OBJ_MOVE_ABOVE_LAVA)) {
-        if (o->oMoveFlags & OBJ_MOVE_ENTERED_WATER) {
-            if (o->oWallHitboxRadius < 200.0f) {
-                cur_obj_play_sound_2(SOUND_OBJ_DIVING_INTO_WATER);
-            } else {
-                cur_obj_play_sound_2(SOUND_OBJ_DIVING_IN_WATER);
-            }
+        obj_die_if_health_non_positive();
+        return TRUE;
+
+    } else if (o->oMoveFlags & OBJ_MOVE_ABOVE_LAVA) {
+        if (o->oMoveFlags & (OBJ_MOVE_ON_GROUND | OBJ_MOVE_LANDED)) {
+            obj_die_if_health_non_positive();
+            return TRUE;
         }
-        return FALSE;
     }
 
-    obj_die_if_health_non_positive();
-    return TRUE;
+    if (o->oMoveFlags & OBJ_MOVE_ENTERED_WATER) {
+        if (o->oWallHitboxRadius < 200.0f) {
+            cur_obj_play_sound_2(SOUND_OBJ_DIVING_INTO_WATER);
+        } else {
+            cur_obj_play_sound_2(SOUND_OBJ_DIVING_IN_WATER);
+        }
+    }
+
+    return FALSE;
 }
 
 static s32 obj_handle_attacks(struct ObjectHitbox *hitbox, s32 attackedMarioAction,
@@ -815,6 +822,7 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/reds_star_marker.inc.c"
 #include "behaviors/triplet_butterfly.inc.c"
 #include "behaviors/bubba.inc.c"
+<<<<<<< HEAD
 #include "behaviors/note_block.inc.c"
 #include "behaviors/wooper.inc.c"
 #include "behaviors/propeller.inc.c"
@@ -828,3 +836,6 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/power_flowers.inc.c"
 #include "behaviors/cosmic_manager.inc.c"
 #include "behaviors/cosmic_mario.inc.c"
+=======
+#include "behaviors/coop_objects.inc.c"
+>>>>>>> Decompetition-1-Multiple-Marios/master

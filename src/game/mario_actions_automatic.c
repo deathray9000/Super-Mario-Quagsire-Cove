@@ -621,6 +621,7 @@ void climb_up_ledge(struct MarioState *m) {
 }
 
 void update_ledge_climb_camera(struct MarioState *m) {
+    return;
     f32 dist = MIN(m->actionTimer, 14.0f);
 
     m->statusForCamera->pos[0] = m->pos[0] + dist * sins(m->faceAngle[1]);
@@ -650,11 +651,9 @@ s32 act_ledge_grab(struct MarioState *m) {
     if (m->actionTimer < 10) {
         m->actionTimer++;
     }
-#ifdef LEDGE_GRABS_CHECK_SLOPE_ANGLE
     if (m->floor->normal.y < COS25) {
         return let_go_of_ledge(m);
     }
-#endif
     if (m->input & (INPUT_Z_PRESSED | INPUT_OFF_FLOOR)) {
         return let_go_of_ledge(m);
     }

@@ -22,11 +22,6 @@
 #include "game/puppyprint.h"
 
 
-// round up to the next multiple
-#define ALIGN4(val) (((val) + 0x3) & ~0x3)
-#define ALIGN8(val) (((val) + 0x7) & ~0x7)
-#define ALIGN16(val) (((val) + 0xF) & ~0xF)
-
 struct MainPoolState {
     u32 freeSpace;
     struct MainPoolBlock *listHeadL;
@@ -101,11 +96,13 @@ void *virtual_to_segmented(u32 segment, const void *addr) {
 }
 
 void move_segment_table_to_dmem(void) {
-    s32 i;
+    Gfx *tempGfxHead = gDisplayListHead;
 
-    for (i = 0; i < 16; i++) {
-        gSPSegment(gDisplayListHead++, i, sSegmentTable[i]);
+    for (s32 i = 0; i < 16; i++) {
+        gSPSegment(tempGfxHead++, i, sSegmentTable[i]);
     }
+
+    gDisplayListHead = tempGfxHead;
 }
 #else
 void *segmented_to_virtual(const void *addr) {
@@ -136,7 +133,7 @@ void main_pool_init(void *start, void *end) {
     sPoolListHeadL->next = NULL;
     sPoolListHeadR->prev = NULL;
     sPoolListHeadR->next = NULL;
-#if PUPPYPRINT_DEBUG
+#ifdef PUPPYPRINT_DEBUG
     mempool = sPoolFreeSpace;
 #endif
 }
@@ -341,8 +338,9 @@ void *load_segment(s32 segment, u8 *srcStart, u8 *srcEnd, u32 side, u8 *bssStart
             set_segment_base_addr(segment, addr); sSegmentROMTable[segment] = (uintptr_t) srcStart;
         }
     }
-#if PUPPYPRINT_DEBUG
-    ramsizeSegment[(segment + nameTable) - 2] = ((s32)srcEnd - (s32)srcStart);
+#ifdef PUPPYPRINT_DEBUG
+    u32 ppSize = ALIGN16(srcEnd - srcStart) + 16;
+    set_segment_memory_printout(segment, ppSize);
 #endif
     return addr;
 }
@@ -418,12 +416,14 @@ void *load_segment_decompress(s32 segment, u8 *srcStart, u8 *srcEnd) {
             main_pool_free(compressed);
         }
     }
-#if PUPPYPRINT_DEBUG
-    ramsizeSegment[(segment + nameTable) - 2] = (s32)srcEnd - (s32)srcStart;
+#ifdef PUPPYPRINT_DEBUG
+    u32 ppSize = ALIGN16((u32)*size) + 16;
+    set_segment_memory_printout(segment, ppSize);
 #endif
     return dest;
 }
 
+<<<<<<< HEAD
 void *load_segment_decompress_heap(u32 segment, u8 *srcStart, u8 *srcEnd) {
     UNUSED void *dest = NULL;
 
@@ -460,6 +460,8 @@ void *load_segment_decompress_heap(u32 segment, u8 *srcStart, u8 *srcEnd) {
     return gDecompressionHeap;
 }
 
+=======
+>>>>>>> Decompetition-1-Multiple-Marios/master
 void load_engine_code_segment(void) {
     void *startAddr = (void *) _engineSegmentStart;
     u32 totalSize = _engineSegmentEnd - _engineSegmentStart;
@@ -550,6 +552,9 @@ struct MemoryPool *mem_pool_init(u32 size, u32 side) {
         block->next = NULL;
         block->size = pool->totalSpace;
     }
+#ifdef PUPPYPRINT_DEBUG
+    gPoolMem += ALIGN16(size) + 16;
+#endif
     return pool;
 }
 

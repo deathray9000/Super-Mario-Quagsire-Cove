@@ -2,9 +2,13 @@ Lights1 wooden_signpost_back_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
 	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
+<<<<<<< HEAD
 Lights1 wooden_signpost_stone_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
 	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
+=======
+// 0x0302C940
+>>>>>>> Decompetition-1-Multiple-Marios/master
 
 Lights1 wooden_signpost_front_lights = gdSPDefLights1(
 	0x7F, 0x7F, 0x7F,
@@ -25,6 +29,7 @@ u8 wooden_signpost_wooden_signpost_front_rgba16_rgba16[] = {
 	#include "actors/wooden_signpost/wooden_signpost_front.rgba16.inc.c"
 };
 
+<<<<<<< HEAD
 Vtx wooden_signpost_base_mesh_layer_1_vtx_0[10] = {
 	{{{0, 59, 34},0, {20, 462},{0xFF, 0x26, 0x79, 0xFF}}},
 	{{{-23, 38, -6},0, {20, 162},{0x92, 0x0, 0xC0, 0xFF}}},
@@ -36,6 +41,22 @@ Vtx wooden_signpost_base_mesh_layer_1_vtx_0[10] = {
 	{{{0, 59, 34},0, {20, 162},{0xFF, 0x26, 0x79, 0xFF}}},
 	{{{0, 38, 34},0, {20, 162},{0xFF, 0x0, 0x7F, 0xFF}}},
 	{{{24, 38, -6},0, {20, 462},{0x6E, 0x0, 0xC1, 0xFF}}},
+=======
+// 0x0302D9C8 - 0x0302DA48
+const Gfx wooden_signpost_seg3_dl_0302D9C8[] = {
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, wooden_signpost_seg3_texture_0302C9C8),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPLightColor(LIGHT_1, 0xffffffff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
+    gsSPVertex(wooden_signpost_seg3_vertex_0302C958, 7, 0),
+    gsSP2Triangles( 0,  1,  2, 0x0,  2,  3,  0, 0x0),
+    gsSP2Triangles( 0,  3,  1, 0x0,  4,  1,  3, 0x0),
+    gsSP2Triangles( 3,  5,  4, 0x0,  5,  3,  2, 0x0),
+    gsSP2Triangles( 2,  6,  5, 0x0,  1,  4,  6, 0x0),
+    gsSP1Triangle( 6,  2,  1, 0x0),
+    gsSPEndDisplayList(),
+>>>>>>> Decompetition-1-Multiple-Marios/master
 };
 
 Gfx wooden_signpost_base_mesh_layer_1_tri_0[] = {
@@ -50,6 +71,7 @@ Gfx wooden_signpost_base_mesh_layer_1_tri_0[] = {
 	gsSPEndDisplayList(),
 };
 
+<<<<<<< HEAD
 Vtx wooden_signpost_base_mesh_layer_1_vtx_1[20] = {
 	{{{-136, -20, 150},0, {1701, -709},{0x94, 0x43, 0x0, 0xFF}}},
 	{{{-100, 38, 114},0, {1247, -255},{0x94, 0x43, 0x0, 0xFF}}},
@@ -71,6 +93,28 @@ Vtx wooden_signpost_base_mesh_layer_1_vtx_1[20] = {
 	{{{100, 38, 114},0, {-255, -255},{0x6C, 0x43, 0x0, 0xFF}}},
 	{{{136, -20, 150},0, {-709, -709},{0x6C, 0x43, 0x0, 0xFF}}},
 	{{{100, 38, -86},0, {-255, 1247},{0x6C, 0x43, 0x0, 0xFF}}},
+=======
+// 0x0302DAA8
+
+// 0x0302DAC0
+static const Vtx wooden_signpost_seg3_vertex_0302DAC0[] = {
+    {{{   180,    260,     20}, 0, {   990,    990}, {0x00, 0x81, 0x00, 0xff}}},
+    {{{  -179,    260,     60}, 0, {     0,    990}, {0x00, 0x81, 0x00, 0xff}}},
+    {{{  -179,    260,     20}, 0, {     0,    990}, {0x00, 0x81, 0x00, 0xff}}},
+    {{{   180,    260,     20}, 0, {   990,    990}, {0x00, 0x00, 0x81, 0xff}}},
+    {{{  -179,    260,     20}, 0, {     0,    990}, {0x00, 0x00, 0x81, 0xff}}},
+    {{{  -179,    460,     20}, 0, {     0,      0}, {0x00, 0x00, 0x81, 0xff}}},
+    {{{  -179,    260,     20}, 0, {     0,    990}, {0x81, 0x00, 0x00, 0xff}}},
+    {{{  -179,    260,     60}, 0, {     0,    990}, {0x81, 0x00, 0x00, 0xff}}},
+    {{{  -179,    460,     60}, 0, {     0,      0}, {0x81, 0x00, 0x00, 0xff}}},
+    {{{  -179,    460,     20}, 0, {     0,      0}, {0x81, 0x00, 0x00, 0xff}}},
+    {{{   180,    260,     60}, 0, {   990,    990}, {0x00, 0x81, 0x00, 0xff}}},
+    {{{  -179,    460,     20}, 0, {     0,      0}, {0x00, 0x7f, 0x00, 0xff}}},
+    {{{  -179,    460,     60}, 0, {     0,      0}, {0x00, 0x7f, 0x00, 0xff}}},
+    {{{   180,    460,     60}, 0, {   990,      0}, {0x00, 0x7f, 0x00, 0xff}}},
+    {{{   180,    460,     20}, 0, {   990,      0}, {0x00, 0x00, 0x81, 0xff}}},
+    {{{   180,    460,     20}, 0, {   990,      0}, {0x00, 0x7f, 0x00, 0xff}}},
+>>>>>>> Decompetition-1-Multiple-Marios/master
 };
 
 Gfx wooden_signpost_base_mesh_layer_1_tri_1[] = {
@@ -120,6 +164,7 @@ Vtx wooden_signpost_sign_mesh_layer_1_vtx_0[28] = {
 	{{{180, 431, 47},0, {974, -16},{0x49, 0x49, 0x49, 0xFF}}},
 };
 
+<<<<<<< HEAD
 Gfx wooden_signpost_sign_mesh_layer_1_tri_0[] = {
 	gsSPVertex(wooden_signpost_sign_mesh_layer_1_vtx_0 + 0, 16, 0),
 	gsSP1Triangle(0, 1, 2, 0),
@@ -144,6 +189,23 @@ Gfx wooden_signpost_sign_mesh_layer_1_tri_0[] = {
 	gsSP1Triangle(10, 9, 11, 0),
 	gsSP1Triangle(8, 10, 7, 0),
 	gsSPEndDisplayList(),
+=======
+// 0x0302DC40 - 0x0302DCD0
+const Gfx wooden_signpost_seg3_dl_0302DC40[] = {
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, wooden_signpost_seg3_texture_0302C9C8),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
+    gsSPLightColor(LIGHT_1, 0xffffffff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
+    gsSPVertex(wooden_signpost_seg3_vertex_0302DAC0, 16, 0),
+    gsSP2Triangles( 0,  1,  2, 0x0,  3,  4,  5, 0x0),
+    gsSP2Triangles( 6,  7,  8, 0x0,  6,  8,  9, 0x0),
+    gsSP2Triangles( 0, 10,  1, 0x0, 11, 12, 13, 0x0),
+    gsSP2Triangles( 3,  5, 14, 0x0, 11, 13, 15, 0x0),
+    gsSPVertex(wooden_signpost_seg3_vertex_0302DBC0, 4, 0),
+    gsSP2Triangles( 0,  1,  2, 0x0,  0,  3,  1, 0x0),
+    gsSPEndDisplayList(),
+>>>>>>> Decompetition-1-Multiple-Marios/master
 };
 
 Vtx wooden_signpost_sign_mesh_layer_1_vtx_1[4] = {

@@ -1,6 +1,7 @@
 #include <ultra64.h>
 
 #include "sm64.h"
+#include "types.h"
 #include "behavior_data.h"
 #include "behavior_script.h"
 #include "game/area.h"
@@ -14,19 +15,21 @@
 #include "math_util.h"
 #include "graph_node.h"
 #include "surface_collision.h"
-#include "game/puppylights.h"
+#include "game/mario_coop.h"
+#include "game/level_update.h"
 
 // Macros for retrieving arguments from behavior scripts.
-#define BHV_CMD_GET_1ST_U8(index)  (u8)((gCurBhvCommand[index] >> 24) & 0xFF) // unused
-#define BHV_CMD_GET_2ND_U8(index)  (u8)((gCurBhvCommand[index] >> 16) & 0xFF)
-#define BHV_CMD_GET_3RD_U8(index)  (u8)((gCurBhvCommand[index] >> 8) & 0xFF)
-#define BHV_CMD_GET_4TH_U8(index)  (u8)((gCurBhvCommand[index]) & 0xFF)
+#define BHV_CMD_GET_1ST_U8(index)     (u8)((gCurBhvCommand[index] >> 24) & 0xFF) // unused
+#define BHV_CMD_GET_2ND_U8(index)     (u8)((gCurBhvCommand[index] >> 16) & 0xFF)
+#define BHV_CMD_GET_3RD_U8(index)     (u8)((gCurBhvCommand[index] >> 8) & 0xFF)
+#define BHV_CMD_GET_4TH_U8(index)     (u8)((gCurBhvCommand[index]) & 0xFF)
 
-#define BHV_CMD_GET_1ST_S16(index) (s16)(gCurBhvCommand[index] >> 16)
-#define BHV_CMD_GET_2ND_S16(index) (s16)(gCurBhvCommand[index] & 0xFFFF)
+#define BHV_CMD_GET_1ST_S16(index)    (s16)(gCurBhvCommand[index] >> 16)
+#define BHV_CMD_GET_2ND_S16(index)    (s16)(gCurBhvCommand[index] & 0xFFFF)
 
-#define BHV_CMD_GET_U32(index)     (u32)(gCurBhvCommand[index])
-#define BHV_CMD_GET_VPTR(index)    (void *)(gCurBhvCommand[index])
+#define BHV_CMD_GET_U32(index)        (u32)(gCurBhvCommand[index])
+#define BHV_CMD_GET_VPTR(index)       (void *)(gCurBhvCommand[index])
+#define BHV_CMD_GET_VPTR_SMALL(index) (void *)(OS_PHYSICAL_TO_K0(gCurBhvCommand[index] & 0xFFFFFF))
 
 #define BHV_CMD_GET_ADDR_OF_CMD(index) (uintptr_t)(&gCurBhvCommand[index])
 
@@ -52,11 +55,6 @@ void obj_update_gfx_pos_and_angle(struct Object *obj) {
 #define OBJ_OPACITY_LENGTH 512.0f
 void obj_set_opacity_from_cam_dist(struct Object *obj) {
     s32 opacityDist = ((-obj->header.gfx.cameraToObject[2] - OBJ_OPACITY_NEAR) * (256.0f / OBJ_OPACITY_LENGTH));
-#ifdef OBJECTS_REJ
-    if (opacityDist > 0) {
-        obj->header.gfx.ucode = GRAPH_NODE_UCODE_REJ;
-    }
-#endif
     obj->oOpacity = CLAMP(opacityDist, 0x00, 0xFF);
 }
 #undef OBJ_OPACITY_NEAR
@@ -319,11 +317,11 @@ static s32 bhv_cmd_end_loop(void) {
 // Usage: CALL_NATIVE(func)
 typedef void (*NativeBhvFunc)(void);
 static s32 bhv_cmd_call_native(void) {
-    NativeBhvFunc behaviorFunc = BHV_CMD_GET_VPTR(1);
+    NativeBhvFunc behaviorFunc = BHV_CMD_GET_VPTR_SMALL(0);
 
     behaviorFunc();
 
-    gCurBhvCommand += 2;
+    gCurBhvCommand++;
     return BHV_PROC_CONTINUE;
 }
 
@@ -362,7 +360,7 @@ static s32 bhv_cmd_set_int_unused(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x14: Sets the specified field to a random float in the given range.
+// Command 0x15: Sets the specified field to a random float in the given range.
 // Usage: SET_RANDOM_FLOAT(field, min, range)
 static s32 bhv_cmd_set_random_float(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -375,7 +373,7 @@ static s32 bhv_cmd_set_random_float(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x15: Sets the specified field to a random integer in the given range.
+// Command 0x16: Sets the specified field to a random integer in the given range.
 // Usage: SET_RANDOM_INT(field, min, range)
 static s32 bhv_cmd_set_random_int(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -388,7 +386,7 @@ static s32 bhv_cmd_set_random_int(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x13: Gets a random short, right shifts it the specified amount and adds min to it, then sets the specified field to that value.
+// Command 0x14: Gets a random short, right shifts it the specified amount and adds min to it, then sets the specified field to that value.
 // Usage: SET_INT_RAND_RSHIFT(field, min, rshift)
 static s32 bhv_cmd_set_int_rand_rshift(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -401,7 +399,7 @@ static s32 bhv_cmd_set_int_rand_rshift(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x16: Adds a random float in the given range to the specified field.
+// Command 0x17: Adds a random float in the given range to the specified field.
 // Usage: ADD_RANDOM_FLOAT(field, min, range)
 static s32 bhv_cmd_add_random_float(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -414,7 +412,7 @@ static s32 bhv_cmd_add_random_float(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x17: Gets a random short, right shifts it the specified amount and adds min to it, then adds the value to the specified field. Unused.
+// Command 0x18: Gets a random short, right shifts it the specified amount and adds min to it, then adds the value to the specified field. Unused.
 // Usage: ADD_INT_RAND_RSHIFT(field, min, rshift)
 static s32 bhv_cmd_add_int_rand_rshift(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -466,7 +464,20 @@ static s32 bhv_cmd_or_int(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x12: Performs a bit clear with the specified short. Unused.
+// Command 0x12: Performs a bitwise OR with the specified field and the given (32 bit) integer.
+// Usually used to set an object's flags which use values above 16 bits.
+// Usage: OR_LONG(field, value)
+static s32 bhv_cmd_or_long(void) {
+    u8 field = BHV_CMD_GET_2ND_U8(0);
+    u32 value = BHV_CMD_GET_U32(1);
+
+    cur_obj_or_int(field, value);
+
+    gCurBhvCommand += 2;
+    return BHV_PROC_CONTINUE;
+}
+
+// Command 0x13: Performs a bit clear with the specified short. Unused.
 // Usage: BIT_CLEAR(field, value)
 static s32 bhv_cmd_bit_clear(void) {
     u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -513,7 +524,7 @@ static s32 bhv_cmd_drop_to_floor(void) {
     return BHV_PROC_CONTINUE;
 }
 
-// Command 0x18: No operation. Unused.
+// Command 0x19: No operation. Unused.
 // Usage: CMD_NOP_1(field)
 static s32 bhv_cmd_nop_1(void) {
     UNUSED u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -523,15 +534,6 @@ static s32 bhv_cmd_nop_1(void) {
 }
 
 // Command 0x1A: No operation. Unused.
-// Usage: CMD_NOP_3(field)
-static s32 bhv_cmd_nop_3(void) {
-    UNUSED u8 field = BHV_CMD_GET_2ND_U8(0);
-
-    gCurBhvCommand++;
-    return BHV_PROC_CONTINUE;
-}
-
-// Command 0x19: No operation. Unused.
 // Usage: CMD_NOP_2(field)
 static s32 bhv_cmd_nop_2(void) {
     UNUSED u8 field = BHV_CMD_GET_2ND_U8(0);
@@ -733,11 +735,11 @@ static s32 bhv_cmd_parent_bit_clear(void) {
 // Command 0x37: Spawns a water droplet with the given parameters.
 // Usage: SPAWN_WATER_DROPLET(dropletParams)
 static s32 bhv_cmd_spawn_water_droplet(void) {
-    struct WaterDropletParams *dropletParams = BHV_CMD_GET_VPTR(1);
+    struct WaterDropletParams *dropletParams = BHV_CMD_GET_VPTR_SMALL(0);
 
     spawn_water_droplet(gCurrentObject, dropletParams);
 
-    gCurBhvCommand += 2;
+    gCurBhvCommand++;
     return BHV_PROC_CONTINUE;
 }
 
@@ -776,6 +778,7 @@ static BhvCommandProc BehaviorCmdTable[] = {
     /*BHV_CMD_ADD_INT               */ bhv_cmd_add_int,
     /*BHV_CMD_SET_INT               */ bhv_cmd_set_int,
     /*BHV_CMD_OR_INT                */ bhv_cmd_or_int,
+    /*BHV_CMD_OR_LONG               */ bhv_cmd_or_long,
     /*BHV_CMD_BIT_CLEAR             */ bhv_cmd_bit_clear,
     /*BHV_CMD_SET_INT_RAND_RSHIFT   */ bhv_cmd_set_int_rand_rshift,
     /*BHV_CMD_SET_RANDOM_FLOAT      */ bhv_cmd_set_random_float,
@@ -784,7 +787,6 @@ static BhvCommandProc BehaviorCmdTable[] = {
     /*BHV_CMD_ADD_INT_RAND_RSHIFT   */ bhv_cmd_add_int_rand_rshift,
     /*BHV_CMD_NOP_1                 */ bhv_cmd_nop_1,
     /*BHV_CMD_NOP_2                 */ bhv_cmd_nop_2,
-    /*BHV_CMD_NOP_3                 */ bhv_cmd_nop_3,
     /*BHV_CMD_SET_MODEL             */ bhv_cmd_set_model,
     /*BHV_CMD_SPAWN_CHILD           */ bhv_cmd_spawn_child,
     /*BHV_CMD_DEACTIVATE            */ bhv_cmd_deactivate,
@@ -823,9 +825,30 @@ void cur_obj_update(void) {
     BhvCommandProc bhvCmdProc;
     s32 bhvProcResult;
 
+    s32 inRoom = cur_obj_is_mario_in_room();
+
+    if (inRoom == MARIO_OUTSIDE_ROOM && (objFlags & OBJ_FLAG_ONLY_PROCESS_INSIDE_ROOM)) {
+        cur_obj_disable_rendering_in_room();
+        return;
+    }
+
     // Calculate the distance from the object to Mario.
     if (objFlags & OBJ_FLAG_COMPUTE_DIST_TO_MARIO) {
-        o->oDistanceToMario = dist_between_objects(o, gMarioObject);
+        //o->oDistanceToMario = dist_between_objects(o, gMarioObject);
+
+        f32 sqrLateralDist = 99999999999999.0f;
+        Vec3f dist;
+        for (int i = 0; i < COOP_MARIO_STATES_MAX; i++) {
+            if (gMarioStates[i].marioObj == NULL) {continue;}
+    
+            vec3_diff(dist, &o->oPosVec, gMarioStates[i].pos);
+            f32 compareSqrLatDist = sqr(dist[0]) + sqr(dist[2]) + sqr(dist[1]);
+            if (sqrLateralDist > compareSqrLatDist) {
+                sqrLateralDist = compareSqrLatDist;
+            }
+        }
+
+        o->oDistanceToMario = sqrtf(sqrLateralDist);
         distanceFromMario = o->oDistanceToMario;
     } else {
         distanceFromMario = 0.0f;
@@ -833,7 +856,20 @@ void cur_obj_update(void) {
 
     // Calculate the angle from the object to Mario.
     if (objFlags & OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO) {
-        o->oAngleToMario = obj_angle_to_object(o, gMarioObject);
+        //o->oAngleToMario = obj_angle_to_object(o, gMarioObject);
+
+        f32 sqrLateralDist = 99999999999999.0f;
+        Vec3f dist;
+        for (int i = 0; i < COOP_MARIO_STATES_MAX; i++) {
+            if (gMarioStates[i].marioObj == NULL) {continue;}
+    
+            vec3_diff(dist, &o->oPosVec, gMarioStates[i].pos);
+            f32 compareSqrLatDist = sqr(dist[0]) + sqr(dist[2]) + sqr(dist[1]);
+            if (sqrLateralDist > compareSqrLatDist) {
+                sqrLateralDist = compareSqrLatDist;
+                o->oAngleToMario = obj_angle_to_object(o, gMarioStates[i].marioObj);
+            }
+        }
     }
 
     // If the object's action has changed, reset the action timer.
@@ -901,28 +937,29 @@ void cur_obj_update(void) {
     COND_BIT((objFlags & OBJ_FLAG_OCCLUDE_SILHOUETTE), o->header.gfx.node.flags, GRAPH_RENDER_OCCLUDE_SILHOUETTE);
 #endif
 
-#ifdef OBJECTS_REJ
-    if ((objFlags & OBJ_FLAG_SILHOUETTE) || (objFlags & OBJ_FLAG_UCODE_SMALL)) {
-        o->header.gfx.ucode = GRAPH_NODE_UCODE_REJ;
-    } else {
-        o->header.gfx.ucode = GRAPH_NODE_UCODE_DEFAULT;
-    }
-#endif
-
 #ifdef OBJ_OPACITY_BY_CAM_DIST
     if (objFlags & OBJ_FLAG_OPACITY_FROM_CAMERA_DIST) {
         obj_set_opacity_from_cam_dist(o);
     }
 #endif
 
-#ifdef PUPPYLIGHTS
-    puppylights_object_emit(o);
-#endif
-
     // Handle visibility of object
     if (o->oRoom != -1) {
         // If the object is in a room, only show it when Mario is in the room.
-        cur_obj_enable_rendering_if_mario_in_room();
+        if (
+            (objFlags & OBJ_FLAG_ACTIVE_FROM_AFAR)
+            || distanceFromMario < o->oDrawingDistance
+        ) {
+            if (inRoom == MARIO_OUTSIDE_ROOM) {
+                cur_obj_disable_rendering_in_room();
+            } else if (inRoom == MARIO_INSIDE_ROOM) {
+                cur_obj_enable_rendering_in_room();
+            }
+            o->activeFlags &= ~ACTIVE_FLAG_FAR_AWAY;
+        } else {
+            o->header.gfx.node.flags &= ~GRAPH_RENDER_ACTIVE;
+            o->activeFlags |= ACTIVE_FLAG_FAR_AWAY;
+        }
     } else if (
         o->collisionData == NULL
         &&  (objFlags & OBJ_FLAG_COMPUTE_DIST_TO_MARIO)

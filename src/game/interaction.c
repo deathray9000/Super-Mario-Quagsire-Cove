@@ -24,9 +24,11 @@
 #include "sound_init.h"
 #include "rumble_init.h"
 #include "config.h"
+#include "object_list_processor.h"
+#include "mario_coop.h"
 
-u8  sDelayInvincTimer;
-s16 sInvulnerable;
+u8  sDelayInvincTimer[COOP_MARIO_STATES_MAX];
+s16 sInvulnerable[COOP_MARIO_STATES_MAX];
 u32 interact_coin          (struct MarioState *m, u32 interactType, struct Object *obj);
 u32 interact_water_ring    (struct MarioState *m, u32 interactType, struct Object *obj);
 u32 interact_star_or_key   (struct MarioState *m, u32 interactType, struct Object *obj);
@@ -435,6 +437,8 @@ u32 mario_check_object_grab(struct MarioState *m) {
             if (facingDYaw >= -0x5555 && facingDYaw <= 0x5555) {
                 m->faceAngle[1] = m->interactObj->oMoveAngleYaw;
                 m->usedObj = m->interactObj;
+                m->pos[1] = m->floorHeight;
+                m->vel[1] = 0.0f;
                 result = set_mario_action(m, ACT_PICKING_UP_BOWSER, 0);
             }
         } else {
@@ -713,7 +717,7 @@ u32 take_damage_from_interact_object(struct MarioState *m) {
 u32 take_damage_and_knock_back(struct MarioState *m, struct Object *obj) {
     u32 damage;
 
-    if (!sInvulnerable && !(m->flags & MARIO_VANISH_CAP)
+    if (!sInvulnerable[m->playerID] && !(m->flags & MARIO_VANISH_CAP)
         && !(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
         obj->oInteractStatus = INT_STATUS_INTERACTED | INT_STATUS_ATTACKED_MARIO;
         m->interactObj = obj;
@@ -791,10 +795,18 @@ u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *
         o->oInteractStatus = INT_STATUS_INTERACTED;
 
 #ifdef X_COIN_STAR
+<<<<<<< HEAD
         if (COURSE_IS_MAIN_COURSE(gCurrCourseNum) && m->numCoins - o->oDamageOrCoinValue < X_COIN_STAR
             && m->numCoins >= X_COIN_STAR) {
             bhv_spawn_star_no_level_exit(STAR_BP_ACT_100_COINS);
         }
+=======
+    if (COURSE_IS_MAIN_COURSE(gCurrCourseNum) && m->numCoins - obj->oDamageOrCoinValue < X_COIN_STAR
+        && m->numCoins >= X_COIN_STAR && !g100CoinStarSpawned) {
+        bhv_spawn_star_no_level_exit(STAR_BP_ACT_100_COINS);
+        g100CoinStarSpawned = TRUE;
+    }
+>>>>>>> Decompetition-1-Multiple-Marios/master
 #endif
 #if ENABLE_RUMBLE
         if (o->oDamageOrCoinValue >= 2) {
@@ -817,6 +829,8 @@ u32 interact_water_ring(struct MarioState *m, UNUSED u32 interactType, struct Ob
 }
 
 u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
+    if (m != gMarioState) {gMarioState = m; gMarioObject = gMarioState->marioObj;}
+
     u32 starIndex;
     u32 starGrabAction = ACT_STAR_DANCE_EXIT;
 #ifdef NON_STOP_STARS
@@ -900,6 +914,8 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
             obj->oInteractStatus = INT_STATUS_INTERACTED;
             m->interactObj       = obj;
             m->usedObj           = obj;
+
+        gStarModelLastCollected = obj_get_model_id(obj);
 
 #ifdef GLOBAL_STAR_IDS
             starIndex = (obj->oBehParams >> 24) & 0xFF;
@@ -1241,7 +1257,7 @@ u32 interact_strong_wind(struct MarioState *m, UNUSED u32 interactType, struct O
 u32 interact_flame(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
     u32 burningAction = ACT_BURNING_JUMP;
 
-    if (!sInvulnerable && !(m->flags & MARIO_METAL_CAP) && !(m->flags & MARIO_VANISH_CAP)
+    if (!sInvulnerable[m->playerID] && !(m->flags & MARIO_METAL_CAP) && !(m->flags & MARIO_VANISH_CAP)
         && !(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
@@ -1269,7 +1285,7 @@ u32 interact_flame(struct MarioState *m, UNUSED u32 interactType, struct Object 
 }
 
 u32 interact_snufit_bullet(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
-    if (!sInvulnerable && !(m->flags & MARIO_VANISH_CAP)) {
+    if (!sInvulnerable[m->playerID] && !(m->flags & MARIO_VANISH_CAP)) {
         if (m->flags & MARIO_METAL_CAP) {
             obj->oInteractStatus = INT_STATUS_INTERACTED | INT_STATUS_WAS_ATTACKED;
             play_sound(SOUND_ACTION_SNUFFIT_BULLET_HIT_METAL, m->marioObj->header.gfx.cameraToObject);
@@ -1287,7 +1303,7 @@ u32 interact_snufit_bullet(struct MarioState *m, UNUSED u32 interactType, struct
     }
 
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
 
     return FALSE;
@@ -1303,7 +1319,7 @@ u32 interact_clam_or_bubba(struct MarioState *m, UNUSED u32 interactType, struct
     }
 
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
 
     return TRUE;
@@ -1332,7 +1348,7 @@ u32 interact_bully(struct MarioState *m, UNUSED u32 interactType, struct Object 
         attack_object(obj, interaction);
         bounce_back_from_attack(m, interaction);
         return TRUE;
-    } else if (!sInvulnerable && !(m->flags & MARIO_VANISH_CAP)
+    } else if (!sInvulnerable[m->playerID] && !(m->flags & MARIO_VANISH_CAP)
              && !(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
         obj->oInteractStatus = INT_STATUS_INTERACTED;
         m->invincTimer = 2;
@@ -1353,8 +1369,12 @@ u32 interact_bully(struct MarioState *m, UNUSED u32 interactType, struct Object 
 }
 
 u32 interact_shock(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
+<<<<<<< HEAD
 
     if (!sInvulnerable && !(m->flags & MARIO_VANISH_CAP)
+=======
+    if (!sInvulnerable[m->playerID] && !(m->flags & MARIO_VANISH_CAP)
+>>>>>>> Decompetition-1-Multiple-Marios/master
         && !(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
         u32 actionArg = (m->action & (ACT_FLAG_AIR | ACT_FLAG_ON_POLE | ACT_FLAG_HANGING)) == 0;
 
@@ -1376,7 +1396,7 @@ u32 interact_shock(struct MarioState *m, UNUSED u32 interactType, struct Object 
     }
 
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
 
     return FALSE;
@@ -1384,7 +1404,7 @@ u32 interact_shock(struct MarioState *m, UNUSED u32 interactType, struct Object 
 
 UNUSED static u32 interact_stub(UNUSED struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
     return FALSE;
 }
@@ -1395,7 +1415,7 @@ u32 interact_mr_blizzard(struct MarioState *m, UNUSED u32 interactType, struct O
     }
 
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
 
     return FALSE;
@@ -1435,7 +1455,7 @@ u32 interact_hit_from_below(struct MarioState *m, UNUSED u32 interactType, struc
     }
 
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
 
     return FALSE;
@@ -1482,7 +1502,7 @@ u32 interact_bounce_top(struct MarioState *m, UNUSED u32 interactType, struct Ob
     }
 
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
 
     return FALSE;
@@ -1499,7 +1519,7 @@ u32 interact_spiny_walking(struct MarioState *m, UNUSED u32 interactType, struct
     }
 
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-        sDelayInvincTimer = TRUE;
+        sDelayInvincTimer[m->playerID] = TRUE;
     }
 
     return FALSE;
@@ -1508,6 +1528,7 @@ u32 interact_spiny_walking(struct MarioState *m, UNUSED u32 interactType, struct
 u32 interact_damage(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
     u32 interaction;
 
+<<<<<<< HEAD
     if (obj->oInteractStatus != 1) {
         if (obj->behavior == segmented_to_virtual(bhvNormalPiranha)) {
             if (m->flags & MARIO_METAL_CAP) {
@@ -1544,6 +1565,10 @@ u32 interact_damage(struct MarioState *m, UNUSED u32 interactType, struct Object
                 sDelayInvincTimer = TRUE;
             }
         }
+=======
+    if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
+        sDelayInvincTimer[m->playerID] = TRUE;
+>>>>>>> Decompetition-1-Multiple-Marios/master
     }
 
     return FALSE;
@@ -1601,7 +1626,7 @@ u32 interact_koopa_shell(struct MarioState *m, UNUSED u32 interactType, struct O
 }
 
 u32 check_object_grab_mario(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
-    if ((!(m->action & (ACT_FLAG_AIR | ACT_FLAG_INVULNERABLE | ACT_FLAG_ATTACKING)) || !sInvulnerable)
+    if ((!(m->action & (ACT_FLAG_AIR | ACT_FLAG_INVULNERABLE | ACT_FLAG_ATTACKING)) || !sInvulnerable[m->playerID])
         && (obj->oInteractionSubtype & INT_SUBTYPE_GRABS_MARIO)) {
         if (object_facing_mario(m, obj, DEGREES(60))) {
             mario_stop_riding_and_holding(m);
@@ -1914,11 +1939,14 @@ u32 check_read_sign(struct MarioState *m, struct Object *obj) {
         && m->action != (ACT_LEDGE_GRAB)
     ) {
 #ifdef DIALOG_INDICATOR
+        struct Object *orangeNumber;
         if (obj->behavior == segmented_to_virtual(bhvSignOnWall)) {
-            spawn_object_relative(ORANGE_NUMBER_A, 0, 180, 32, obj, MODEL_NUMBER, bhvOrangeNumber);
+            orangeNumber = spawn_object_relative(ORANGE_NUMBER_A, 0, 180, 32, obj, MODEL_NUMBER, bhvOrangeNumber);
         } else {
-            spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  8, obj, MODEL_NUMBER, bhvOrangeNumber);
+            orangeNumber = spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  8, obj, MODEL_NUMBER, bhvOrangeNumber);
         }
+        orangeNumber->oHomeX = orangeNumber->oPosX;
+        orangeNumber->oHomeZ = orangeNumber->oPosZ;
 #endif
         if (m->input & READ_MASK) {
 #else
@@ -1949,6 +1977,7 @@ u32 check_read_sign(struct MarioState *m, struct Object *obj) {
 }
 
 u32 check_npc_talk(struct MarioState *m, struct Object *obj) {
+<<<<<<< HEAD
     u32 interaction = determine_interaction(m, obj);
 
     if (interaction & INT_HIT_FROM_ABOVE || interaction & INT_GROUND_POUND_OR_TWIRL) {
@@ -1995,6 +2024,22 @@ u32 check_npc_talk(struct MarioState *m, struct Object *obj) {
             } else {
                 spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  0, obj, MODEL_NUMBER, bhvOrangeNumber);
             }
+=======
+#ifdef EASIER_DIALOG_TRIGGER
+    if (
+        mario_can_talk(m, TRUE)
+        && abs_angle_diff(mario_obj_angle_to_object(m, obj), m->faceAngle[1]) <= SIGN_RANGE
+    ) {
+#ifdef DIALOG_INDICATOR
+        struct Object *orangeNumber;
+        if (obj->behavior == segmented_to_virtual(bhvYoshi)) {
+            orangeNumber = spawn_object_relative(ORANGE_NUMBER_A, 0, 256, 64, obj, MODEL_NUMBER, bhvOrangeNumber);
+        } else {
+            orangeNumber = spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  0, obj, MODEL_NUMBER, bhvOrangeNumber);
+        }
+        orangeNumber->oHomeX = orangeNumber->oPosX;
+        orangeNumber->oHomeZ = orangeNumber->oPosZ;
+>>>>>>> Decompetition-1-Multiple-Marios/master
 #endif
             if (m->input & READ_MASK) {
 #else
@@ -2077,6 +2122,8 @@ u32 check_Stuffwell(struct MarioState *m, struct Object *obj) {
 }
 
 u32 interact_text(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
+    if (m != gMarioState) {return FALSE;}
+
     u32 interact = FALSE;
 
     if (obj->oInteractionSubtype & INT_SUBTYPE_SIGN) {
@@ -2120,8 +2167,8 @@ void check_kick_or_punch_wall(struct MarioState *m) {
 }
 
 void mario_process_interactions(struct MarioState *m) {
-    sDelayInvincTimer = FALSE;
-    sInvulnerable = (m->action & ACT_FLAG_INVULNERABLE) || m->invincTimer != 0;
+    sDelayInvincTimer[m->playerID] = FALSE;
+    sInvulnerable[m->playerID] = (m->action & ACT_FLAG_INVULNERABLE) || m->invincTimer != 0;
 
     if (!(m->action & ACT_FLAG_INTANGIBLE) && m->collidedObjInteractTypes != 0) {
         s32 i;
@@ -2141,7 +2188,7 @@ void mario_process_interactions(struct MarioState *m) {
         }
     }
 
-    if (m->invincTimer > 0 && !sDelayInvincTimer) {
+    if (m->invincTimer > 0 && !sDelayInvincTimer[m->playerID]) {
         m->invincTimer--;
     }
 
@@ -2160,8 +2207,10 @@ void mario_process_interactions(struct MarioState *m) {
 
 void check_death_barrier(struct MarioState *m) {
     if (m->pos[1] < m->floorHeight + 2048.0f) {
-        if (level_trigger_warp(m, WARP_OP_WARP_FLOOR) == 20 && !(m->flags & MARIO_FALL_SOUND_PLAYED)) {
-            play_sound(SOUND_MARIO_WAAAOOOW, m->marioObj->header.gfx.cameraToObject);
+        if (!coop_delete_mario(m)) {
+            if (level_trigger_warp(m, WARP_OP_WARP_FLOOR) == 20 && !(m->flags & MARIO_FALL_SOUND_PLAYED)) {
+                play_sound(SOUND_MARIO_WAAAOOOW, m->marioObj->header.gfx.cameraToObject);
+            }
         }
     }
 }

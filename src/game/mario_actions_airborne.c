@@ -445,6 +445,7 @@ u32 common_air_action_step(struct MarioState *m, u32 landAction, s32 animation, 
 }
 
 s32 act_jump(struct MarioState *m) {
+<<<<<<< HEAD
 #ifdef EASIER_LONG_JUMPS
     if (m->actionTimer < 1) {
         m->actionTimer++;
@@ -458,6 +459,8 @@ s32 act_jump(struct MarioState *m) {
         return TRUE;
     }
 
+=======
+>>>>>>> Decompetition-1-Multiple-Marios/master
     if (check_kick_or_dive_in_air(m)) {
         return TRUE;
     }
@@ -1373,7 +1376,7 @@ s32 act_air_hit_wall(struct MarioState *m) {
         mario_drop_held_object(m);
     }
 
-    if (++(m->actionTimer) <= FIRSTY_LAST_FRAME) {
+    if (++(m->actionTimer) <= 2) {
         if (m->input & INPUT_A_PRESSED) {
             m->vel[1] = 52.0f;
             m->faceAngle[1] += 0x8000;
@@ -1395,12 +1398,9 @@ s32 act_air_hit_wall(struct MarioState *m) {
         return set_mario_action(m, ACT_WALL_SLIDE, 0);
     }
 
-#if FIRSTY_LAST_FRAME > 1
     set_mario_animation(m, MARIO_ANIM_START_WALLKICK);
-    m->marioObj->header.gfx.angle[1] = m->wallYaw;
-#endif
 
-    return FALSE;
+    return TRUE;
 }
 
 s32 act_wall_slide(struct MarioState *m) {

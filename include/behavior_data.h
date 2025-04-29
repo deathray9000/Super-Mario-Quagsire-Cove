@@ -554,5 +554,11 @@ extern const BehaviorScript bhvStuffwell[];
 extern const BehaviorScript bhvPowerFlowers[];
 extern const BehaviorScript bhvCosmicManager[];
 extern const BehaviorScript bhvCosmicMario[];
+extern const BehaviorScript bhvSpawnCoopMario[];
+extern const BehaviorScript bhvWeightPlate[];
+extern const BehaviorScript bhvCountPlate[];
+extern const BehaviorScript bhvWeightPlateNumber[];
+extern const BehaviorScript bhvRaisePlatform[];
+extern const BehaviorScript bhvDoubleCherry[];
 
 #endif // BEHAVIOR_DATA_H
