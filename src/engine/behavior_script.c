@@ -975,5 +975,5 @@ void cur_obj_update(void) {
             o->header.gfx.node.flags |= GRAPH_RENDER_ACTIVE;
             o->activeFlags &= ~ACTIVE_FLAG_FAR_AWAY;
         }
-    }
+    }   
 }

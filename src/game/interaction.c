@@ -795,18 +795,10 @@ u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *
         o->oInteractStatus = INT_STATUS_INTERACTED;
 
 #ifdef X_COIN_STAR
-<<<<<<< HEAD
         if (COURSE_IS_MAIN_COURSE(gCurrCourseNum) && m->numCoins - o->oDamageOrCoinValue < X_COIN_STAR
             && m->numCoins >= X_COIN_STAR) {
             bhv_spawn_star_no_level_exit(STAR_BP_ACT_100_COINS);
         }
-=======
-    if (COURSE_IS_MAIN_COURSE(gCurrCourseNum) && m->numCoins - obj->oDamageOrCoinValue < X_COIN_STAR
-        && m->numCoins >= X_COIN_STAR && !g100CoinStarSpawned) {
-        bhv_spawn_star_no_level_exit(STAR_BP_ACT_100_COINS);
-        g100CoinStarSpawned = TRUE;
-    }
->>>>>>> Decompetition-1-Multiple-Marios/master
 #endif
 #if ENABLE_RUMBLE
         if (o->oDamageOrCoinValue >= 2) {
@@ -1369,12 +1361,7 @@ u32 interact_bully(struct MarioState *m, UNUSED u32 interactType, struct Object 
 }
 
 u32 interact_shock(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
-<<<<<<< HEAD
-
-    if (!sInvulnerable && !(m->flags & MARIO_VANISH_CAP)
-=======
     if (!sInvulnerable[m->playerID] && !(m->flags & MARIO_VANISH_CAP)
->>>>>>> Decompetition-1-Multiple-Marios/master
         && !(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
         u32 actionArg = (m->action & (ACT_FLAG_AIR | ACT_FLAG_ON_POLE | ACT_FLAG_HANGING)) == 0;
 
@@ -1528,47 +1515,8 @@ u32 interact_spiny_walking(struct MarioState *m, UNUSED u32 interactType, struct
 u32 interact_damage(struct MarioState *m, UNUSED u32 interactType, struct Object *obj) {
     u32 interaction;
 
-<<<<<<< HEAD
-    if (obj->oInteractStatus != 1) {
-        if (obj->behavior == segmented_to_virtual(bhvNormalPiranha)) {
-            if (m->flags & MARIO_METAL_CAP) {
-                interaction = INT_FAST_ATTACK_OR_SHELL;
-            } else {
-                interaction = determine_interaction(m, obj);
-            }
-
-            if (interaction & INT_ATTACK_NOT_FROM_BELOW) {
-#if ENABLE_RUMBLE
-                queue_rumble_data(5, 80);
-#endif
-                if (interaction & (INT_PUNCH | INT_KICK | INT_SLIDE_KICK | INT_TRIP | INT_GROUND_POUND_OR_TWIRL | INT_FAST_ATTACK_OR_SHELL)) {
-                    obj->oInteractStatus = INT_STATUS_HIT_MINE;
-                } else {
-                    obj->oInteractStatus = INT_STATUS_INTERACTED;
-                }
-
-                bounce_back_from_attack(m, interaction);
-
-                if (interaction & INT_HIT_FROM_ABOVE) {
-                    obj->oInteractStatus = INT_STATUS_WAS_ATTACKED;
-                    bounce_off_object(m, obj, 30.0f);
-                }
-            } else if (take_damage_and_knock_back(m, obj)) {
-                return TRUE;
-            }
-        } else {
-            if (take_damage_and_knock_back(m, obj)) {
-                return TRUE;
-            }
-
-            if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
-                sDelayInvincTimer = TRUE;
-            }
-        }
-=======
     if (!(obj->oInteractionSubtype & INT_SUBTYPE_DELAY_INVINCIBILITY)) {
         sDelayInvincTimer[m->playerID] = TRUE;
->>>>>>> Decompetition-1-Multiple-Marios/master
     }
 
     return FALSE;
@@ -1923,6 +1871,7 @@ u32 check_read_sign(struct MarioState *m, struct Object *obj) {
         if (m->pos[1] >= obj->oPosY + 125) {
             spawn_object(obj, MODEL_BROKEN_SIGNPOST, bhvBrokenSign);
             obj_mark_for_deletion(obj);
+            obj->oIntangibleTimer = -1;
         }
     }
 
@@ -1977,7 +1926,6 @@ u32 check_read_sign(struct MarioState *m, struct Object *obj) {
 }
 
 u32 check_npc_talk(struct MarioState *m, struct Object *obj) {
-<<<<<<< HEAD
     u32 interaction = determine_interaction(m, obj);
 
     if (interaction & INT_HIT_FROM_ABOVE || interaction & INT_GROUND_POUND_OR_TWIRL) {
@@ -2024,22 +1972,6 @@ u32 check_npc_talk(struct MarioState *m, struct Object *obj) {
             } else {
                 spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  0, obj, MODEL_NUMBER, bhvOrangeNumber);
             }
-=======
-#ifdef EASIER_DIALOG_TRIGGER
-    if (
-        mario_can_talk(m, TRUE)
-        && abs_angle_diff(mario_obj_angle_to_object(m, obj), m->faceAngle[1]) <= SIGN_RANGE
-    ) {
-#ifdef DIALOG_INDICATOR
-        struct Object *orangeNumber;
-        if (obj->behavior == segmented_to_virtual(bhvYoshi)) {
-            orangeNumber = spawn_object_relative(ORANGE_NUMBER_A, 0, 256, 64, obj, MODEL_NUMBER, bhvOrangeNumber);
-        } else {
-            orangeNumber = spawn_object_relative(ORANGE_NUMBER_A, 0, 160,  0, obj, MODEL_NUMBER, bhvOrangeNumber);
-        }
-        orangeNumber->oHomeX = orangeNumber->oPosX;
-        orangeNumber->oHomeZ = orangeNumber->oPosZ;
->>>>>>> Decompetition-1-Multiple-Marios/master
 #endif
             if (m->input & READ_MASK) {
 #else

@@ -647,7 +647,6 @@ void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags)
     sWarpDest.levelNum = destLevel;
     sWarpDest.areaIdx = destArea;
     sWarpDest.nodeId = destWarpNode;
-<<<<<<< HEAD
     if (warpFlags == WARP_FLAG_FORCE_LEVEL_CHANGE) {
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
         sWarpDest.arg = WARP_FLAGS_NONE;
@@ -676,9 +675,6 @@ void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags)
 #if defined(PUPPYCAM) || defined(PUPPYLIGHTS)
     s32 i = 0;
 #endif
-=======
-    sWarpDest.arg = warpFlags;
->>>>>>> Decompetition-1-Multiple-Marios/master
 #ifdef PUPPYCAM
     if (sWarpDest.type == WARP_TYPE_CHANGE_LEVEL)
     {
@@ -831,15 +827,7 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                             sSourceWarpNodeId = WARP_NODE_DEATH;
                         }
 #else
-<<<<<<< HEAD
-                    // if (gWarpCheckpoint.courseNum != COURSE_NONE) {
-                    //     sSourceWarpNodeId = gWarpCheckpoint.warpNode;
-                    // } else {
                         sSourceWarpNodeId = WARP_NODE_DEATH;
-                    //}
-=======
-                        sSourceWarpNodeId = WARP_NODE_DEATH;
->>>>>>> Decompetition-1-Multiple-Marios/master
 #endif
                     }                    
                 }
@@ -1028,15 +1016,6 @@ void update_hud_values(void) {
         if (gHudDisplay.coins > MAX_NUM_COINS) {
             gHudDisplay.coins = MAX_NUM_COINS;
         }
-<<<<<<< HEAD
-#else
-        if (gMarioState->numCoins > 9999) {
-            gMarioState->numCoins = 9999;
-            gHudDisplay.coins = 9999;
-        }
-#endif
-=======
->>>>>>> Decompetition-1-Multiple-Marios/master
 
         gHudDisplay.stars = gMarioState->numStars;
         gHudDisplay.lives = gMarioState->numLives;
@@ -1153,10 +1132,8 @@ s32 play_mode_paused(void) {
         if (gDebugLevelSelect) {
             fade_into_special_warp(WARP_SPECIAL_LEVEL_SELECT, 1);
         } else {
-<<<<<<< HEAD
             initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_FORCE_LEVEL_CHANGE);
             fade_into_special_warp(WARP_SPECIAL_NONE, 0);
-=======
 #ifdef DEATH_ON_EXIT_COURSE
             struct ObjectWarpNode *warpNode = area_get_warp_node(WARP_NODE_DEATH);
             assert(warpNode != NULL, "No death warp node could be found!");
@@ -1165,7 +1142,6 @@ s32 play_mode_paused(void) {
                             warpNode->node.destNode, WARP_FLAGS_NONE);
 #else // DEATH_ON_EXIT_COURSE
             initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_EXIT_COURSE);
->>>>>>> Decompetition-1-Multiple-Marios/master
             gSavedCourseNum = COURSE_NONE;
 #endif // DEATH_ON_EXIT_COURSE
 
@@ -1455,16 +1431,10 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
-<<<<<<< HEAD
-	if (gCurrLevelNum == LEVEL_CCM) return 0;
+    if (gCurrLevelNum == LEVEL_EXAMPLE) return 0;
 	if (TRUE) return 0; // permanatly deactivates act select, remove after competition
 	
     if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE || gMarioState->isDead) {
-=======
-	if (gCurrLevelNum == LEVEL_EXAMPLE) return 0;
-
-    if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE) {
->>>>>>> Decompetition-1-Multiple-Marios/master
         return FALSE;
     }
 

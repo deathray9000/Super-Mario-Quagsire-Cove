@@ -20,7 +20,6 @@
  */
 #define MAX_NUM_LIVES 100
 
-<<<<<<< HEAD
 // This is the number of lives Mario starts with after a game over or starting the game for the first time (must be lower than 127).
 #define DEFAULT_NUM_LIVES 5
 
@@ -38,42 +37,14 @@
 
 // Stars don't kick you out of the level (does not play nicely with vanilla).
 #define NON_STOP_STARS
-=======
-/**
- * This can be 0..32767.
- */
-#define MAX_NUM_COINS 999
-
-/**
- * Air/breath meter is separate from health meter when underwater.
- */
-// #define BREATH_METER
-
-/**
- * Number of coins to spawn the "100 coin" star. If you remove the define altogether, then there won't be a 100 coin star at all.
- */
-#define X_COIN_STAR 100
-
-/**
- * Stars don't kick you out of the level (does not play nicely with vanilla).
- */
-// #define NON_STOP_STARS
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /**
  * Bowser keys always exit the level. Only has an effect if NON_STOP_STARS is enabled.
  */
 // #define KEYS_EXIT_LEVEL
 
-<<<<<<< HEAD
 // Uncomment this if you want global star IDs (useful for creating an open world hack ala MVC).
 #define GLOBAL_STAR_IDS
-=======
-/**
- * Uncomment this if you want global star IDs (useful for creating an open world hack ala MVC).
- */
-// #define GLOBAL_STAR_IDS
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /**
  * Number of possible unique model ID's (keep it higher than 256).
@@ -85,23 +56,11 @@
  */
 #define AREA_COUNT 8
 
-<<<<<<< HEAD
 // Makes signs and NPCs easier to talk to.
 #define EASIER_DIALOG_TRIGGER
 
 // Shows an "A" when Mario is able to talk [requires EASIER_DIALOG_TRIGGER].
 #define DIALOG_INDICATOR
-=======
-/**
- * Makes signs and NPCs easier to talk to.
- */
-// #define EASIER_DIALOG_TRIGGER
-
-/**
- * Shows an "A" when Mario is able to talk [requires EASIER_DIALOG_TRIGGER].
- */
-// #define DIALOG_INDICATOR
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /**
  * Include the English characters that were missing from US segment2 and the rumble pak texture if using rumble.
@@ -130,4 +89,4 @@
  * The level that the game starts with immediately after file select.
  * The levelscript needs to have a MARIO_POS command for this to work.
  */
-#define START_LEVEL LEVEL_CASTLE_GROUNDS
+#define START_LEVEL LEVEL_CCM

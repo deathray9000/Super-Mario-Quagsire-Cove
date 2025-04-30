@@ -350,12 +350,7 @@ Gfx *geo_mirror_mario_set_alpha(s32 callContext, struct GraphNode *node, UNUSED 
  */
 Gfx *geo_switch_mario_stand_run(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx) {
     struct GraphNodeSwitchCase *switchCase = (struct GraphNodeSwitchCase *) node;
-<<<<<<< HEAD
-    // struct MarioBodyState *bodyState = &gBodyStates[switchCase->numCases];
-    struct MarioState *m = &gMarioStates[0];
-=======
     struct MarioBodyState *bodyState = &gBodyStates[((struct Object *) gCurGraphNodeObject)->oPlayerID];
->>>>>>> Decompetition-1-Multiple-Marios/master
 
     if (callContext == GEO_CONTEXT_RENDER) {
         switchCase->selectedCase = save_file_get_power_up(gCurrSaveFileNum - 1, 0);

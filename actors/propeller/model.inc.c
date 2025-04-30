@@ -1,14 +1,5 @@
-Lights1 propeller_blade_lights = gdSPDefLights1(
-	0x7F, 0x7C, 0x0,
-	0xFE, 0xF9, 0x0, 0x28, 0x28, 0x28);
 
-Lights1 propeller_dot_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 propeller_face_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
 Gfx propeller_propeller_dot_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 propeller_propeller_dot_rgba16[] = {
@@ -512,7 +503,8 @@ Gfx mat_propeller_blade[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(propeller_blade_lights),
+    gsSPLightColor(LIGHT_1, 0xfef900ff),
+    gsSPLightColor(LIGHT_2, 0x7f7c00ff),
 	gsSPEndDisplayList(),
 };
 
@@ -528,7 +520,8 @@ Gfx mat_propeller_dot[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(propeller_dot_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -544,7 +537,8 @@ Gfx mat_propeller_face[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(propeller_face_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 

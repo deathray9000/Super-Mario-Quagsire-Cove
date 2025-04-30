@@ -545,18 +545,11 @@ u32 mario_floor_is_slippery(struct MarioState *m) {
     }
 
     switch (mario_get_floor_class(m)) {
-<<<<<<< HEAD
         case SURFACE_SLIDE:
-        case SURFACE_VERY_SLIPPERY: normY = COS10; break;
-        case SURFACE_SLIPPERY:      normY = COS20; break;
-        default:                    normY = COS38; break;
-        case SURFACE_NOT_SLIPPERY:  normY = 0.0f;  break;
-=======
         case SURFACE_CLASS_VERY_SLIPPERY: normY = COS10; break;
         case SURFACE_CLASS_SLIPPERY:      normY = COS20; break;
         default:                          normY = COS38; break;
         case SURFACE_CLASS_NOT_SLIPPERY:  normY = 0.0f;  break;
->>>>>>> Decompetition-1-Multiple-Marios/master
     }
 
     return m->floor->normal.y <= normY;
@@ -574,18 +567,11 @@ s32 mario_floor_is_slope(struct MarioState *m) {
     }
 
     switch (mario_get_floor_class(m)) {
-<<<<<<< HEAD
         case SURFACE_SLIDE:
-        case SURFACE_VERY_SLIPPERY: normY = COS5;  break;
-        case SURFACE_SLIPPERY:      normY = COS10; break;
-        default:                    normY = COS15; break;
-        case SURFACE_NOT_SLIPPERY:  normY = COS20; break;
-=======
         case SURFACE_CLASS_VERY_SLIPPERY: normY = COS5;  break;
         case SURFACE_CLASS_SLIPPERY:      normY = COS10; break;
         default:                          normY = COS15; break;
         case SURFACE_CLASS_NOT_SLIPPERY:  normY = COS20; break;
->>>>>>> Decompetition-1-Multiple-Marios/master
     }
 
     return m->floor->normal.y <= normY;
@@ -611,18 +597,11 @@ s32 mario_floor_is_steep(struct MarioState *m) {
     // This does not matter in vanilla game practice.
     if (!mario_facing_downhill(m, FALSE)) {
         switch (mario_get_floor_class(m)) {
-<<<<<<< HEAD
             case SURFACE_SLIDE:
-            case SURFACE_VERY_SLIPPERY: normY = COS15; break;
-            case SURFACE_SLIPPERY:      normY = COS20; break;
-            default:                    normY = COS30; break;
-            case SURFACE_NOT_SLIPPERY:  normY = COS30; break;
-=======
             case SURFACE_CLASS_VERY_SLIPPERY: normY = COS15; break;
             case SURFACE_CLASS_SLIPPERY:      normY = COS20; break;
             default:                          normY = COS30; break;
             case SURFACE_CLASS_NOT_SLIPPERY:  normY = COS30; break;
->>>>>>> Decompetition-1-Multiple-Marios/master
         }
 
         return m->floor->normal.y <= normY;
@@ -1877,9 +1856,6 @@ void init_mario(struct MarioState *m) {
 
     m->invincTimer = 0;
 
-<<<<<<< HEAD
-    gMarioState->flags = (MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD);
-=======
     if (save_file_get_flags()
         & (SAVE_FLAG_CAP_ON_GROUND | SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI
            | SAVE_FLAG_CAP_ON_MR_BLIZZARD)) {
@@ -1887,7 +1863,6 @@ void init_mario(struct MarioState *m) {
     } else {
         m->flags = (MARIO_NORMAL_CAP | MARIO_CAP_ON_HEAD);
     }
->>>>>>> Decompetition-1-Multiple-Marios/master
 
     m->forwardVel = 0.0f;
     m->squishTimer = 0;
@@ -1902,20 +1877,8 @@ void init_mario(struct MarioState *m) {
     m->riddenObj = NULL;
     m->usedObj = NULL;
 
-<<<<<<< HEAD
-    gMarioState->waterLevel = find_water_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
-    gMarioState->STOR_State = 0;
-
-    // gMarioState->STOR_prop = 3;
-    // gMarioState->STOR_F_FLower = 12;
-    // gMarioState->STOR_Bubble_FLower = 4;
-    // gMarioState->STOR_Boomer_FLower = 7;
-    // gMarioState->STOR_Deluxe = 0;
-
-    // gMarioState->Power_Up_State = 0;
-=======
     m->waterLevel = find_water_level(gMarioSpawnInfo->startPos[0], gMarioSpawnInfo->startPos[2]);
->>>>>>> Decompetition-1-Multiple-Marios/master
+    gMarioState->STOR_State = 0;
 
     m->area = gCurrentArea;
     m->marioObj->header.gfx.animInfo.animID = -1;
@@ -1968,7 +1931,6 @@ void init_mario_from_save_file(struct MarioState *m, int playerId) {
     m->controller = &gControllers[0];
     m->animList = &gMarioAnimsBufs[playerId];
 
-<<<<<<< HEAD
     gMarioState->numCoins = save_file_get_num_coins(gCurrSaveFileNum - 1);
     gMarioState->numStars = save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
     gMarioState->numKeys = 0;
@@ -1976,13 +1938,6 @@ void init_mario_from_save_file(struct MarioState *m, int playerId) {
 #ifdef SAVE_NUM_LIVES
     s8 savedLives = save_file_get_num_lives();
     gMarioState->numLives = (savedLives > DEFAULT_NUM_LIVES) ? savedLives : DEFAULT_NUM_LIVES;
-=======
-    m->numCoins = 0;
-    m->numStars = save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
-    m->numKeys = 0;
-#ifdef ENABLE_LIVES
-    m->numLives = ENABLE_LIVES;
->>>>>>> Decompetition-1-Multiple-Marios/master
 #else
     m->numLives = 0;
 #endif

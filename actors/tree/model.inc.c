@@ -1,14 +1,4 @@
-Lights1 tree_sm64_leaves_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-<<<<<<< HEAD
-Lights1 tree_sm64_trunk_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
-=======
-// 0x0302DE10
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 Gfx tree_sm64_leaves_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 tree_sm64_leaves_rgba16[] = {
@@ -277,7 +267,8 @@ Gfx mat_tree_sm64_leaves[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(tree_sm64_leaves_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -293,7 +284,8 @@ Gfx mat_tree_sm64_trunk[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(tree_sm64_trunk_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -316,125 +308,3 @@ Gfx tree_sm64_material_revert_render_settings[] = {
 	gsSPEndDisplayList(),
 };
 
-<<<<<<< HEAD
-=======
-// 0x03030FA0 - 0x03031048
-const Gfx tree_seg3_sub_dl_spiky[] = {
-    gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsDPTileSync(),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 6, G_TX_NOLOD, G_TX_CLAMP, 5, G_TX_NOLOD),
-    gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (64 - 1) << G_TEXTURE_IMAGE_FRAC),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, tree_seg3_texture_pine),
-    gsDPLoadSync(),
-    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 64 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPLightColor(LIGHT_1, 0xffffffff),
-    gsSPLightColor(LIGHT_2, 0x3f3f3fff),
-    gsSPVertex(tree_seg3_vertex_spiky, 4, 0),
-    gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
-    gsSPSetGeometryMode(G_SHADING_SMOOTH),
-    gsSPEndDisplayList(),
-};
-
-const Gfx tree_seg3_dl_spiky[] = {
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
-    gsSPBranchList(tree_seg3_sub_dl_spiky),
-};
-//! These shouldn't need to be separate. However, silhouette moment.
-const Gfx tree_seg3_dl_spiky_transparent[] = {
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_DECALFADEA, G_CC_DECALFADEA),
-    gsSPBranchList(tree_seg3_sub_dl_spiky),
-};
-
-// 0x03031048
-ALIGNED8 static const Texture tree_seg3_texture_snowy_pine[] = {
-#include "actors/tree/snowy_pine_tree.rgba16.inc.c"
-};
-
-// 0x03032088 - 0x03032130
-const Gfx tree_seg3_sub_dl_snowy_pine[] = {
-    gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsDPTileSync(),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 6, G_TX_NOLOD, G_TX_CLAMP, 5, G_TX_NOLOD),
-    gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (64 - 1) << G_TEXTURE_IMAGE_FRAC),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, tree_seg3_texture_snowy_pine),
-    gsDPLoadSync(),
-    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 64 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPLightColor(LIGHT_1, 0xffffffff),
-    gsSPLightColor(LIGHT_2, 0x3f3f3fff),
-    gsSPVertex(tree_seg3_vertex_spiky, 4, 0),
-    gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
-    gsSPSetGeometryMode(G_SHADING_SMOOTH),
-    gsSPEndDisplayList(),
-};
-
-const Gfx tree_seg3_dl_snowy_pine[] = {
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
-    gsSPBranchList(tree_seg3_sub_dl_snowy_pine),
-};
-//! These shouldn't need to be separate. However, silhouette moment.
-const Gfx tree_seg3_dl_snowy_pine_transparent[] = {
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_DECALFADEA, G_CC_DECALFADEA),
-    gsSPBranchList(tree_seg3_sub_dl_snowy_pine),
-};
-
-// 0x03032218
-ALIGNED8 static const Texture tree_seg3_texture_palm[] = {
-#include "actors/tree/palm_tree.rgba16.inc.c"
-};
-
-// 0x03033218
-static const Vtx tree_seg3_vertex_palm[] = {
-    {{{   170,    512,      0}, 0, {   990,      0}, {0x00, 0x00, 0x7f, 0xff}}},
-    {{{  -169,    512,      0}, 0, {     0,      0}, {0x00, 0x00, 0x7f, 0xff}}},
-    {{{  -169,      0,      0}, 0, {     0,   2012}, {0x00, 0x00, 0x7f, 0xff}}},
-    {{{   170,      0,      0}, 0, {   990,   2012}, {0x00, 0x00, 0x7f, 0xff}}},
-};
-
-// 0x03033258 - 0x03033300
-const Gfx tree_seg3_sub_dl_palm[] = {
-    gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsDPTileSync(),
-    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 6, G_TX_NOLOD, G_TX_CLAMP, 5, G_TX_NOLOD),
-    gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (64 - 1) << G_TEXTURE_IMAGE_FRAC),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, tree_seg3_texture_palm),
-    gsDPLoadSync(),
-    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 64 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPLightColor(LIGHT_1, 0xffffffff),
-    gsSPLightColor(LIGHT_2, 0x3f3f3fff),
-    gsSPVertex(tree_seg3_vertex_palm, 4, 0),
-    gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
-    gsSPSetGeometryMode(G_SHADING_SMOOTH),
-    gsSPEndDisplayList(),
-};
-
-const Gfx tree_seg3_dl_palm[] = {
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_DECALRGBA),
-    gsSPBranchList(tree_seg3_sub_dl_palm),
-};
-//! These shouldn't need to be separate. However, silhouette moment.
-const Gfx tree_seg3_dl_palm_transparent[] = {
-    gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_DECALFADEA, G_CC_DECALFADEA),
-    gsSPBranchList(tree_seg3_sub_dl_palm),
-};
->>>>>>> Decompetition-1-Multiple-Marios/master

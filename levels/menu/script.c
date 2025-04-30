@@ -56,12 +56,8 @@ const LevelScript level_main_menu_entry_file_select[] = {
     SLEEP(/*frames*/ 16),
     CLEAR_LEVEL(),
     SLEEP_BEFORE_EXIT(/*frames*/ 1),
-<<<<<<< HEAD
-    SET_REG(LEVEL_CCM),
-=======
 #endif // SKIP_FILE_SELECT
     SET_REG(/*value*/ START_LEVEL),
->>>>>>> Decompetition-1-Multiple-Marios/master
     EXIT_AND_EXECUTE(/*seg*/ SEGMENT_GLOBAL_LEVEL_SCRIPT, _scriptsSegmentRomStart, _scriptsSegmentRomEnd, level_main_scripts_entry),
 };
 

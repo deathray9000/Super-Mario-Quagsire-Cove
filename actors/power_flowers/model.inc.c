@@ -1,38 +1,11 @@
-Lights1 power_flowers_leaf_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_leaf_blue_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_purple_lights = gdSPDefLights1(
-	0x5C, 0x1E, 0x5C,
-	0xB8, 0x3C, 0xB9, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_yellow_lights = gdSPDefLights1(
-	0x7F, 0x79, 0x14,
-	0xFE, 0xF3, 0x29, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_pink_lights = gdSPDefLights1(
-	0x7F, 0x56, 0x64,
-	0xFE, 0xAD, 0xC8, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_red_lights = gdSPDefLights1(
-	0x73, 0x1B, 0xC,
-	0xE7, 0x37, 0x18, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_white_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_eye_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 power_flowers_dark_blue_lights = gdSPDefLights1(
-	0xB, 0x0, 0x7F,
-	0x17, 0x0, 0xFE, 0x28, 0x28, 0x28);
 
 Gfx power_flowers_leaf_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 power_flowers_leaf_rgba16[] = {
@@ -1111,7 +1084,8 @@ Gfx mat_power_flowers_leaf[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(power_flowers_leaf_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -1128,7 +1102,8 @@ Gfx mat_power_flowers_leaf_blue[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_WRAP | G_TX_MIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(power_flowers_leaf_blue_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -1149,7 +1124,8 @@ Gfx mat_power_flowers_purple[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(power_flowers_purple_lights),
+    gsSPLightColor(LIGHT_1, 0xb83cb9ff),
+    gsSPLightColor(LIGHT_2, 0x5c1e5cff),
 	gsSPEndDisplayList(),
 };
 
@@ -1157,7 +1133,8 @@ Gfx mat_power_flowers_yellow[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(power_flowers_yellow_lights),
+    gsSPLightColor(LIGHT_1, 0xfef329ff),
+    gsSPLightColor(LIGHT_2, 0x7f7914ff),
 	gsSPEndDisplayList(),
 };
 
@@ -1165,7 +1142,8 @@ Gfx mat_power_flowers_pink[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(power_flowers_pink_lights),
+    gsSPLightColor(LIGHT_1, 0xfeadc8ff),
+    gsSPLightColor(LIGHT_2, 0x7f5664ff),
 	gsSPEndDisplayList(),
 };
 
@@ -1173,7 +1151,8 @@ Gfx mat_power_flowers_red[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(power_flowers_red_lights),
+    gsSPLightColor(LIGHT_1, 0xe73718ff),
+    gsSPLightColor(LIGHT_2, 0x731b0cff),
 	gsSPEndDisplayList(),
 };
 
@@ -1181,7 +1160,8 @@ Gfx mat_power_flowers_white[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(power_flowers_white_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -1199,7 +1179,8 @@ Gfx mat_power_flowers_eye[] = {
 	gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_4b, 2, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
 	gsDPSetPrimColor(0, 0, 254, 254, 254, 255),
-	gsSPSetLights1(power_flowers_eye_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -1213,7 +1194,8 @@ Gfx mat_power_flowers_dark_blue[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(power_flowers_dark_blue_lights),
+    gsSPLightColor(LIGHT_1, 0x1700feff),
+    gsSPLightColor(LIGHT_2, 0xb007fff),
 	gsSPEndDisplayList(),
 };
 

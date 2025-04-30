@@ -19,25 +19,6 @@ struct ExclamationBoxContents {
 };
 
 struct ExclamationBoxContents sExclamationBoxContents[] = {
-<<<<<<< HEAD
-    { EXCLAMATION_BOX_BP_WING_CAP,         0, 0, MODEL_MARIOS_WING_CAP,  bhvWingCap               }, // 0x00
-    { EXCLAMATION_BOX_BP_METAL_CAP,        0, 0, MODEL_MARIOS_METAL_CAP, bhvMetalCap              }, // 0x01
-    { EXCLAMATION_BOX_BP_VANISH_CAP,       0, 0, MODEL_MARIOS_CAP,       bhvVanishCap             }, // 0x02
-    { EXCLAMATION_BOX_BP_KOOPA_SHELL,      0, 0, MODEL_KOOPA_SHELL,      bhvKoopaShell            }, // 0x03
-    { EXCLAMATION_BOX_BP_COINS_1,          0, 0, MODEL_YELLOW_COIN,      bhvSingleCoinGetsSpawned }, // 0x04
-    { EXCLAMATION_BOX_BP_COINS_3,          0, 0, MODEL_NONE,             bhvThreeCoinsSpawn       }, // 0x05
-    { EXCLAMATION_BOX_BP_COINS_10,         0, 0, MODEL_NONE,             bhvTenCoinsSpawn         }, // 0x06
-    { EXCLAMATION_BOX_BP_1UP_WALKING,      0, 0, MODEL_1UP,              bhv1upWalking            }, // 0x07
-    { EXCLAMATION_BOX_BP_STAR_1,           0, 0, MODEL_STAR,             bhvSpawnedStar           }, // 0x08
-    { EXCLAMATION_BOX_BP_1UP_RUNNING_AWAY, 0, 0, MODEL_1UP,              bhv1upRunningAway        }, // 0x09
-    { EXCLAMATION_BOX_BP_STAR_2,           0, 1, MODEL_STAR,             bhvSpawnedStar           }, // 0x0A
-    { EXCLAMATION_BOX_BP_STAR_3,           0, 2, MODEL_STAR,             bhvSpawnedStar           }, // 0x0B
-    { EXCLAMATION_BOX_BP_STAR_4,           0, 3, MODEL_STAR,             bhvSpawnedStar           }, // 0x0C
-    { EXCLAMATION_BOX_BP_STAR_5,           0, 4, MODEL_STAR,             bhvSpawnedStar           }, // 0x0D
-    { EXCLAMATION_BOX_BP_STAR_6,           0, 5, MODEL_STAR,             bhvSpawnedStar           }, // 0x0E
-    { EXCLAMATION_BOX_BP_PROPELLER_MUSH,   0, 0, MODEL_PROPELLER,        bhvPropeller             }, // 0x0F
-    { EXCLAMATION_BOX_BP_NULL,             0, 0, MODEL_NONE,             NULL                     }
-=======
     [EXCLAMATION_BOX_BP_WING_CAP        ] = { MODEL_MARIOS_WING_CAP,  bhvWingCap,               0 },
     [EXCLAMATION_BOX_BP_METAL_CAP       ] = { MODEL_MARIOS_METAL_CAP, bhvMetalCap,              0 },
     [EXCLAMATION_BOX_BP_VANISH_CAP      ] = { MODEL_MARIOS_CAP,       bhvVanishCap,             0 },
@@ -53,7 +34,8 @@ struct ExclamationBoxContents sExclamationBoxContents[] = {
     [EXCLAMATION_BOX_BP_STAR_4          ] = { MODEL_STAR,             bhvSpawnedStar,           3 },
     [EXCLAMATION_BOX_BP_STAR_5          ] = { MODEL_STAR,             bhvSpawnedStar,           4 },
     [EXCLAMATION_BOX_BP_STAR_6          ] = { MODEL_STAR,             bhvSpawnedStar,           5 },
->>>>>>> Decompetition-1-Multiple-Marios/master
+    [EXCLAMATION_BOX_BP_PROPELLER_MUSH  ] = { MODEL_PROPELLER,        bhvPropeller,             0 },
+    [EXCLAMATION_BOX_BP_NULL            ] = { MODEL_NONE,             NULL,                     0 },
 };
 
 void bhv_rotating_exclamation_mark_loop(void) {
@@ -137,37 +119,22 @@ void exclamation_box_act_scaling(void) {
 void exclamation_box_spawn_contents(struct ExclamationBoxContents *contentsList, u8 boxType) {
     struct Object *contentsObj = NULL;
 
-<<<<<<< HEAD
-    while (contentsList->id != EXCLAMATION_BOX_BP_NULL) {
-        if (boxType == contentsList->id) {
-            if (contentsList->model != MODEL_STAR) {
-                contentsObj = spawn_object(o, contentsList->model, contentsList->behavior);
-                contentsObj->oVelY = 20.0f;
-                contentsObj->oForwardVel = 3.0f;
-                contentsObj->oMoveAngleYaw = gMarioObject->oMoveAngleYaw;
-                OR_BPARAM1(o->oBehParams, contentsList->behParams);
-            } else {
-                struct Object *starObj = spawn_object(o, MODEL_STAR, bhvStarSpawnCoordinates);
-                SET_BPARAM1(starObj->oBehParams, GET_BPARAM3(o->oBehParams));
-                vec3f_set(&starObj->oHomeVec, o->oPosX, o->oPosY, o->oPosZ);
-                starObj->oFaceAnglePitch = 0;
-                starObj->oFaceAngleRoll = 0;
-                o->oFlags |= OBJ_FLAG_PERSISTENT_RESPAWN;
-            }
-            
-            break;
-=======
     if (boxType < ARRAY_COUNT(sExclamationBoxContents)) {
         struct ExclamationBoxContents *contents = &contentsList[boxType];
 
-        contentsObj = spawn_object(o, contents->model, contents->behavior);
-        contentsObj->oVelY = 20.0f;
-        contentsObj->oForwardVel = 3.0f;
-        contentsObj->oMoveAngleYaw = gMarioObject->oMoveAngleYaw;
-        OR_BPARAM1(o->oBehParams, contents->behParam);
         if (contents->model == MODEL_STAR) {
+            struct Object *starObj = spawn_object(o, MODEL_STAR, bhvStarSpawnCoordinates);
+            SET_BPARAM1(starObj->oBehParams, GET_BPARAM3(o->oBehParams));
+            vec3f_set(&starObj->oHomeVec, o->oPosX, o->oPosY, o->oPosZ);
+            starObj->oFaceAnglePitch = 0;
+            starObj->oFaceAngleRoll = 0;
             o->oFlags |= OBJ_FLAG_PERSISTENT_RESPAWN;
->>>>>>> Decompetition-1-Multiple-Marios/master
+        } else {
+            contentsObj = spawn_object(o, contents->model, contents->behavior);
+            contentsObj->oVelY = 20.0f;
+            contentsObj->oForwardVel = 3.0f;
+            contentsObj->oMoveAngleYaw = gMarioObject->oMoveAngleYaw;
+            OR_BPARAM1(o->oBehParams, contents->behParam);
         }
     }
 }
@@ -177,12 +144,8 @@ void exclamation_box_act_explode(void) {
     spawn_mist_particles_variable(0, 0, 46.0f);
     spawn_triangle_break_particles(20, MODEL_CARTOON_STAR, 0.3f, o->oAnimState);
     create_sound_spawner(SOUND_GENERAL_BREAK_BOX);
-<<<<<<< HEAD
-    if (o->oBehParams2ndByte < EXCLAMATION_BOX_BP_COINS_1 || o->oBehParams2ndByte == EXCLAMATION_BOX_BP_PROPELLER_MUSH) {
-=======
-    if (o->oBehParams2ndByte <= EXCLAMATION_BOX_BP_KOOPA_SHELL) {
+    if (o->oBehParams2ndByte <= EXCLAMATION_BOX_BP_KOOPA_SHELL || o->oBehParams2ndByte == EXCLAMATION_BOX_BP_PROPELLER_MUSH) {
         // Cap boxes + Koopa shell boxes.
->>>>>>> Decompetition-1-Multiple-Marios/master
         o->oAction = EXCLAMATION_BOX_ACT_WAIT_FOR_RESPAWN;
         cur_obj_hide();
     } else {

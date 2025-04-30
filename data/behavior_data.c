@@ -6247,7 +6247,7 @@ const BehaviorScript bhvCosmicMario[] = {
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_cosmic_mario_loop),
 };
-=======
+
 const BehaviorScript bhvCountPlate[] = {
     BEGIN(OBJ_LIST_SURFACE),
     SCALE(/*Unused*/ 0, /*Field*/ 150),
@@ -6282,6 +6282,5 @@ const BehaviorScript bhvDoubleCherry[] = {
     BEGIN(OBJ_LIST_SURFACE), // Not a mistake, object order shenanigans to get rid of a camera bug
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
         CALL_NATIVE(bhv_coop_double_cherry),
->>>>>>> Decompetition-1-Multiple-Marios/master
     END_LOOP(),
 };

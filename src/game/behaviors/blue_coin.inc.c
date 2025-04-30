@@ -83,13 +83,8 @@ void bhv_blue_coin_switch_loop(void) {
         case BLUE_COIN_SWITCH_ACT_IDLE:
             // If Mario is on the switch and has ground-pounded,
             // recede and get ready to start ticking.
-<<<<<<< HEAD
-            if (gMarioObject->platform == o) {
-                if (gMarioStates[0].action == ACT_GROUND_POUND_LAND || gMarioStates[0].action == ACT_WATER_POUND_LAND) {
-=======
             if (is_a_mario_on_platform()) {
-                if (gMarioStates[0].action == ACT_GROUND_POUND_LAND) {
->>>>>>> Decompetition-1-Multiple-Marios/master
+                if (gMarioStates[0].action == ACT_GROUND_POUND_LAND || gMarioStates[0].action == ACT_WATER_POUND_LAND) {
                     // Set to BLUE_COIN_SWITCH_ACT_RECEDING
                     o->oAction = BLUE_COIN_SWITCH_ACT_RECEDING;
 #ifdef BLUE_COIN_SWITCH_RETRY

@@ -1,30 +1,9 @@
-Lights1 bob_dl_ground_lights = gdSPDefLights1(
-	0x7F, 0x5, 0x0,
-	0xFE, 0xA, 0x0, 0x28, 0x28, 0x28);
 
-Lights1 bob_dl_quicksand_lights = gdSPDefLights1(
-	0x0, 0x0, 0x0,
-	0x0, 0x0, 0x0, 0x28, 0x28, 0x28);
 
-Lights1 bob_dl_gate_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 bob_dl_stone_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 bob_dl_f3d_material_007_lights = gdSPDefLights1(
-	0x0, 0x1, 0x7F,
-	0x0, 0x2, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 bob_dl_f3d_material_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 bob_dl_sm64_water_mat_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
 Gfx bob_dl_bob_textures_08800_rgba16_ci4_aligner[] = {gsSPEndDisplayList()};
 u8 bob_dl_bob_textures_08800_rgba16_ci4[] = {
@@ -2730,7 +2709,8 @@ Gfx mat_bob_dl_ground[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(bob_dl_ground_lights),
+    gsSPLightColor(LIGHT_1, 0xfe0a00ff),
+    gsSPLightColor(LIGHT_2, 0x7f0500ff),
 	gsSPEndDisplayList(),
 };
 
@@ -2738,7 +2718,8 @@ Gfx mat_bob_dl_quicksand[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(bob_dl_quicksand_lights),
+    gsSPLightColor(LIGHT_1, 0xff),
+    gsSPLightColor(LIGHT_2, 0xff),
 	gsSPEndDisplayList(),
 };
 
@@ -2762,7 +2743,8 @@ Gfx mat_bob_dl_gate[] = {
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
 	gsDPSetPrimColor(0, 0, 254, 254, 254, 255),
-	gsSPSetLights1(bob_dl_gate_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -2791,7 +2773,8 @@ Gfx mat_bob_dl_stone[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 6, 0),
 	gsDPSetTileSize(0, 0, 0, 252, 124),
-	gsSPSetLights1(bob_dl_stone_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -2805,7 +2788,8 @@ Gfx mat_bob_dl_f3d_material_007[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(bob_dl_f3d_material_007_lights),
+    gsSPLightColor(LIGHT_1, 0x2feff),
+    gsSPLightColor(LIGHT_2, 0x17fff),
 	gsSPEndDisplayList(),
 };
 
@@ -2813,7 +2797,8 @@ Gfx mat_bob_dl_f3d_material[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(bob_dl_f3d_material_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -2838,7 +2823,8 @@ Gfx mat_bob_dl_sm64_water_mat[] = {
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
 	gsDPSetPrimColor(0, 0, 254, 254, 254, 204),
-	gsSPSetLights1(bob_dl_sm64_water_mat_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 

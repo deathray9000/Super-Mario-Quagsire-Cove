@@ -552,7 +552,6 @@ void bhv_intro_scene_loop(void);
 void bhv_dust_smoke_loop(void);
 void bhv_yoshi_loop(void);
 void bhv_volcano_trap_loop(void);
-<<<<<<< HEAD
 void bhv_note_block_init(void);
 void bhv_note_block_loop(void);
 void bhv_wooper_loop(void);
@@ -590,13 +589,11 @@ Gfx *geo_prop_blade(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 
 // stuffwell
 Gfx *geo_stuffwell_blink(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
 Gfx *geo_stuffwell_mouth(s32 callContext, struct GraphNode *node, UNUSED Mat4 *mtx);
-=======
 void bhv_coop_spawn_mario(void);
 void bhv_coop_weight_plate(void);
 void bhv_coop_raise_platform(void);
 void bhv_coop_double_cherry(void);
 void bhv_coop_count_plate(void);
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 Gfx *geo_move_mario_part_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx);
 

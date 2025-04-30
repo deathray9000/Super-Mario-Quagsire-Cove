@@ -142,11 +142,7 @@ u32 get_mario_spawn_type(struct Object *obj) {
     s32 i;
     const BehaviorScript *behavior = virtual_to_segmented(SEGMENT_BEHAVIOR_DATA, obj->behavior);
 
-<<<<<<< HEAD
-    for (i = 0; i < 22; i++) {
-=======
     for (i = 0; i < ARRAY_COUNT(sWarpBhvSpawnTable); i++) {
->>>>>>> Decompetition-1-Multiple-Marios/master
         if (sWarpBhvSpawnTable[i] == behavior) {
             return sSpawnTypeFromWarpBhv[i];
         }

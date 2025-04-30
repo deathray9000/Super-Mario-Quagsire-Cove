@@ -445,7 +445,6 @@ u32 common_air_action_step(struct MarioState *m, u32 landAction, s32 animation, 
 }
 
 s32 act_jump(struct MarioState *m) {
-<<<<<<< HEAD
 #ifdef EASIER_LONG_JUMPS
     if (m->actionTimer < 1) {
         m->actionTimer++;
@@ -459,8 +458,6 @@ s32 act_jump(struct MarioState *m) {
         return TRUE;
     }
 
-=======
->>>>>>> Decompetition-1-Multiple-Marios/master
     if (check_kick_or_dive_in_air(m)) {
         return TRUE;
     }

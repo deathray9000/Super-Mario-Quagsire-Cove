@@ -27,7 +27,6 @@
  **/
 
 #ifdef BREATH_METER
-<<<<<<< HEAD
 // #ifdef DISABLE_LIVES
 #define HUD_BREATH_METER_X         64
 #define HUD_BREATH_METER_Y        200
@@ -37,11 +36,6 @@
 // #define HUD_BREATH_METER_Y         32
 // #define HUD_BREATH_METER_HIDDEN_Y -20
 // #endif
-=======
-#define HUD_BREATH_METER_X         40
-#define HUD_BREATH_METER_Y         32
-#define HUD_BREATH_METER_HIDDEN_Y -20
->>>>>>> Decompetition-1-Multiple-Marios/master
 #endif
 
 // ------------- FPS COUNTER ---------------

@@ -30,12 +30,9 @@
 #include "debug_box.h"
 #include "vc_ultra.h"
 #include "profiling.h"
-<<<<<<< HEAD
 #include "camera.h"
-=======
 #include "emutest.h"
 #include "mario_coop.h"
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 // Emulators that the Instant Input patch should not be applied to
 #define INSTANT_INPUT_BLACKLIST (EMU_CONSOLE | EMU_WIIVC | EMU_ARES | EMU_SIMPLE64 | EMU_CEN64)

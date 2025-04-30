@@ -13,17 +13,14 @@
  */
 #define FORCED_CAMERA_MODE        CAMERA_MODE_8_DIRECTIONS
 
-<<<<<<< HEAD
 // Changes hardcoded camera mode reverting to instead use the area's default mode (defMode).
 // If you're using a FORCED_CAMERA_MODE, this must be on for it to work.
 //#define USE_COURSE_DEFAULT_MODE
-=======
 /**
  * Changes hardcoded camera mode reverting to instead use the area's default mode (defMode).
  * If you're using a FORCED_CAMERA_MODE, this must be on for it to work.
  */
 #define USE_COURSE_DEFAULT_MODE
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /***** Movement specific camera modes: *****/
 /**
@@ -55,19 +52,10 @@
  */
 // #define PUPPYCAM
 
-<<<<<<< HEAD
 // Enables Reonucam, a custom camera that aims to be a more feature-rich "aglabcam" that also uses less buttons.
 // An explanation the features can be seen here: https://www.youtube.com/watch?v=TQNkznX9Z3k (please note that the analog feature shown at the end is no longer present)
 #define REONUCAM
 #define REONUCAM_COLLISION
-=======
-/**
- * Note: Reonucam is available, but because we had no time to test it properly, it's included as a patch rather than being in the code by default.
- * Run this command to apply the patch if you want to use it:
- *       tools/apply_patch.sh enhancements/reonucam.patch
- * Consider it a beta, but it should work fine. Please report any bugs with it. Applying the patch will simply add a define here, so you can still turn it off even after patching.
- */
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /**********************************/
 /***** Vanilla config options *****/

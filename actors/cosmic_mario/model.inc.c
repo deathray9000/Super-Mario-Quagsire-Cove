@@ -1,34 +1,10 @@
-Lights1 cosmic_mario_button_v3_002_lights = gdSPDefLights1(
-	0x0, 0x0, 0x38,
-	0x0, 0x0, 0x71, 0x28, 0x28, 0x28);
 
-Lights1 cosmic_mario_hat_v3_002_lights = gdSPDefLights1(
-	0x0, 0x1B, 0x44,
-	0x0, 0x36, 0x89, 0x28, 0x28, 0x28);
 
-Lights1 cosmic_mario_skin_v3_002_lights = gdSPDefLights1(
-	0x4A, 0x0, 0x60,
-	0x94, 0x0, 0xC0, 0x28, 0x28, 0x28);
 
-Lights1 cosmic_mario_shoes_v3_002_lights = gdSPDefLights1(
-	0x0, 0x0, 0x0,
-	0x0, 0x0, 0x0, 0x28, 0x28, 0x28);
 
-Lights1 cosmic_mario_moustache_v3_002_lights = gdSPDefLights1(
-	0x4A, 0x0, 0x60,
-	0x94, 0x0, 0xC0, 0x28, 0x28, 0x28);
 
-Lights1 cosmic_mario_face_0___Open_Eyes_v3_001_lights = gdSPDefLights1(
-	0x4A, 0x0, 0x60,
-	0x94, 0x0, 0xC0, 0x28, 0x28, 0x28);
 
-Lights1 cosmic_mario_sideburns_v3_002_lights = gdSPDefLights1(
-	0x4A, 0x0, 0x60,
-	0x94, 0x0, 0xC0, 0x28, 0x28, 0x28);
 
-Lights1 cosmic_mario_white_v3_002_lights = gdSPDefLights1(
-	0x4A, 0x0, 0x60,
-	0x94, 0x0, 0xC0, 0x28, 0x28, 0x28);
 
 Gfx cosmic_mario_cosmic_button_rgba16_aligner[] = {gsSPEndDisplayList()};
 u8 cosmic_mario_cosmic_button_rgba16[] = {
@@ -856,7 +832,8 @@ Gfx mat_cosmic_mario_button_v3_002[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_CLAMP | G_TX_MIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(cosmic_mario_button_v3_002_lights),
+    gsSPLightColor(LIGHT_1, 0x71ff),
+    gsSPLightColor(LIGHT_2, 0x38ff),
 	gsSPEndDisplayList(),
 };
 
@@ -872,7 +849,8 @@ Gfx mat_cosmic_mario_hat_v3_002[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 4, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 60),
-	gsSPSetLights1(cosmic_mario_hat_v3_002_lights),
+    gsSPLightColor(LIGHT_1, 0x3689ff),
+    gsSPLightColor(LIGHT_2, 0x1b44ff),
 	gsSPEndDisplayList(),
 };
 
@@ -880,7 +858,8 @@ Gfx mat_cosmic_mario_skin_v3_002[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(cosmic_mario_skin_v3_002_lights),
+    gsSPLightColor(LIGHT_1, 0x9400c0ff),
+    gsSPLightColor(LIGHT_2, 0x4a0060ff),
 	gsSPEndDisplayList(),
 };
 
@@ -888,7 +867,8 @@ Gfx mat_cosmic_mario_shoes_v3_002[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(cosmic_mario_shoes_v3_002_lights),
+    gsSPLightColor(LIGHT_1, 0xff),
+    gsSPLightColor(LIGHT_2, 0xff),
 	gsSPEndDisplayList(),
 };
 
@@ -904,7 +884,8 @@ Gfx mat_cosmic_mario_moustache_v3_002[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(cosmic_mario_moustache_v3_002_lights),
+    gsSPLightColor(LIGHT_1, 0x9400c0ff),
+    gsSPLightColor(LIGHT_2, 0x4a0060ff),
 	gsSPEndDisplayList(),
 };
 
@@ -920,7 +901,8 @@ Gfx mat_cosmic_mario_face_0___Open_Eyes_v3_001[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 4, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 4, 0),
 	gsDPSetTileSize(0, 0, 0, 60, 124),
-	gsSPSetLights1(cosmic_mario_face_0___Open_Eyes_v3_001_lights),
+    gsSPLightColor(LIGHT_1, 0x9400c0ff),
+    gsSPLightColor(LIGHT_2, 0x4a0060ff),
 	gsSPEndDisplayList(),
 };
 
@@ -936,7 +918,8 @@ Gfx mat_cosmic_mario_sideburns_v3_002[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(cosmic_mario_sideburns_v3_002_lights),
+    gsSPLightColor(LIGHT_1, 0x9400c0ff),
+    gsSPLightColor(LIGHT_2, 0x4a0060ff),
 	gsSPEndDisplayList(),
 };
 
@@ -944,7 +927,8 @@ Gfx mat_cosmic_mario_white_v3_002[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(cosmic_mario_white_v3_002_lights),
+    gsSPLightColor(LIGHT_1, 0x9400c0ff),
+    gsSPLightColor(LIGHT_2, 0x4a0060ff),
 	gsSPEndDisplayList(),
 };
 

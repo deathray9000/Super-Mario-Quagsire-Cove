@@ -14,11 +14,8 @@
 #include "memory.h"
 #include "behavior_data.h"
 #include "rumble_init.h"
-<<<<<<< HEAD
 #include "game_init.h"
-=======
 #include "mario_coop.h"
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 #include "config.h"
 

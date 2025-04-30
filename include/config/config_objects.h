@@ -89,15 +89,8 @@
  * -- 1-UP MUSHROOM --
  **********************/
 
-<<<<<<< HEAD
 // Collecting a 1-Up Mushroom will fully heal Mario.
 // #define MUSHROOMS_HEAL
-=======
-/**
- * Collecting a 1-Up Mushroom will fully heal Mario.
- */
-#define MUSHROOMS_HEAL
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /***************************
  * -- PLATFORM ON TRACK --

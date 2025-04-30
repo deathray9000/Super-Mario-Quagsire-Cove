@@ -26,17 +26,17 @@
  * - Precise turning control.
  * - Prevents falling from the edges.
  */
-// #define BETTER_HANGING
+#define BETTER_HANGING
 
 /**
  * Change the movement speed when hanging from a ceiling (the vanilla value is 4.0f, has no effect if BETTER_HANGING is enabled).
  */
-#define HANGING_SPEED 4.0f
+#define HANGING_SPEED 12.0f
 
 /**
  * Prevents Mario from falling asleep while idle.
  */
-#define NO_SLEEP
+// #define NO_SLEEP
 
 /**
  * Disables fall damage.
@@ -53,15 +53,8 @@
  */
 #define FALL_DAMAGE_HEIGHT_SMALL 1150.0f
 
-<<<<<<< HEAD
 // Fall height for double fall damage. Vanilla is 3000.0f.
 #define FALL_DAMAGE_HEIGHT_LARGE 2500.0f
-=======
-/**
- * Fall height for double fall damage. Vanilla is 3000.0f.
- */
-#define FALL_DAMAGE_HEIGHT_LARGE 3000.0f
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /**
  * Disables Mario getting stuck in snow and sand when falling.
@@ -73,15 +66,8 @@
  */
 // #define HANDS_FREE_HOLDING_FIX
 
-<<<<<<< HEAD
 // Prevents Mario from losing his cap.
 #define PREVENT_CAP_LOSS
-=======
-/**
- * Prevents Mario from losing his cap.
- */
-// #define PREVENT_CAP_LOSS
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /**
  * Uses Shindou's pole behavior.
@@ -91,12 +77,12 @@
 /**
  * If A and Z are pressed on the same frame while running, Mario will long jump instead of ground pound.
  */
-// #define EASIER_LONG_JUMPS
+#define EASIER_LONG_JUMPS
 
 /**
  * Enables the ability to hold Z while twirling to descend faster.
  */
-// #define Z_TWIRL
+#define Z_TWIRL
 
 /**
  * Disables bonks when ground pounding next to a wall.
@@ -111,20 +97,13 @@
 /**
  * Allows Mario to grab hangable ceilings from any state.
  */
-// #define HANGING_FIX
+#define HANGING_FIX
 
-<<<<<<< HEAD
 // The last frame after hitting a wall that will be considered a firsty when wallkicking.
 #define FIRSTY_LAST_FRAME 1
 
 // The maximum angle the player can wall kick, in degrees. 0..90. To allow 45 degree wall kicks, you must supply `46` to allow 45 and under.
 #define WALL_KICK_DEGREES 46
-=======
-/**
- * The maximum angle the player can wall kick, in degrees. 0..90. To allow 45 degree wall kicks, you must supply `46` to allow 45 and under.
- */
-#define WALL_KICK_DEGREES 45
->>>>>>> Decompetition-1-Multiple-Marios/master
 
 /**
  * Makes Mario unable to ledge grab steep slopes to prevent false ledge grabs.

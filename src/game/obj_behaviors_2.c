@@ -822,7 +822,6 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/reds_star_marker.inc.c"
 #include "behaviors/triplet_butterfly.inc.c"
 #include "behaviors/bubba.inc.c"
-<<<<<<< HEAD
 #include "behaviors/note_block.inc.c"
 #include "behaviors/wooper.inc.c"
 #include "behaviors/propeller.inc.c"
@@ -836,6 +835,4 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/power_flowers.inc.c"
 #include "behaviors/cosmic_manager.inc.c"
 #include "behaviors/cosmic_mario.inc.c"
-=======
 #include "behaviors/coop_objects.inc.c"
->>>>>>> Decompetition-1-Multiple-Marios/master

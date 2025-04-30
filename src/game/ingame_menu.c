@@ -1184,17 +1184,13 @@ void render_dialog_entries(void) {
         case DIALOG_STATE_VERTICAL:
             gDialogBoxOpenTimer = 0.0f;
 
-<<<<<<< HEAD
-            if (gPlayer3Controller->buttonPressed & Z_TRIG) {
+            if (gPlayer1Controller->buttonPressed & Z_TRIG) {
                     handle_special_dialog_text(gDialogID);
                     gDialogBoxState = DIALOG_STATE_CLOSING;
                     gDialogResponse = DIALOG_RESPONSE_IGNORED;
             }
 
-            if (gPlayer3Controller->buttonPressed & (A_BUTTON | B_BUTTON)) {
-=======
             if (gPlayer1Controller->buttonPressed & (A_BUTTON | B_BUTTON)) {
->>>>>>> Decompetition-1-Multiple-Marios/master
                 if (gLastDialogPageStrPos == -1) {
                     handle_special_dialog_text(gDialogID);
                     gDialogBoxState = DIALOG_STATE_CLOSING;
@@ -2169,7 +2165,7 @@ s32 render_pause_courses_and_castle(void) { // =================================
 #endif
 #endif
         
-            if (gPlayer3Controller->buttonPressed & (A_BUTTON)) {
+            if (gPlayer1Controller->buttonPressed & (A_BUTTON)) {
                 if (gDialogLineNum == MENU_OPT_SAVE_GAME) {
                     index = gDialogLineNum;
                     play_sound(SOUND_MENU_STAR_SOUND_OKEY_DOKEY, gGlobalSoundSource);
@@ -2180,7 +2176,6 @@ s32 render_pause_courses_and_castle(void) { // =================================
                     gDialogBoxState = DIALOG_STATE_OPENING;
                     gMenuMode = MENU_MODE_NONE;
 
-<<<<<<< HEAD
                     if (gDialogLineNum == MENU_OPT_EXIT_COURSE) {
                         index = gDialogLineNum;
                     } else { // MENU_OPT_CONTINUE or MENU_OPT_CAMERA_ANGLE_R
@@ -2191,10 +2186,7 @@ s32 render_pause_courses_and_castle(void) { // =================================
                 }
             }
 
-            if (gPlayer3Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
-=======
-            if (gPlayer1Controller->buttonPressed & (A_BUTTON | START_BUTTON)) {
->>>>>>> Decompetition-1-Multiple-Marios/master
+            if (gPlayer1Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
                 level_set_transition(0, NULL);
                 play_sound(SOUND_MENU_PAUSE_CLOSE, gGlobalSoundSource);
                 gDialogBoxState = DIALOG_STATE_OPENING;
@@ -2211,11 +2203,7 @@ s32 render_pause_courses_and_castle(void) { // =================================
             render_pause_castle_menu_box(160, 143);
             render_pause_castle_main_strings(104, 60);
 
-<<<<<<< HEAD
-            if (gPlayer3Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
-=======
-            if (gPlayer1Controller->buttonPressed & (A_BUTTON | START_BUTTON)) {
->>>>>>> Decompetition-1-Multiple-Marios/master
+            if (gPlayer1Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
                 level_set_transition(0, NULL);
                 play_sound(SOUND_MENU_PAUSE_CLOSE, gGlobalSoundSource);
                 gMenuMode = MENU_MODE_NONE;
@@ -2237,7 +2225,7 @@ s32 render_pause_courses_and_castle(void) { // =================================
 #endif
             render_pause_camera_options(74, 93, gDialogLineNum);
 
-            if (gPlayer3Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
+            if (gPlayer1Controller->buttonPressed & (START_BUTTON | Z_TRIG)) {
                 level_set_transition(0, NULL);
                 play_sound(SOUND_MENU_PAUSE_CLOSE, gGlobalSoundSource);
                 gDialogBoxState = DIALOG_STATE_OPENING;
