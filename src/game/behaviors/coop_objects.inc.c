@@ -20,7 +20,7 @@ struct ObjectHitbox sDoubleCherryHitbox = {
 void bhv_coop_double_cherry(void) {
     switch(o->oAction) {
         case 0:
-        obj_set_hitbox(o, &sDoubleCherryHitbox);
+            obj_set_hitbox(o, &sDoubleCherryHitbox);
             o->oAction = 1;
             break;
         case 1:

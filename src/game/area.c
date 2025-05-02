@@ -395,7 +395,9 @@ void play_transition_after_delay(s16 transType, s16 time, u8 red, u8 green, u8 b
 
 void render_game(void) {
     if (((gMarioState->action & ACT_GROUP_MASK) != ACT_GROUP_CUTSCENE) && (gPlayer1Controller->buttonPressed & L_TRIG)) {
-        coop_give_control_to_next();
+        if (sCurrPlayMode != PLAY_MODE_PAUSED) {
+            coop_give_control_to_next();
+        }
     }
 
     #ifdef COOP_DEBUG_SPAWN_MARIO_WITH_DDOWN

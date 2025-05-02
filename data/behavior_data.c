@@ -3784,10 +3784,10 @@ const BehaviorScript bhvMessagePanel[] = {
     SET_HITBOX(/*Radius*/ 150, /*Height*/ 200),
     SET_INT(oWoodenPostTotalMarioAngle, 0),
     CALL_NATIVE(bhv_init_room),
-    CALL_NATIVE(load_object_static_model),
     BEGIN_LOOP(),
         SET_INT(oIntangibleTimer, 0),
         SET_INT(oInteractStatus, INT_STATUS_NONE),
+        CALL_NATIVE(load_object_collision_model),
     END_LOOP(),
 };
 
@@ -6210,7 +6210,7 @@ const BehaviorScript bhvQuagsire[] = {
 
 const BehaviorScript bhvStuffwell[] = {
     BEGIN(OBJ_LIST_GENACTOR),
-    OR_INT(oFlags, (OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO | OBJ_FLAG_COMPUTE_DIST_TO_MARIO | OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE)),
     LOAD_ANIMATIONS(oAnimations, Stuffwell_anims),
     CALL_NATIVE(bhv_Stuffwell_init),
     SET_HOME(),
@@ -6281,6 +6281,7 @@ const BehaviorScript bhvRaisePlatform[] = {
 const BehaviorScript bhvDoubleCherry[] = {
     BEGIN(OBJ_LIST_SURFACE), // Not a mistake, object order shenanigans to get rid of a camera bug
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
+    BEGIN_LOOP(),
         CALL_NATIVE(bhv_coop_double_cherry),
     END_LOOP(),
 };

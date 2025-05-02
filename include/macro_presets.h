@@ -398,9 +398,10 @@ struct MacroPreset MacroObjectPresets[] = {
     {bhvBomb, MODEL_BLACK_BOBOMB, 0}, // macro_bomb
     {bhvStarStatue, MODEL_STAR_STATUE, 0}, //macro_star_statue
     {bhvQuagsire, MODEL_QUAGSIRE, 0}, //macro_quagsire
-    {bhvStuffwell, MODEL_STUFFWELL, 0}, //macro_quagsire
+    {bhvStuffwell, MODEL_STUFFWELL, 0}, //macro_stuffwell
     {bhvPowerFlowers, MODEL_POWER_FLOWERS, 0}, //macro_flowers
     {bhvCosmicMario, MODEL_COSMIC_MARIO, 0}, //macro_cosmic_mario
+    {bhvDoubleCherry, MODEL_DOUBLE_CHERRY, 0}, //macro_double_cherry
     };
 
 #endif // MACRO_PRESETS_H

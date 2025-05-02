@@ -445,7 +445,20 @@ s32 act_enter_pipe(struct MarioState *m) {
         }
 
         if (m->actionState >= 25) {
-            set_mario_action(m, ACT_DISAPPEARED, m->actionArg);
+            if (m->actionArg != 0) {
+                set_mario_action(m, ACT_DISAPPEARED, m->actionArg);
+            } else {
+                m->pos[0] = m->usedObj->oObjF4->oPosX;
+                m->pos[1] = m->usedObj->oObjF4->oPosY+160;
+                m->pos[2] = m->usedObj->oObjF4->oPosZ;
+
+                m->marioObj->header.gfx.pos[0] = m->usedObj->oObjF4->oPosX;
+                m->marioObj->header.gfx.pos[1] = m->usedObj->oObjF4->oPosY;
+                m->marioObj->header.gfx.pos[2] = m->usedObj->oObjF4->oPosZ;
+
+                set_mario_action(m, ACT_EXIT_PIPE, 0);
+                return FALSE;
+            }
         }
         m->actionState += 1;
     } else {
@@ -464,6 +477,17 @@ s32 act_enter_pipe(struct MarioState *m) {
                 if ((m->actionArg & 0xFFFF) == 0) {
                     level_trigger_warp(m, m->actionArg >> 16);
                 }
+            } else {
+                m->pos[0] = m->usedObj->oObjF4->oPosX;
+                m->pos[1] = m->usedObj->oObjF4->oPosY+160;
+                m->pos[2] = m->usedObj->oObjF4->oPosZ;
+
+                m->marioObj->header.gfx.pos[0] = m->usedObj->oObjF4->oPosX;
+                m->marioObj->header.gfx.pos[1] = m->usedObj->oObjF4->oPosY;
+                m->marioObj->header.gfx.pos[2] = m->usedObj->oObjF4->oPosZ;
+
+                set_mario_action(m, ACT_EXIT_PIPE, 0);
+                return FALSE;
             }
         }
         m->actionState += 1;
@@ -490,13 +514,15 @@ s32 act_exit_pipe(struct MarioState *m) {
         play_sound(SOUND_MENU_ENTER_PIPE, m->marioObj->header.gfx.cameraToObject);
         if (m->actionState == 1) {
             m->pos[1] += 150;
+            m->marioObj->header.gfx.pos[1] = m->pos[1] - 350;
+        } else {
+            m->marioObj->header.gfx.pos[1] = m->pos[1] - 250;
         }
-        m->marioObj->header.gfx.pos[1] = m->pos[1] - 250;
     } else if (m->actionTimer < (timer_delay + 20)) {
         m->marioObj->header.gfx.pos[1] += 10;
     }
 
-    if (m->actionState == 0) {
+    if (m->actionState != 1) {
         if (m->actionTimer == 20) {
             set_mario_action(m, ACT_IDLE, m->actionArg);
         }
@@ -786,11 +812,14 @@ s32 act_fall_after_star_grab(struct MarioState *m) {
     return FALSE;
 }
 
-s32 common_death_handler(struct MarioState *m, s32 animation, s32 frameToDeathWarp) {
+s32 common_death_handler(struct MarioState *m, s32 animation, s32 frameToDeathWarp) { // ANCHOR_POINT
     s32 animFrame = set_mario_animation(m, animation);
-    if (animFrame == frameToDeathWarp) {
+    m->actionTimer += 1;
+
+    if (!coop_delete_mario(m)) {
         level_trigger_warp(m, WARP_OP_DEATH);
     }
+    
     m->marioBodyState->eyeState = MARIO_EYES_DEAD;
     stop_and_set_height_to_floor(m);
 #ifdef PREVENT_DEATH_LOOP
@@ -1572,7 +1601,7 @@ s32 act_teleport_fade_in(struct MarioState *m) {
 s32 act_shocked(struct MarioState *m) {
     play_sound_if_no_flag(m, SOUND_MARIO_WAAAOOOW, MARIO_ACTION_SOUND_PLAYED);
     play_sound(SOUND_MOVING_SHOCKED, m->marioObj->header.gfx.cameraToObject);
-    set_camera_shake_from_hit(SHAKE_SHOCK);
+    set_camera_shake_from_hit(m, SHAKE_SHOCK);
 
     if (set_mario_animation(m, MARIO_ANIM_SHOCKED) == 0) {
         m->actionTimer++;

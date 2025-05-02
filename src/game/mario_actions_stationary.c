@@ -1042,7 +1042,7 @@ s32 act_first_person(struct MarioState *m) {
     } else if (!(m->input & INPUT_FIRST_PERSON) || exit) {
         raise_background_noise(2);
         // Go back to the last camera mode
-        set_camera_mode(m->area->camera, -1, 1);
+        set_camera_mode(m->area->camera, CAMERA_MODE_8_DIRECTIONS, 1);
         return set_mario_action(m, ACT_IDLE, 0);
     }
 

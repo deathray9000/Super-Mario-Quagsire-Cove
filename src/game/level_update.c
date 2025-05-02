@@ -447,9 +447,9 @@ void init_mario_after_warp(void) {
         }
 #endif
 #ifndef DISABLE_EXIT_COURSE
-       if (sWarpDest.arg == WARP_FLAG_EXIT_COURSE) {
-            play_sound(SOUND_MENU_MARIO_CASTLE_WARP, gGlobalSoundSource);
-        }
+    //    if (sWarpDest.arg == WARP_FLAG_EXIT_COURSE) {
+    //         play_sound(SOUND_MENU_MARIO_CASTLE_WARP, gGlobalSoundSource);
+    //     }
 #endif
     }
 #ifdef PUPPYPRINT_DEBUG
@@ -757,12 +757,12 @@ void initiate_painting_warp(void) {
 s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
     s32 fadeMusic = TRUE;
 
-    if (warpOp == WARP_OP_DEATH) {
-        // I think i could && with short circut eval but just to be safe I won't, gcc be like pmo idgaf
-        if (coop_delete_mario(m)) {
-            return 0;
-        }
-    }
+    // if (warpOp == WARP_OP_DEATH) {
+    //     // I think i could && with short circut eval but just to be safe I won't, gcc be like pmo idgaf
+    //     if (coop_delete_mario(m)) {
+    //         return 0;
+    //     }
+    // }
 
     if (sDelayedWarpOp == WARP_OP_NONE) {
         m->invincTimer = -1;
@@ -1431,6 +1431,7 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     sWarpCheckpointActive = FALSE;
     gCurrLevelNum = levelNum;
     gCurrCourseNum = gLevelToCourseNumTable[levelNum - 1];
+	if (gCurrLevelNum == LEVEL_CCM) return 0;
     if (gCurrLevelNum == LEVEL_EXAMPLE) return 0;
 	if (TRUE) return 0; // permanatly deactivates act select, remove after competition
 	

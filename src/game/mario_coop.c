@@ -83,11 +83,13 @@ void coop_give_control_to_next(void) {
 Deletes the Mario
 */
 int coop_delete_mario(struct MarioState * m) {
-    if (m->marioObj == NULL || m->isDead) {return TRUE;} // Already deleted
+    //if (m->marioObj == NULL || m->isDead) {return TRUE;} // Already deleted
+    if (m->marioObj == NULL) {return TRUE;} // Already deleted
 
     if (m != gMarioState) {
         // marioObj is safely unplugged from MarioState when object is unloaded in unload_deactivated_objects_in_list() in object_list_processor.c
         obj_mark_for_deletion(m->marioObj);
+        m->isDead = FALSE;
         gCoopActiveMarios--;
         if (IS_CONTROLLABLE(m->controlMode)) {
             gCoopActiveControllableMarios --;

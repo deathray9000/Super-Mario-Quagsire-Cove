@@ -533,7 +533,7 @@ void bounce_off_object(struct MarioState *m, struct Object *obj, f32 velY) {
 
 void hit_object_from_below(struct MarioState *m, UNUSED struct Object *obj) {
     m->vel[1] = 0.0f;
-    set_camera_shake_from_hit(SHAKE_HIT_FROM_BELOW);
+    set_camera_shake_from_hit(m, SHAKE_HIT_FROM_BELOW);
 }
 
 UNUSED static u32 unused_determine_knockback_action(struct MarioState *m) {
@@ -666,7 +666,7 @@ void bounce_back_from_attack(struct MarioState *m, u32 interaction) {
             mario_set_forward_vel(m, -16.0f);
         }
 
-        set_camera_shake_from_hit(SHAKE_ATTACK);
+        set_camera_shake_from_hit(m, SHAKE_ATTACK);
         m->particleFlags |= PARTICLE_TRIANGLE;
     }
 
@@ -709,7 +709,7 @@ u32 take_damage_from_interact_object(struct MarioState *m) {
 #if ENABLE_RUMBLE
     queue_rumble_data(5, 80);
 #endif
-    set_camera_shake_from_hit(shake);
+    set_camera_shake_from_hit(m, shake);
 
     return damage;
 }
@@ -976,16 +976,28 @@ u32 interact_warp(struct MarioState *m, UNUSED u32 interactType, struct Object *
         }
     } else if (obj->behavior == segmented_to_virtual(bhvOGpipe)) { 
         if (GET_BPARAM3(obj->oBehParams) == 0) {
-            m->interactObj       = obj;
-            m->usedObj           = obj;
-            obj->oInteractStatus = INT_STATUS_INTERACTED;
-
             if (m->action == ACT_CROUCHING || m->action == ACT_GROUND_POUND_LAND) {
+                m->interactObj       = obj;
+                m->usedObj           = obj;
+                obj->oInteractStatus = INT_STATUS_INTERACTED;
+
                 m->marioObj->header.gfx.pos[0] = obj->oPosX;
                 m->marioObj->header.gfx.pos[2] = obj->oPosZ;
                 m->actionTimer = 0;
 
                 return set_mario_action(m, ACT_ENTER_PIPE, (WARP_OP_WARP_OBJECT << 16) + 2);
+            }
+        } else if (GET_BPARAM3(obj->oBehParams) == 4) {
+            if (m->action == ACT_CROUCHING || m->action == ACT_GROUND_POUND_LAND) {
+                m->interactObj       = obj;
+                m->usedObj           = obj;
+                obj->oInteractStatus = INT_STATUS_INTERACTED;
+
+                m->marioObj->header.gfx.pos[0] = obj->oPosX;
+                m->marioObj->header.gfx.pos[2] = obj->oPosZ;
+                m->actionTimer = 0;
+                
+                return set_mario_action(m, ACT_ENTER_PIPE, 0);
             }
         }
     } else {
@@ -1871,7 +1883,6 @@ u32 check_read_sign(struct MarioState *m, struct Object *obj) {
         if (m->pos[1] >= obj->oPosY + 125) {
             spawn_object(obj, MODEL_BROKEN_SIGNPOST, bhvBrokenSign);
             obj_mark_for_deletion(obj);
-            obj->oIntangibleTimer = -1;
         }
     }
 
@@ -2186,10 +2197,10 @@ void mario_handle_special_floors(struct MarioState *m) {
     if (m->floor != NULL) {
         s32 floorType = m->floor->type;
         
-        if (floorType == SURFACE_DEATH_PLANE && m->pos[1] < m->floorHeight + 2048.0f) {
-            m->isDead = TRUE;
-            save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
-        }
+        // if (floorType == SURFACE_DEATH_PLANE && m->pos[1] < m->floorHeight + 2048.0f) {
+        //     m->isDead = TRUE;
+        //     save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
+        // }
 
         switch (floorType) {
             case SURFACE_DEATH_PLANE:

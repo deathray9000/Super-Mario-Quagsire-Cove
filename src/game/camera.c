@@ -76,7 +76,7 @@
  */
 
 #ifdef REONUCAM
-struct ReonucamState gReonucamState = { 2, FALSE, FALSE, FALSE, 0, 0, };
+struct ReonucamState gReonucamState = { 2, FALSE, FALSE, FALSE};
 #endif
 
 // BSS
@@ -479,7 +479,11 @@ f32 set_camera_speed(void) {
 /**
  * Starts a camera shake triggered by an interaction
  */
-void set_camera_shake_from_hit(s16 shake) {
+void set_camera_shake_from_hit(struct MarioState * m, s16 shake) {
+    if (m!=gMarioState) {
+        return;
+    }
+
     switch (shake) {
         // Makes the camera stop for a bit
         case SHAKE_ATTACK:
@@ -2780,8 +2784,8 @@ void move_into_c_up(struct Camera *c) {
     vec3f_add(c->focus, sMarioCamState->pos);
     vec3f_set_dist_and_angle(c->focus, c->pos, dist, pitch, yaw);
 
-    sMarioCamState->headRotation[0] = 0;
-    sMarioCamState->headRotation[1] = 0;
+    sMarioCamState->headRotation[0] = sCUpCameraPitch * 3 / 4;
+    sMarioCamState->headRotation[1] = sModeOffsetYaw * 3 / 4;
 
     // Finished zooming in
     if (++sModeInfo.frame == sModeInfo.max) {
@@ -2915,8 +2919,12 @@ void transition_to_camera_mode(struct Camera *c, s16 newMode, s16 numFrames) {
  * @param mode the mode to change to, or -1 to switch to the previous mode
  * @param frames number of frames the transition should last, only used when entering C_UP
  */
-void set_camera_mode(struct Camera *c, s16 mode, s16 frames) {
-    return;
+void set_camera_mode(struct Camera *c, s16 mode, s16 frames) { 
+    //return;
+
+    if (mode == -1 && sModeInfo.lastMode == CAMERA_MODE_C_UP) {
+        return;
+    }
     struct LinearTransitionPoint *start = &sModeInfo.transitionStart;
     struct LinearTransitionPoint *end = &sModeInfo.transitionEnd;
 
@@ -2930,8 +2938,11 @@ void set_camera_mode(struct Camera *c, s16 mode, s16 frames) {
         if (mode == CAMERA_MODE_NONE) {
             mode = CAMERA_MODE_CLOSE;
         }
-        sCUpCameraPitch = 0;
-        sModeOffsetYaw = 0;
+
+        if (mode != CAMERA_MODE_C_UP) {
+            sCUpCameraPitch = 0;
+            sModeOffsetYaw = 0;
+        }
         sLakituDist = 0;
         sLakituPitch = 0;
         sAreaYawChange = 0;
@@ -2953,10 +2964,11 @@ void set_camera_mode(struct Camera *c, s16 mode, s16 frames) {
 #ifndef ENABLE_VANILLA_CAM_PROCESSING
         if (mode == CAMERA_MODE_8_DIRECTIONS) {
             // Helps transition from any camera mode to 8dir
-#ifdef REONUCAM
-            s8DirModeBaseYaw = 0;
+            s8DirModeYawOffset = 0;
+#ifdef REONUCAM            
+            s8DirModeBaseYaw = gMarioState->faceAngle[1]-0x8000;
+            gMarioState->area->camera->yaw = s8DirModeBaseYaw;
 #endif
-            s8DirModeYawOffset = snap_to_45_degrees(c->yaw);
         }
 #endif
 
@@ -3044,7 +3056,7 @@ void update_lakitu(struct Camera *c) {
         shake_camera_handheld(gLakituState.pos, gLakituState.focus);
 
         if (sMarioCamState->action == ACT_DIVE && gLakituState.lastFrameAction != ACT_DIVE) {
-            set_camera_shake_from_hit(SHAKE_HIT_FROM_BELOW);
+            set_camera_shake_from_hit(gMarioState, SHAKE_HIT_FROM_BELOW);
         }
 
         gLakituState.roll += sHandheldShakeRoll;
@@ -3078,7 +3090,7 @@ void update_lakitu(struct Camera *c) {
 void update_cam_angle_to_mario(void) {
     s8DirModeBaseYaw = atan2s(gMarioObject->oPosZ - gLakituState.curPos[2], gMarioObject->oPosX - gLakituState.curPos[0]);
     s8DirModeBaseYaw += DEGREES(180);
-    s8DirModeYawOffset = snap_to_45_degrees(s8DirModeYawOffset);
+    //s8DirModeBaseYaw = snap_to_45_degrees(s8DirModeBaseYaw);
 }
 
 

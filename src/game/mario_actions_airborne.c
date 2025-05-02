@@ -68,7 +68,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
 #if ENABLE_RUMBLE
                 queue_rumble_data(5, 80);
 #endif
-                set_camera_shake_from_hit(SHAKE_FALL_DAMAGE);
+                set_camera_shake_from_hit(m, SHAKE_FALL_DAMAGE);
                 play_sound(SOUND_MARIO_ATTACKED, m->marioObj->header.gfx.cameraToObject);
                 return drop_and_set_mario_action(m, hardFallAction, 0);
             } 
@@ -90,7 +90,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
 #if ENABLE_RUMBLE
                 queue_rumble_data(5, 80);
 #endif
-                set_camera_shake_from_hit(SHAKE_FALL_DAMAGE);
+                set_camera_shake_from_hit(m, SHAKE_FALL_DAMAGE);
                 play_sound(SOUND_MARIO_ATTACKED, m->marioObj->header.gfx.cameraToObject);
                 return drop_and_set_mario_action(m, hardFallAction, 4);
             } else if (fallHeight > damageHeight && !mario_floor_is_slippery(m)) {
@@ -99,7 +99,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
 #if ENABLE_RUMBLE
                 queue_rumble_data(5, 80);
 #endif
-                set_camera_shake_from_hit(SHAKE_FALL_DAMAGE);
+                set_camera_shake_from_hit(m, SHAKE_FALL_DAMAGE);
                 play_sound(SOUND_MARIO_ATTACKED, m->marioObj->header.gfx.cameraToObject);
             }
         }
@@ -1055,7 +1055,7 @@ s32 act_ground_pound(struct MarioState *m) {
                     set_mario_action(m, ACT_GROUND_POUND_LAND, 0);
                 }
             }
-            set_camera_shake_from_hit(SHAKE_GROUND_POUND);
+            set_camera_shake_from_hit(m, SHAKE_GROUND_POUND);
         }
 #ifndef DISABLE_GROUNDPOUND_BONK
         else if (stepResult == AIR_STEP_HIT_WALL) {

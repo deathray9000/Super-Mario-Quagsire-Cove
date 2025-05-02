@@ -1,4 +1,17 @@
-// og_pipe.inc.c
+// og_pipe.inc.c // ogpipe.inc.c
+
+// Bparam behavior
+// Bparam 1 = color (0 = green, 1 = red, 2 = blue, 3 = gold, 4 = SMW green)
+// Bparam 2 = warp ID
+// Bparam 4 = required star ID for hidden pipes to spawn and become normal
+// Bparam 3 = Pipe behavior:
+//    0 = normal (differnet level transition), 
+//    1 = disappearing (pipe is hidden unless warped to, after which it spawns mario and disappears again), 
+//    2 = hidden (pipe is hidden until a specific star is collected, at which point it becomes a normal pipe), 
+//    3 = mario start override (disappearing pipe, but with logic for handling both a hardcoded mario spawn and a standard warp), 
+//    4 = 3D transition (will instantly teleport mario to a 3D warp pipe of the same Bparam without changing level or area)
+//    5 = 2D transition (will instantly teleport mario to a 2D warp pipe of the same Bparam without changing level or area)
+
 
 static struct ObjectHitbox sPipe = {
     /* interactType:      */ INTERACT_WARP,
@@ -12,12 +25,31 @@ static struct ObjectHitbox sPipe = {
     /* hurtboxHeight:     */ 140,
 };
 
+static void find_nearest_mario() {
+    f32 sqrLateralDist = 99999999999999.0f;
+    Vec3f dist;
+    for (int i = 0; i < COOP_MARIO_STATES_MAX; i++) {
+        if (gMarioStates[i].marioObj == NULL) {continue;}
+
+        vec3_diff(dist, &o->oPosVec, gMarioStates[i].pos);
+        f32 compareSqrLatDist = sqr(dist[0]) + sqr(dist[2]) + sqr(dist[1]);
+        if (sqrLateralDist > compareSqrLatDist) {
+            sqrLateralDist = compareSqrLatDist;
+            o->oF8 = i;
+        }
+    }
+
+    o->oDistanceToMario = sqrtf(sqrLateralDist);
+}
+
 void bhv_og_pipe_init(void) {
+    find_nearest_mario();
     obj_set_hitbox(o, &sPipe);
     o->oAnimState = GET_BPARAM1(o->oBehParams);
     o->oHomeX = o->oPosX;
     o->oHomeY = o->oPosY;
     o->oHomeZ = o->oPosZ;
+    f32 dist;
 
     if (GET_BPARAM3(o->oBehParams) == 1) { // disappearing pipe
         o->oAction = 1;
@@ -48,6 +80,14 @@ void bhv_og_pipe_init(void) {
             }
         }
     }
+
+    if (GET_BPARAM3(o->oBehParams) == 4) { // override code for initally spawning from a pipe after selecting save file
+        o->oObjF4 = cur_obj_find_nearest_twin_object(&dist);
+
+        if (o->oObjF4 == NULL) { // in the event that no twin was found, just send mario back to the pipe he entered
+            o->oObjF4 == o;
+        }
+    }
 };
 
 static void dissapearing_pipe(void) {
@@ -59,7 +99,6 @@ static void dissapearing_pipe(void) {
     } 
     
     if (o->oAction == 1) {
-        o->oDistanceToMario = dist_between_objects(o, gMarioObject);
         if (gMarioState->action == ACT_EXIT_PIPE && o->oDistanceToMario <= 100) {
             o->oAction = 2;
             gMarioState->actionState = 1;
@@ -104,6 +143,8 @@ static void hidden_pipe(void) {
 }
 
 void bhv_og_pipe_loop(void) {
+    find_nearest_mario();
+
     if (GET_BPARAM3(o->oBehParams) == 1) {
         dissapearing_pipe();
     } else if (GET_BPARAM3(o->oBehParams) == 2) {
@@ -112,11 +153,11 @@ void bhv_og_pipe_loop(void) {
 
     o->oInteractStatus = 0;
 
-    // warp to end picture
     if (GET_BPARAM2(o->oBehParams) == 0xFF && gMarioState->action == ACT_ENTER_PIPE && dist_between_objects(o, gMarioObject) <= 200) {
         start_cutscene(gCamera, CUTSCENE_QUICKSAND_DEATH);
         set_fov_function(CAM_FOV_SET_45);
         level_trigger_warp(gMarioState, WARP_OP_CREDITS_END);
         set_background_music(0, SEQ_EVENT_CUTSCENE_CREDITS, 0);
     }
+    
 };

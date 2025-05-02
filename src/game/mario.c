@@ -695,9 +695,10 @@ void update_mario_sound_and_camera(struct MarioState *m) {
     u32 action = m->action;
     s32 camPreset = m->area->camera->mode;
 
-    if (action == ACT_FIRST_PERSON) {
+    if (action == ACT_FIRST_PERSON && m == gMarioState) {
         raise_background_noise(2);
         gCameraMovementFlags &= ~CAM_MOVE_C_UP_MODE;
+        
         // Go back to the last camera mode
         set_camera_mode(m->area->camera, -1, 1);
     } else if (action == ACT_SLEEPING) {
@@ -1371,8 +1372,8 @@ void update_mario_inputs(struct MarioState *m) {
 #endif
     if (gCameraMovementFlags & CAM_MOVE_C_UP_MODE) {
         if (m->action & ACT_FLAG_ALLOW_FIRST_PERSON) {
-            //m->input |= INPUT_FIRST_PERSON;
-        } else {
+            m->input |= INPUT_FIRST_PERSON; 
+        } else if (m == gMarioState) {
             gCameraMovementFlags &= ~CAM_MOVE_C_UP_MODE;
         }
     }

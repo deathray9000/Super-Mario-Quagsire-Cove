@@ -31,6 +31,8 @@ void bhv_Stuffwell_loop(void) {
     f32 waterLevel = find_water_level(o->oPosX, o->oPosZ);
     cur_obj_update_floor_and_walls();
 
+    o->oAngleToMario = obj_angle_to_object(o, gMarioObject);
+
     if (o->oPosY < waterLevel && o->oF8 == 0) {
         o->oF8 = 1;
         o->oTimer = 0;
@@ -99,6 +101,7 @@ void bhv_Stuffwell_loop(void) {
         
     cur_obj_move_standard(-78);
 
+    o->oDistanceToMario = dist_between_objects(o, gMarioObject);
     if (o->oDistanceToMario > max_distance || (o->oFloorType == SURFACE_DEATH_PLANE && o->oPosY < 2048.0f + o->oFloorHeight) || o->oF4 >= 5) {
         if (gMarioState->floorHeight == gMarioState->pos[1] || gMarioState->pos[1] < gMarioState->waterLevel) {
             o->oPosY = gMarioState->pos[1];
