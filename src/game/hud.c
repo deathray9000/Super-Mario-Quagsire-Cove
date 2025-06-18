@@ -715,6 +715,9 @@ void render_hud_camera_status(void) {
         case CAM_STATUS_FIXED:
             render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_FIXED]);
             break;
+        case CAM_STATUS_2D:
+            render_hud_tex_lut(x + 16, y, (*cameraLUT)[GLYPH_CAM_2D]);
+            break;
     }
 
     switch (sCameraHUD.status & CAM_STATUS_C_MODE_GROUP) {

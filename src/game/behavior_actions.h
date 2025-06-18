@@ -578,7 +578,27 @@ void bhv_cosmic_manager_loop(void);
 void bhv_cosmic_manager_init(void);
 void bhv_cosmic_mario_loop(void);
 void bhv_cosmic_mario_init(void);
-
+void bhv_smw_mario(void);
+void bhv_smw_mario_init(void);
+void bhv_smw_goomba(void);
+void bhv_smw_goomba_init(void);
+void bhv_smw_ninji(void);
+void bhv_smw_ninji_init(void);
+void bhv_smw_particle_kick(void);
+void bhv_smw_particle_poof(void);
+void bhv_smw_particle_star(void);
+void bhv_smw_message_block_init(void);
+void bhv_smw_message_block(void);
+void bhv_smw_coin(void);
+void bhv_smw_coin_init(void);
+void bhv_smw_turn_block(void);
+void bhv_smw_turn_block_spin(void);
+void bhv_smw_turn_block_init(void);
+void bhv_smw_particle_shatter(void);
+void bhv_smw_on_off_switch(void);
+void bhv_smw_on_off_switch_init(void);
+void bhv_on_off_block_init(void);
+void bhv_on_off_block(void);
 
 // checkpoint_flag
 Gfx *geo_flag_wave(s32 UNUSED callContext, struct GraphNode *node, UNUSED Mat4 *mtx);

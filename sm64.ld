@@ -481,6 +481,7 @@ SECTIONS
    YAY0_SEG(bitfs_skybox,       0x0A000000)
    YAY0_SEG(wdw_skybox,         0x0A000000)
    YAY0_SEG(cloud_floor_skybox, 0x0A000000)
+   YAY0_SEG(ocean_night_skybox,       0x0A000000)
    YAY0_SEG(ssl_skybox,         0x0A000000)
    YAY0_SEG(bbh_skybox,         0x0A000000)
    YAY0_SEG(bidw_skybox,        0x0A000000)

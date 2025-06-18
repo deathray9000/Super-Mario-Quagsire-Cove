@@ -1803,6 +1803,7 @@ const BehaviorScript bhvBreakableBox[] = {
 const BehaviorScript bhvPushableMetalBox[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    DROP_TO_FLOOR(),
     LOAD_COLLISION_DATA(metal_box_seg8_collision_08024C28),
     SET_FLOAT(oCollisionDistance, 500),
     SET_HOME(),
@@ -6283,5 +6284,133 @@ const BehaviorScript bhvDoubleCherry[] = {
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_coop_double_cherry),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWMario[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    CALL_NATIVE(bhv_smw_mario_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_mario),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWgoomba[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 0, /*Unused*/ 0, 0),
+    CALL_NATIVE(bhv_smw_goomba_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_goomba),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWParticlekick[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 0, /*Unused*/ 0, 0),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_particle_kick),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWParticlepoof[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 0, /*Unused*/ 0, 0),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_particle_poof),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWParticlestar[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 0, /*Unused*/ 0, 0),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_particle_star),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWninji[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_ANGLE_TO_MARIO),
+    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ -400, /*Bounciness*/ 0, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 0, /*Unused*/ 0, 0),
+    CALL_NATIVE(bhv_smw_ninji_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_ninji),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWMessageBlock[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(smw_blocks_collision),
+    CALL_NATIVE(bhv_smw_message_block_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_message_block),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
+
+
+const BehaviorScript bhvSMWcoin[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
+    CALL_NATIVE(bhv_smw_coin_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_coin),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWTurnBlock[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(smw_blocks_collision),
+    CALL_NATIVE(bhv_smw_turn_block_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_turn_block),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWTurnBlockSpin[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    CALL_NATIVE(bhv_smw_turn_block_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_turn_block_spin),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWParticleShatter[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    SET_OBJ_PHYSICS(/*Wall hitbox radius*/ 40, /*Gravity*/ -400, /*Bounciness*/ -50, /*Drag strength*/ 1000, /*Friction*/ 1000, /*Buoyancy*/ 0, /*Unused*/ 0, 0),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_particle_shatter),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSMWOnOffSwitch[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    LOAD_COLLISION_DATA(on_off_switch_collision),
+    CALL_NATIVE(bhv_smw_on_off_switch_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_smw_on_off_switch),
+        CALL_NATIVE(load_object_collision_model),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvOnOffBlock[] = {
+    BEGIN(OBJ_LIST_SURFACE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_ACTIVE_FROM_AFAR | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
+    SET_FLOAT(oDrawingDistance, 32700),
+    LOAD_COLLISION_DATA(note_block_collision),
+    CALL_NATIVE(bhv_on_off_block_init),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_on_off_block),
     END_LOOP(),
 };

@@ -280,11 +280,28 @@ static s32 perform_ground_quarter_step(struct MarioState *m, Vec3f nextPos) {
     s16 i;
     s16 wallDYaw;
     s32 oldWallDYaw;
+    f32 floorHeight = find_floor(nextPos[0], nextPos[1], nextPos[2], &floor);;
 
     resolve_and_return_wall_collisions(nextPos, 30.0f, 24.0f, &lowerWall);
     resolve_and_return_wall_collisions(nextPos, 60.0f, 50.0f, &upperWall);
 
-    f32 floorHeight = find_floor(nextPos[0], nextPos[1], nextPos[2], &floor);
+    if (m->action & ACT_FLAG_2D) {
+        floorHeight = find_floor(nextPos[0] - (40 * sins(m->faceAngle[1])), nextPos[1], nextPos[2] - (40 * coss(m->faceAngle[1])), &floor);
+        struct Surface *floorAlt;
+        f32 floorHeightAlt = find_floor(nextPos[0] + (40 * sins(m->faceAngle[1])), nextPos[1], nextPos[2] + (40 * coss(m->faceAngle[1])), &floorAlt);
+
+        if (floorHeight < floorHeightAlt) {
+            floorHeight = floorHeightAlt;
+            floor = floorAlt;
+        }
+
+        floorHeightAlt = find_floor(nextPos[0], nextPos[1], nextPos[2], &floorAlt);
+
+        if (floorHeight < floorHeightAlt) {
+            floorHeight = floorHeightAlt;
+            floor = floorAlt;
+        }
+    }
     f32 ceilHeight = find_mario_ceil(nextPos, floorHeight, &ceil);
 
     f32 waterLevel = find_water_level(nextPos[0], nextPos[2]);
@@ -357,6 +374,7 @@ s32 perform_ground_step(struct MarioState *m) {
         intendedPos[1] = m->pos[1];
 
         stepResult = perform_ground_quarter_step(m, intendedPos);
+
         if (stepResult == GROUND_STEP_LEFT_GROUND || stepResult == GROUND_STEP_HIT_WALL_STOP_QSTEPS) {
             break;
         }
@@ -400,7 +418,7 @@ struct Surface *check_ledge_grab(struct MarioState *m, struct Surface *prevWall,
 
     ledgePos[0] = nextPos[0] - (wall->normal.x * 60.0f);
     ledgePos[2] = nextPos[2] - (wall->normal.z * 60.0f);
-    ledgePos[1] = find_floor(ledgePos[0], nextPos[1] + 160.0f, ledgePos[2], ledgeFloor);
+    ledgePos[1] = find_floor(ledgePos[0], nextPos[1] + m->marioObj->hitboxHeight, ledgePos[2], ledgeFloor); // #TODO
 
     if (ledgeFloor == NULL
         || (*ledgeFloor) == NULL
@@ -464,10 +482,33 @@ s32 perform_air_quarter_step(struct MarioState *m, Vec3f intendedPos, u32 stepAr
 
     vec3f_copy(nextPos, intendedPos);
 
-    resolve_and_return_wall_collisions(nextPos, 150.0f, 50.0f, &upperWall);
+    if (m->action == ACT_SMW_DUCK || m->action == ACT_SMW_DUCK_JUMP) {
+        resolve_and_return_wall_collisions(nextPos, 70.0f, 50.0f, &upperWall);
+    } else {
+        resolve_and_return_wall_collisions(nextPos, 150.0f, 50.0f, &upperWall);
+    }
+
     resolve_and_return_wall_collisions(nextPos, 30.0f, 50.0f, &lowerWall);
 
-    f32 floorHeight = find_floor(nextPos[0], nextPos[1], nextPos[2], &floor);
+    f32 floorHeight = find_floor(nextPos[0], nextPos[1], nextPos[2], &floor);;
+
+    if (m->action & ACT_FLAG_2D) {
+        floorHeight = find_floor(nextPos[0] - (40 * sins(m->faceAngle[1])), nextPos[1], nextPos[2] - (40 * coss(m->faceAngle[1])), &floor);
+        struct Surface *floorAlt;
+        f32 floorHeightAlt = find_floor(nextPos[0] + (40 * sins(m->faceAngle[1])), nextPos[1], nextPos[2] + (40 * coss(m->faceAngle[1])), &floorAlt);
+
+        if (floorHeight < floorHeightAlt) {
+            floorHeight = floorHeightAlt;
+            floor = floorAlt;
+        }
+
+        floorHeightAlt = find_floor(nextPos[0], nextPos[1], nextPos[2], &floorAlt);
+
+        if (floorHeight < floorHeightAlt) {
+            floorHeight = floorHeightAlt;
+            floor = floorAlt;
+        }
+    }
     f32 ceilHeight = find_mario_ceil(nextPos, floorHeight, &ceil);
 
     f32 waterLevel = find_water_level(nextPos[0], nextPos[2]);
@@ -506,7 +547,7 @@ s32 perform_air_quarter_step(struct MarioState *m, Vec3f intendedPos, u32 stepAr
         return AIR_STEP_LANDED;
     }
 
-    if (nextPos[1] + 160.0f > ceilHeight) {
+    if (nextPos[1] + m->marioObj->hitboxHeight > ceilHeight) { // #TODO
         if (m->vel[1] >= 0.0f) {
             m->vel[1] = 0.0f;
 
@@ -601,7 +642,9 @@ u32 should_strengthen_gravity_for_jump_ascent(struct MarioState *m) {
     }
 
     if (!(m->input & INPUT_A_DOWN) && m->vel[1] > 20.0f) {
-        return (m->action & ACT_FLAG_CONTROL_JUMP_HEIGHT) != 0;
+        if (!(m->action & ACT_FLAG_2D && m->controller->buttonDown & R_TRIG)) {
+            return (m->action & ACT_FLAG_CONTROL_JUMP_HEIGHT) != 0;
+        }
     }
 
     return FALSE;

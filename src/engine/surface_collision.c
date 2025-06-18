@@ -76,7 +76,7 @@ static s32 find_wall_collisions_from_list(struct SurfaceNode *surfaceNode, struc
 
         // Determine if checking for the camera or not.
         if (gCollisionFlags & COLLISION_FLAG_CAMERA) {
-            if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION) continue;
+            if (surf->flags & SURFACE_FLAG_NO_CAM_COLLISION || type == SURFACE_ECHO) continue;
         } else {
             // Ignore camera only surfaces.
             if (type == SURFACE_CAMERA_BOUNDARY) continue;
@@ -87,6 +87,10 @@ static s32 find_wall_collisions_from_list(struct SurfaceNode *surfaceNode, struc
                 if (o->activeFlags & ACTIVE_FLAG_MOVE_THROUGH_GRATE) continue;
                 // If Mario has a vanish cap, pass through the vanish cap wall.
                 if (o == gMarioObject && gMarioState->flags & MARIO_VANISH_CAP) continue;
+            }
+
+            if (type == SURFACE_ECHO) {
+                if (!(o == gMarioObject && gMarioState->flags & MARIO_VANISH_CAP)) continue;
             }
         }
 

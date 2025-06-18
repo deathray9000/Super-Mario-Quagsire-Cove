@@ -13,9 +13,9 @@ static struct ObjectHitbox sFollowBox = {
 };
 
 void bhv_Stuffwell_init(void) {
-    o->oPosX = gMarioState->pos[0] - (200 * sins(gMarioState->faceAngle[1]));
-    o->oPosY = gMarioState->pos[1];
-    o->oPosZ = gMarioState->pos[2] - (200 * coss(gMarioState->faceAngle[1]));
+    o->oPosX = gMarioStates[0].pos[0] - (350 * sins(gMarioStates[0].faceAngle[1]));
+    o->oPosY = gMarioStates[0].pos[1];
+    o->oPosZ = gMarioStates[0].pos[2] - (350 * coss(gMarioStates[0].faceAngle[1]));
 
     o->oGravity = -2.5f;
     o->oFriction = 0.8f;
@@ -31,7 +31,7 @@ void bhv_Stuffwell_loop(void) {
     f32 waterLevel = find_water_level(o->oPosX, o->oPosZ);
     cur_obj_update_floor_and_walls();
 
-    o->oAngleToMario = obj_angle_to_object(o, gMarioObject);
+    o->oAngleToMario = obj_angle_to_object(o, gMarioStates[0].marioObj);
 
     if (o->oPosY < waterLevel && o->oF8 == 0) {
         o->oF8 = 1;
@@ -40,7 +40,7 @@ void bhv_Stuffwell_loop(void) {
         play_sound(SOUND_ACTION_WATER_PLUNGE, o->header.gfx.cameraToObject);
     }
     
-    if (gMarioState->STOR_State == 0) {
+    if (gMarioStates[0].STOR_State == 0) {
         switch (o->oInteractStatus) {
             case 0: 
                 Stuffwell_Normal(waterLevel);
@@ -64,7 +64,7 @@ void bhv_Stuffwell_loop(void) {
         ModelID32 model = MODEL_PROPELLER;
         u8 anim_state = 0;
 
-        switch (gMarioState->STOR_State) {
+        switch (gMarioStates[0].STOR_State) {
             case 1:
                 save_file_set_power_up(gCurrSaveFileNum - 1, 1, -1);
                 break;
@@ -96,17 +96,17 @@ void bhv_Stuffwell_loop(void) {
         Power_up->oF4 = 1;
         Power_up->oAnimState = anim_state;
 
-        gMarioState->STOR_State = 0;
+        gMarioStates[0].STOR_State = 0;
     }
         
     cur_obj_move_standard(-78);
 
-    o->oDistanceToMario = dist_between_objects(o, gMarioObject);
+    o->oDistanceToMario = dist_between_objects(o, gMarioStates[0].marioObj);
     if (o->oDistanceToMario > max_distance || (o->oFloorType == SURFACE_DEATH_PLANE && o->oPosY < 2048.0f + o->oFloorHeight) || o->oF4 >= 5) {
-        if (gMarioState->floorHeight == gMarioState->pos[1] || gMarioState->pos[1] < gMarioState->waterLevel) {
-            o->oPosY = gMarioState->pos[1];
-            o->oPosX = gMarioState->pos[0] - (200 * sins(gMarioState->faceAngle[1]));
-            o->oPosZ = gMarioState->pos[2] - (200 * coss(gMarioState->faceAngle[1]));
+        if (gMarioStates[0].floorHeight == gMarioStates[0].pos[1] || gMarioStates[0].pos[1] < gMarioStates[0].waterLevel) {
+            o->oPosY = gMarioStates[0].pos[1];
+            o->oPosX = gMarioStates[0].pos[0] - (350 * sins(gMarioStates[0].faceAngle[1]));
+            o->oPosZ = gMarioStates[0].pos[2] - (350 * coss(gMarioStates[0].faceAngle[1]));
             o->oVelY = 0;
             o->oSubAction = 0;
             o->oInteractStatus = 0;
@@ -116,9 +116,9 @@ void bhv_Stuffwell_loop(void) {
             o->oF4 = 0;
             o->oF8 = 0;
             spawn_mist_particles();
-            cur_obj_play_sound_2(SOUND_OBJ_BOBOMB_BUDDY_TALK);
+            cur_obj_play_sound_2(SOUND_CUSTOM_STUFFWELL);
             cur_obj_init_animation(0);
-            o->oFaceAngleYaw = obj_angle_to_object(o, gMarioObject);
+            o->oFaceAngleYaw = obj_angle_to_object(o, gMarioStates[0].marioObj);
             o->oMoveAngleYaw = o->oFaceAngleYaw;
         } 
     }
@@ -139,7 +139,7 @@ void Stuffwell_Normal(f32 waterLevel) {
         }
     }
 
-    f32 LateralDistToMario = lateral_dist_between_objects(o, gMarioObject);
+    f32 LateralDistToMario = lateral_dist_between_objects(o, gMarioStates[0].marioObj);
 
     switch (o->oSubAction) {
         case 0:
@@ -147,7 +147,7 @@ void Stuffwell_Normal(f32 waterLevel) {
             o->oFaceAngleYaw = o->oMoveAngleYaw;
 
             if (o->oMoveFlags & OBJ_MOVE_HIT_WALL || o->oMoveFlags & OBJ_MOVE_HIT_EDGE || o->oFloorType == SURFACE_VERY_SLIPPERY || o->oPosY > 50.0f + o->oFloorHeight) {
-                if ((gMarioState->floorHeight == gMarioState->pos[1] && gMarioState->action != ACT_LEDGE_GRAB) || gMarioState->pos[1] <= gMarioState->waterLevel) {
+                if ((gMarioStates[0].floorHeight == gMarioStates[0].pos[1] && gMarioStates[0].action != ACT_LEDGE_GRAB) || gMarioStates[0].pos[1] <= gMarioStates[0].waterLevel) {
                     o->oF4 += 1;
                     o->oSubAction = 1;
                     break;
@@ -175,7 +175,7 @@ void Stuffwell_Normal(f32 waterLevel) {
                 } else {
                     cur_obj_init_animation_with_accel_and_sound(1, (o->oForwardVel / 10.0f));
                 }
-            } else if (LateralDistToMario < 200.0f) {
+            } else if (LateralDistToMario < 350.0f) {
                 o->oForwardVel = 0.0f;
                 cur_obj_init_animation(0);
             }
@@ -185,7 +185,7 @@ void Stuffwell_Normal(f32 waterLevel) {
             o->oMoveAngleYaw = o->oFaceAngleYaw;
             o->oGravity = -2.5f;
             o->oForwardVel = 5 + ((LateralDistToMario) / 30.0f);
-            o->oVelY = sqrtf(5.0f + gMarioState->pos[1] - o->oPosY) + ((LateralDistToMario * 1.25f) / o->oForwardVel) + (10 * (o->oF4 - 1));
+            o->oVelY = sqrtf(5.0f + gMarioStates[0].pos[1] - o->oPosY) + ((LateralDistToMario * 1.25f) / o->oForwardVel) + (10 * (o->oF4 - 1));
             if (o->oVelY < 0) {
                 o->oVelY = ((LateralDistToMario * 1.25f) / o->oForwardVel);
             }
@@ -302,12 +302,12 @@ void Stuffwell_Underwater(f32 waterLevel) {
         return;
     }
 
-    f32 LateralDistToMario = lateral_dist_between_objects(o, gMarioObject);
-    f32 Y_differance = (gMarioState->pos[1] - 20.0f) - o->oPosY;
+    f32 LateralDistToMario = lateral_dist_between_objects(o, gMarioStates[0].marioObj);
+    f32 Y_differance = (gMarioStates[0].pos[1] - 20.0f) - o->oPosY;
 
     if (Y_differance > -6 && Y_differance < 6) {
         o->oVelY = 0;
-        o->oPosY = gMarioState->pos[1] - 20.0f;
+        o->oPosY = gMarioStates[0].pos[1] - 20.0f;
     } else {
         o->oVelY = Y_differance / 8.0f;
         
@@ -335,7 +335,7 @@ void Stuffwell_Underwater(f32 waterLevel) {
         if (o->oForwardVel > 30.0f) {
             o->oForwardVel = 30.0f;
         }
-    } else if (LateralDistToMario < 200.0f) {
+    } else if (LateralDistToMario < 350.0f) {
         o->oForwardVel = 0.0f;
     }
 
@@ -359,7 +359,7 @@ void Stuffwell_Underwater(f32 waterLevel) {
         }
 
         o->oFaceAnglePitch = approach_s16_symmetric(o->oFaceAnglePitch, 0, 0x250);
-        if (gMarioState->floorHeight == gMarioState->pos[1] && gMarioState->action != ACT_LEDGE_GRAB) {
+        if (gMarioStates[0].floorHeight == gMarioStates[0].pos[1] && gMarioStates[0].action != ACT_LEDGE_GRAB) {
             o->oPosY += 10;
             if (o->oPosY >= waterLevel) {
                 o->oPosY += 10;

@@ -345,7 +345,7 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
     }
 
 #ifdef PREVENT_DEATH_LOOP
-    if (m->isDead) {
+    if (m->isDead || m->health < 0x100) {
         m->health = 0x880;
         m->isDead = FALSE;
     }
@@ -657,13 +657,19 @@ void initiate_warp(s16 destLevel, s16 destArea, s16 destWarpNode, s32 warpFlags)
 
     if (gMarioState->isDead) { 
         sWarpDest.type = WARP_TYPE_CHANGE_LEVEL;
-        gMarioState->numCoins -= 10;
-        if (gMarioState->numCoins < 0) {
+        gHudDisplay.coins -= 10; 
+
+        if (gHudDisplay.coins < 0) {
             gMarioState->numCoins = 0; 
             gHudDisplay.coins = 0;
         } else {
-            gHudDisplay.coins -= 10;
+            gMarioState->numCoins = gHudDisplay.coins;
         }
+
+        gMarioStates[0].numCoins = gMarioState->numCoins; // #TODO maybe address this later
+        gMarioStates[1].numCoins = gMarioState->numCoins;
+
+        save_file_set_num_coins(gCurrSaveFileNum - 1, gMarioState->numCoins);
 
         if (gWarpCheckpoint.levelID != NULL) {
             sWarpDest.levelNum = gWarpCheckpoint.levelID;
@@ -799,17 +805,22 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 if (m->numLives == 0) {
                     sDelayedWarpOp = WARP_OP_GAME_OVER;
                 }
-#endif
-                sDelayedWarpTimer = 48;
-                // if (gWarpCheckpoint.courseNum != COURSE_NONE) {
-                //     sSourceWarpNodeId = gWarpCheckpoint.warpNode;
-                // } else {
-                    sSourceWarpNodeId = WARP_NODE_DEATH;
-                //}
+#endif          
+                if (!(m->action & ACT_FLAG_2D)) {
+                    sDelayedWarpTimer = 48;
+                    play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
+                } else {
+                    fadeMusic = FALSE;
+                    sDelayedWarpTimer = 58;
+                }
+            
+                sSourceWarpNodeId = WARP_NODE_DEATH;
                 play_transition(WARP_TRANSITION_FADE_INTO_BOWSER, sDelayedWarpTimer, 0x00, 0x00, 0x00);
-                play_sound(SOUND_MENU_BOWSER_LAUGH, gGlobalSoundSource);
 #ifdef PREVENT_DEATH_LOOP
-                m->isDead = TRUE;
+                gMarioStates[0].health = 0;  // #TODO double kill
+                gMarioStates[0].isDead = TRUE;
+                gMarioStates[1].isDead = TRUE;
+                gMarioStates[1].health = 0;
                 save_file_set_power_up(gCurrSaveFileNum - 1, 0, 0);
 #endif
                 break;
@@ -827,7 +838,11 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                             sSourceWarpNodeId = WARP_NODE_DEATH;
                         }
 #else
-                        sSourceWarpNodeId = WARP_NODE_DEATH;
+                        sSourceWarpNodeId = WARP_NODE_DEATH; 
+                        gMarioStates[0].health = 0; // #TODO double kill
+                        gMarioStates[0].isDead = TRUE;
+                        gMarioStates[1].isDead = TRUE;
+                        gMarioStates[1].health = 0;
 #endif
                     }                    
                 }
@@ -994,6 +1009,8 @@ void update_hud_values(void) {
                 u32 coinSound;
                 if (gMarioState->action & (ACT_FLAG_SWIMMING | ACT_FLAG_METAL_WATER)) {
                     coinSound = SOUND_GENERAL_COIN_WATER;
+                } else if (gMarioState->action & ACT_FLAG_2D) {
+                    coinSound = SOUND_CUSTOM_SMW_COIN;
                 } else {
                     coinSound = SOUND_GENERAL_COIN;
                 }
@@ -1001,6 +1018,9 @@ void update_hud_values(void) {
                 gHudDisplay.coins++;
                 play_sound(coinSound, gMarioState->marioObj->header.gfx.cameraToObject);
             }
+            save_file_set_num_coins(gCurrSaveFileNum - 1, gHudDisplay.coins); 
+        } else if (gHudDisplay.coins > gMarioState->numCoins) {
+            gMarioState->numCoins = gHudDisplay.coins;
         }
 
 #ifdef ENABLE_LIVES
@@ -1015,6 +1035,10 @@ void update_hud_values(void) {
 
         if (gHudDisplay.coins > MAX_NUM_COINS) {
             gHudDisplay.coins = MAX_NUM_COINS;
+        }
+
+        if (gMarioStates[0].numStars > gMarioStates[1].numStars) {
+            gMarioStates[1].numStars = gMarioStates[0].numStars;
         }
 
         gHudDisplay.stars = gMarioState->numStars;
@@ -1132,6 +1156,7 @@ s32 play_mode_paused(void) {
         if (gDebugLevelSelect) {
             fade_into_special_warp(WARP_SPECIAL_LEVEL_SELECT, 1);
         } else {
+            gMarioState->health = 0x880;
             initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, WARP_FLAG_FORCE_LEVEL_CHANGE);
             fade_into_special_warp(WARP_SPECIAL_NONE, 0);
 #ifdef DEATH_ON_EXIT_COURSE
@@ -1435,7 +1460,7 @@ s32 lvl_set_current_level(UNUSED s16 initOrUpdate, s32 levelNum) {
     if (gCurrLevelNum == LEVEL_EXAMPLE) return 0;
 	if (TRUE) return 0; // permanatly deactivates act select, remove after competition
 	
-    if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE || gMarioState->isDead) {
+    if (gCurrDemoInput != NULL || gCurrCreditsEntry != NULL || gCurrCourseNum == COURSE_NONE || gMarioState->isDead || gMarioState->health < 0x100) {
         return FALSE;
     }
 

@@ -8077,11 +8077,152 @@ layer_jump .layer_32B7
 
 
 .channelA_table:
-// Add custom sounds for Channel A here!
+sound_ref .sound_custom_smw_jump
+sound_ref .sound_custom_smw_spin
+sound_ref .sound_custom_smw_kick
+sound_ref .sound_custom_smw_stomp
+sound_ref .sound_custom_smw_hurt
+sound_ref .sound_custom_smw_death
+sound_ref .sound_custom_smw_super_stomp
+sound_ref .sound_custom_smw_message
+sound_ref .sound_custom_stuffwell
+
+ .sound_custom_smw_jump:
+  chan_setbank 0
+  chan_setinstr 14
+  chan_setlayer 0, .layer_19C0
+  chan_end
+
+  .layer_19C0:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_spin:
+  chan_setbank 0
+  chan_setinstr 15
+  chan_setlayer 0, .layer_19D0
+  chan_end
+
+  .layer_19D0:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_kick:
+  chan_setbank 0
+  chan_setinstr 16
+  chan_setlayer 0, .layer_19E0
+  chan_end
+
+  .layer_19E0:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_stomp:
+  chan_setbank 0
+  chan_setinstr 16
+  chan_setlayer 0, .layer_19F0
+  chan_end
+
+  .layer_19F0:
+  layer_note1 41, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_hurt:
+  chan_setbank 0
+  chan_setinstr 17
+  chan_setlayer 0, .layer_1A10
+  chan_end
+
+  .layer_1A10:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_death:
+  chan_setbank 0
+  chan_setinstr 18
+  chan_setlayer 0, .layer_1A20
+  chan_end
+
+  .layer_1A20:
+  layer_note1 39, 0x180, 127
+  layer_end
+
+ .sound_custom_smw_super_stomp:
+  chan_setbank 0
+  chan_setinstr 19
+  chan_setlayer 0, .layer_1A30
+  chan_end
+
+  .layer_1A30:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_message:
+  chan_setbank 0
+  chan_setinstr 21
+  chan_setlayer 0, .layer_1A50
+  chan_end
+
+  .layer_1A50:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_stuffwell:
+  chan_setbank 0
+  chan_setinstr 24
+  chan_setlayer 0, .layer_1A80
+  chan_end
+
+  .layer_1A80:
+  layer_note1 39, 0x3c, 127
+  layer_end
 
 
 .channelB_table:
-// Add custom sounds for Channel B here!
+sound_ref .sound_custom_smw_slam
+sound_ref .sound_custom_smw_coin
+sound_ref .sound_custom_smw_shatter
+sound_ref .sound_custom_smw_switch
+
+ .sound_custom_smw_slam:
+  chan_setbank 0
+  chan_setinstr 20
+  chan_setlayer 0, .layer_1A40
+  chan_end
+
+  .layer_1A40:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_coin:
+  chan_setbank 0
+  chan_setinstr 22
+  chan_setlayer 0, .layer_1A60
+  chan_end
+
+  .layer_1A60:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_shatter:
+  chan_setbank 0
+  chan_setinstr 23
+  chan_setlayer 0, .layer_1A70
+  chan_end
+
+  .layer_1A70:
+  layer_note1 39, 0x3c, 127
+  layer_end
+
+ .sound_custom_smw_switch:
+  chan_setbank 0
+  chan_setinstr 25
+  chan_setlayer 0, .layer_1A90
+  chan_end
+
+  .layer_1A90:
+  layer_note1 39, 0x3c, 127
+  layer_end
 
 
 .channelC_table:

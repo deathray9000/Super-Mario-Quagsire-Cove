@@ -2012,6 +2012,10 @@ ALIGNED8 static const Texture texture_hud_char_arrow_down[] = {
 #include "textures/segment2/segment2.081D0.rgba16.inc.c"
 };
 
+ALIGNED8 static const Texture texture_hud_char_SMW_head[] = {
+#include "textures/segment2/segment2.SMW.rgba16.inc.c"
+    };
+
 // Main HUD print table 0x02008250-0x02008337
 const Texture *const main_hud_lut[] = {
     texture_hud_char_0, texture_hud_char_1, texture_hud_char_2, texture_hud_char_3,
@@ -2250,7 +2254,7 @@ const Texture *const main_credits_font_lut[] = {
 // HUD camera table 0x020087CC-0x020087E3
 const Texture *const main_hud_camera_lut[] = {
     texture_hud_char_camera, texture_hud_char_mario_head, texture_hud_char_lakitu, texture_hud_char_no_camera,
-    texture_hud_char_arrow_up, texture_hud_char_arrow_down,
+    texture_hud_char_arrow_up, texture_hud_char_arrow_down, texture_hud_char_SMW_head,
 };
 
 // If you change the language here, the following Makefile rule also needs to

@@ -23,9 +23,6 @@
 // This is the number of lives Mario starts with after a game over or starting the game for the first time (must be lower than 127).
 #define DEFAULT_NUM_LIVES 5
 
-// This can be 0..127.
-#define MAX_NUM_LIVES   100
-
 // This can be 0..32767.
 #define MAX_NUM_COINS   9999
 

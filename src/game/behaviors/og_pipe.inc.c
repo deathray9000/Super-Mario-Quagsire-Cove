@@ -2,16 +2,15 @@
 
 // Bparam behavior
 // Bparam 1 = color (0 = green, 1 = red, 2 = blue, 3 = gold, 4 = SMW green)
+//          = also, will spawn mario as 3D or 2D based on whether it is an SMW pipe variant or not
 // Bparam 2 = warp ID
-// Bparam 4 = required star ID for hidden pipes to spawn and become normal
 // Bparam 3 = Pipe behavior:
 //    0 = normal (differnet level transition), 
 //    1 = disappearing (pipe is hidden unless warped to, after which it spawns mario and disappears again), 
 //    2 = hidden (pipe is hidden until a specific star is collected, at which point it becomes a normal pipe), 
 //    3 = mario start override (disappearing pipe, but with logic for handling both a hardcoded mario spawn and a standard warp), 
-//    4 = 3D transition (will instantly teleport mario to a 3D warp pipe of the same Bparam without changing level or area)
-//    5 = 2D transition (will instantly teleport mario to a 2D warp pipe of the same Bparam without changing level or area)
-
+//    4 = in level transition (will instantly teleport mario to a warp pipe of the same Bparam 2 and Bparam 3 without changing level or area)
+// Bparam 4 = required star ID for hidden pipes to spawn and become normal
 
 static struct ObjectHitbox sPipe = {
     /* interactType:      */ INTERACT_WARP,
@@ -85,7 +84,7 @@ void bhv_og_pipe_init(void) {
         o->oObjF4 = cur_obj_find_nearest_twin_object(&dist);
 
         if (o->oObjF4 == NULL) { // in the event that no twin was found, just send mario back to the pipe he entered
-            o->oObjF4 == o;
+            o->oObjF4 = o;
         }
     }
 };
@@ -93,9 +92,7 @@ void bhv_og_pipe_init(void) {
 static void dissapearing_pipe(void) {
     if (o->oAction == 0) {
         o->oPosY = o->oHomeY - 150;
-        if (o->oInteractStatus = INT_STATUS_INTERACTED) {
-            o->oAction = 1;
-        }
+        o->oAction = 1;
     } 
     
     if (o->oAction == 1) {
@@ -149,11 +146,11 @@ void bhv_og_pipe_loop(void) {
         dissapearing_pipe();
     } else if (GET_BPARAM3(o->oBehParams) == 2) {
         hidden_pipe();
-    }
+    } 
 
     o->oInteractStatus = 0;
 
-    if (GET_BPARAM2(o->oBehParams) == 0xFF && gMarioState->action == ACT_ENTER_PIPE && dist_between_objects(o, gMarioObject) <= 200) {
+    if (GET_BPARAM2(o->oBehParams) == 0xFF && (gMarioState->action == ACT_ENTER_PIPE || gMarioState->action == ACT_SMW_PIPE) && dist_between_objects(o, gMarioObject) <= 200) {
         start_cutscene(gCamera, CUTSCENE_QUICKSAND_DEATH);
         set_fov_function(CAM_FOV_SET_45);
         level_trigger_warp(gMarioState, WARP_OP_CREDITS_END);

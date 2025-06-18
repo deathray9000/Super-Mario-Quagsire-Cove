@@ -2173,11 +2173,18 @@ s32 cur_obj_update_dialog_with_cutscene(s32 actionArg, s32 dialogFlags, s32 cuts
             } else {
                 o->oDialogResponse++; // treated as a timer for the failsafe
             }
+
+            if (gMarioState->action == ACT_SMW_TEXT) {
+                o->oDialogResponse = DIALOG_RESPONSE_NONE;
+                o->oDialogState++;
+                cur_obj_play_sound_2(SOUND_CUSTOM_SMW_MESSAGE);
+            }
             break;
 
         case DIALOG_STATUS_START_DIALOG:
             // Special check for Cap Switch cutscene since the cutscene itself
             // handles what dialog should use
+
             if (cutsceneTable == CUTSCENE_CAP_SWITCH_PRESS) {
                 if ((o->oDialogResponse = cutscene_object_without_dialog(cutsceneTable, o))) {
                     o->oDialogState++;

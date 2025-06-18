@@ -77,20 +77,20 @@ more to offer thee."))
 DEFINE_DIALOG(DIALOG_006, 1, 5, 95, 200, _("\
 Yo waddup. Bill Board\n\
 here, to welcome you\n\
-to Cosmolite 64. I\n\
-gotta message here\n\
+to Quagsire Cove. I\n\
+got a message here\n\
 from the creator saying:\n\
-There are 2 stars total.\n\
+There is 1 star total.\n\
 This is also my\n\
-submission to the\n\
-mario jams element\n\
-competition.\n\
-This is also my third\n\
-ever released rom hack\n\
-so I hope you enjoy.\n\
+submission to Rovert's\n\
+Decompetition.\n\
 \n\
-\n\
-Oh before I let you go\n\
+This is also my fourth\n\
+released rom hack, and\n\
+the prologue of my major\n\
+hack, Nuoh's Island, so\n\
+I hope you enjoy.\n\
+Oh, before I let you go,\n\
 I should mention some\n\
 key changes to Mario's\n\
 movement.\n\
@@ -124,13 +124,13 @@ Wall sliding has also\n\
 been added, making wall\n\
 jumps easier and more\n\
 consitent. Firsties are\n\
-Still a thing.\n\
-Also shout outs to\n\
+still a thing.\n\
+Also shoutouts to\n\
 Reonu for making\n\
 Reonu Cam, which\n\
 this hack uses.\n\
 \n\
-Oh and the pause menu\n\
+Oh, and the pause menu\n\
 has been updated to\n\
 now include multiple\n\
 ways to alter camera\n\
@@ -139,80 +139,226 @@ That is all for now,\n\
 just keep going ahead\n\
 to find the level."))
 
-DEFINE_DIALOG(DIALOG_007, 1, 5, 95, 200, _("\
-Mario, thanks for coming\n\
-on such short notice.\n\
-Thankfully, we managed\n\
-to get the whole team\n\
-out safely.\n\
-Unfortunately, that\n\
-traitor is still down\n\
-there harvesting the\n\
-power of the cosmolite\n\
-ore deposits.\n\
-I'm afraid that if you\n\
-don't go and get the\n\
-power stars back from\n\
-him, he'll do more\n\
-then cause earthquakes."))
+DEFINE_DIALOG(DIALOG_007, 1, 6, 95, 200, _("\
+Why stop at multiple\n\
+Mario's when you can\n\
+have multiple Mario\n\
+GAMES.\n\
+\n\
+\n\
+Controls are simple.\n\
+The joystick and D-Pad\n\
+move 2D mario, A to\n\
+Jump, B to run, R to\n\
+Spin Jump. C-Buttons\n\
+move the camera.\n\
+I based these controls\n\
+off of Mario Maker 2.\n\
+But the feel of Mario\n\
+should be closer to\n\
+the original Mario\n\
+World.\n\
+You may notice the blocks\n\
+are bigger then they\n\
+should be compared to\n\
+Mario.\n\
+\n\
+\n\
+My excuse is that the\n\
+sm64 collision system\n\
+is weird and does not\n\
+like small cubes."))
 
-DEFINE_DIALOG(DIALOG_008, 1, 6, 95, 200, _("\
-I can't believe we\n\
-trusted that boo!\n\
-He promised us safe\n\
-passage to the rare\n\
-earth element called\n\
-cosmolite.\n\
-But all he wanted\n\
-was for us to give\n\
-him a power star so\n\
-that he could become\n\
-more powerful."))
+DEFINE_DIALOG(DIALOG_008, 1, 5, 95, 200, _("\
+May 25th, 1365.\n\
+\n\
+Professor Petro Nuoh.\n\
+Field Research Journal.\n\
+\n\
+I've found an ancient\n\
+manuscript, one that\n\
+finally sheds light on\n\
+the location of one of\n\
+the ancient deities.\n\
+I'll copy it here to\n\
+ensure I have a copy\n\
+if needed...\n\
+\n\
+\n\
+9 deities remain alive.\n\
+Only when the primordial\n\
+dark rises again to\n\
+threaten the light, shall\n\
+the first be found...\n\
+Rooted in the magma core\n\
+of a ruined Lumiose. An\n\
+underground desert under\n\
+a frozen mountain, holds\n\
+the gate, but not the key.\n\
+The key is not enough, for\n\
+the city name must be\n\
+written.\n\
+\n\
+\n\
+But writing it backwards\n\
+shall reward a cursed\n\
+idol. A skull of bone\n\
+and iron, one of many in\n\
+that land.\n\
+7 warriors blessed under\n\
+starlight shall lead the\n\
+search, and awaken the\n\
+sleeping legends and\n\
+pierce the gathered evil.\n\
+Passage end.\n\
+\n\
+\n\
+\n\
+\n\
+Based on my knowledge,\n\
+Lumiose City was the\n\
+capital of Kalos, before\n\
+the Great Calamity wiped\n\
+it off every map.\n\
+It may have been nearly\n\
+a million years, but\n\
+the effects of getting\n\
+reset to the stone age\n\
+are still felt today.\n\
+Many before have tried\n\
+to find the region again,\n\
+but none so far have\n\
+succeeded in this quest.\n\
+\n\
+Still, I am positive\n\
+that my wife and I\n\
+can find it, and add\n\
+it back to the map.\n\
+\n\
+However, my illness is\n\
+growing worse, I fear\n\
+I may not be able to\n\
+find the lost deity\n\
+in time.\n\
+Regardless of that\n\
+I shall persist in\n\
+my effort to find\n\
+the island...\n\
+\n\
+Though, it's become\n\
+clear to me that I\n\
+am most certainly\n\
+not one of the star\n\
+warriors...\n\
+May 27th, 1365.\n\
+To whom it may consern,\n\
+If you are reading this,\n\
+then I have probably\n\
+departed this realm.\n\
+As of writing this,\n\
+my wife and I have\n\
+departed to what\n\
+geographically aligns\n\
+with old maps of Kalos.\n\
+No modern map shows\n\
+land in those regions,\n\
+but I am certain I'll\n\
+find something.\n\
+\n\
+I am less certain that\n\
+I'll live to solve\n\
+the entire mystery.\n\
+But, I shall do what I\n\
+can.\n\
+I leave my archives to\n\
+the archeologist who\n\
+finds it. I only ask\n\
+that you finish what\n\
+I started.\n\
+And may the stars\n\
+shine brightly upon\n\
+the 7 warriors.\n\
+\n\
+Fairwell."))
 
-DEFINE_DIALOG(DIALOG_009, 1, 5, 95, 200, _("\
-I'm still suprised\n\
-he caused that much\n\
-damage to the cave\n\
-system with that\n\
-earthquake..."))
+DEFINE_DIALOG(DIALOG_009, 1, 4, 95, 200, _("\
+Oh, happies! This must\n\
+be what that echo was\n\
+leading us to.\n\
+\n\
+Why? I do not know, but\n\
+this lost archive needs\n\
+to be studied closely.\n\
+\n\
+I shall stay here,\n\
+E. Gadd will want to\n\
+see all this.\n\
+You go on without me."))
 
 DEFINE_DIALOG(DIALOG_010, 1, 5, 95, 200, _("\
-whoa, your the Mario!\n\
-I've heard so much\n\
-about your adventures!\n\
-You and Luigi are\n\
-Amazing!\n\
-Oh? Why am I here?\n\
-Well, dad say's I'm\n\
-old enough to join\n\
-him on his adventures.\n\
+So... I ran out of\n\
+time to make anymore\n\
+of the town...\n\
 \n\
-Although I got stuck\n\
-with setting up the\n\
-tents while they\n\
-explored the cave.\n\
 \n\
-It's not much, but\n\
-all adventures have\n\
-to start somewhere!"))
-
-DEFINE_DIALOG(DIALOG_011, 1, 5, 95, 200, _("\
-Cosmolite is based on\n\
-the metal of the same\n\
-name from the Terraria\n\
-Calamity Mod.\n\
+Expect a post comp\n\
+update to greatly\n\
+expand the intro\n\
+for this hack.\n\
 "))
 
-DEFINE_DIALOG(DIALOG_012, 1, 5, 95, 200, _("\
-Welcome to the Frosty\n\
-Slide. As said before,\n\
-there are 3 stars here.\n\
-Star 1 is simply at the\n\
-bottom of the slide.\n\
-Star 2 is collecting all\n\
-5 silver stars on the\n\
-slide. And Star 3 is the\n\
-100 coin Star."))
+DEFINE_DIALOG(DIALOG_011, 1, 6, 95, 200, _("\
+Mario! It's been awhile,\n\
+has it not? As you may,\n\
+notice, I have received\n\
+a few modifications.\n\
+\n\
+\n\
+E. Gadd improved my\n\
+self-sufficiency and\n\
+tweaked my linguistic\n\
+capabilities, among\n\
+other things.\n\
+\n\
+I am still the same\n\
+Stuffwell you traveled\n\
+with prior, but I can\n\
+now do remote research\n\
+for E. Gadd.\n\
+\n\
+Now, for why I called\n\
+for your assistance.\n\
+The locals of this\n\
+town have reported\n\
+ghost sightings of\n\
+YOU!\n\
+You heard that\n\
+correctly, a ghost\n\
+that looks like you\n\
+is here, so it made\n\
+sense to have you\n\
+aid in this mystery.\n\
+I will aid you as\n\
+best as I can, just\n\
+lead the way. Oh and\n\
+I have been wanting\n\
+to say this again\n\
+for awhile...\n\
+BACK TO ADVENTURE!"))
+
+DEFINE_DIALOG(DIALOG_012, 1, 7, 95, 200, _("\
+My son likes to watch\n\
+the stars at night,\n\
+it's become a weekly\n\
+tradition that every\n\
+clear sky'd friday my\n\
+husband takes him to\n\
+the end of the dock.\n\
+You're probably here\n\
+for that ghost huh?\n\
+Well, I saw it enter\n\
+the cave at the end\n\
+of this beach."))
 
 DEFINE_DIALOG(DIALOG_013, 1, 5, 30, 200, _("\
 You've collected 100\n\
@@ -230,37 +376,94 @@ Do you want to Save?\n\
 \n\
 //You Bet//Not Now"))
 
-DEFINE_DIALOG(DIALOG_015, 1, 3, 95, 200, _("\
-Oh hi Mario, what are you\n\
-doing back here?\n\
+DEFINE_DIALOG(DIALOG_015, 1, 6, 95, 200, _("\
+To be honest with you,\n\
+I didn't really know much\n\
+about the stars until he\n\
+gained a fascination for\n\
+them.\n\
 \n\
-Actually, since you're here\n\
-I have some exciting\n\
-news!\n\
-...\n\
+I've sort of been\n\
+learning about them\n\
+alongside him. To say\n\
+the least, the sky is\n\
+actually pretty cool.\n\
 \n\
-\n\
-I'm a Chuckster!"))
+My wife sometimes joins\n\
+us, but she prefers to\n\
+stay near the house\n\
+because the wind on this\n\
+dock gets too cold for\n\
+her most nights."))
+
 
 DEFINE_DIALOG(DIALOG_016, 1, 3, 95, 200, _("\
 Like you're not even\n\
 subscribed? Like, just\n\
 go and do it already!"))
 
-DEFINE_DIALOG(DIALOG_017, 1, 3, 95, 200, _("\
-Just crouch on or ground\n\
-pound into the pipe to\n\
-leave."))
+DEFINE_DIALOG(DIALOG_017, 1, 6, 95, 200, _("\
+The stars are awesome\n\
+aren't they? The sky is\n\
+so clear tonight that\n\
+the star shaped\n\
+constellations from\n\
+Star Road are visible!\n\
+From what I've read,\n\
+those constellations\n\
+are actuallty various\n\
+Star Havens connected\n\
+to the greater Star\n\
+Road."))
 
-DEFINE_DIALOG(DIALOG_018, 1, 4, 30, 200, _("\
-I'm sleeping because...\n\
-...I'm sleepy. I don't\n\
-like being disturbed.\n\
-Please walk quietly."))
+DEFINE_DIALOG(DIALOG_018, 1, 6, 95, 200, _("\
+My scans of that\n\
+ghost shows no signs\n\
+of the usual ghost\n\
+typing that Boo's and\n\
+similar species possess.\n\
+\n\
+Additionally, its visual\n\
+appearance mimics yours.\n\
+I also think it is\n\
+trying to lead us\n\
+somewhere.\n\
+\n\
+Based on this, I have\n\
+concluded that it is\n\
+actually an echo ghost.\n\
+A once alive soul that\n\
+mimics the appearance\n\
+of a living entity.\n\
+They can be helpful or\n\
+malevolent in nature.\n\
+So who this echo is,\n\
+or what they want is\n\
+unknown for now...\n\
+\n\
+Based on past records,\n\
+it would have attacked\n\
+someone by now if it\n\
+wished us harm, so it\n\
+must want to help us.\n\
+\n\
+It would be best to\n\
+follow it. But my scans\n\
+indicate that in order\n\
+to get across this\n\
+canyon, we must work\n\
+with the echo."))
 
-DEFINE_DIALOG(DIALOG_019, 1, 2, 30, 200, _("\
-Shhh! Please walk\n\
-quietly in the hallway!"))
+DEFINE_DIALOG(DIALOG_019, 1, 3, 95, 200, _("\
+Press L to switch\n\
+between regular and\n\
+echo Mario.\n\
+Fun Fact: C-up has\n\
+been re-enabled.\n\
+\n\
+Try it.\n\
+I dare you.\n\
+"))
 
 DEFINE_DIALOG(DIALOG_020, 1, 6, 95, 150, _("\
 Dear Mario:\n\
@@ -497,9 +700,9 @@ course.\n\
 //--The Big Bob-omb"))
 
 DEFINE_DIALOG(DIALOG_040, 1, 3, 30, 200, _("\
-Warning!\n\
-Cold, Cold Crevasse\n\
-Below!"))
+I suggest moving the\n\
+camera down a bit.\n\
+Makes reading easier."))
 
 DEFINE_DIALOG(DIALOG_041, 1, 3, 30, 200, _("\
 I win! You lose!\n\

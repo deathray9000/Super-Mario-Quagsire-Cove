@@ -308,7 +308,7 @@ s32 mario_ready_to_speak(void) {
     s32 isReadyToSpeak = FALSE;
 
     if ((gMarioState->action == ACT_WAITING_FOR_DIALOG || actionGroup == ACT_GROUP_STATIONARY
-         || actionGroup == ACT_GROUP_MOVING)
+         || actionGroup == ACT_GROUP_MOVING || gMarioState->action == ACT_SMW_TEXT)
         && (!(gMarioState->action & (ACT_FLAG_RIDING_SHELL | ACT_FLAG_INVULNERABLE))
             && gMarioState->action != ACT_FIRST_PERSON)) {
         isReadyToSpeak = TRUE;
@@ -327,7 +327,7 @@ s32 set_mario_npc_dialog(s32 actionArg) {
     s32 dialogState = MARIO_DIALOG_STATUS_NONE;
 
     // in dialog
-    if (gMarioState->action == ACT_READING_NPC_DIALOG) {
+    if (gMarioState->action == ACT_READING_NPC_DIALOG || gMarioState->action == ACT_SMW_TEXT) {
         if (gMarioState->actionState < 8) {
             dialogState = MARIO_DIALOG_STATUS_START; // starting dialog
         }
@@ -340,7 +340,9 @@ s32 set_mario_npc_dialog(s32 actionArg) {
         }
     } else if (actionArg != MARIO_DIALOG_STOP && mario_ready_to_speak()) {
         gMarioState->usedObj = gCurrentObject;
-        set_mario_action(gMarioState, ACT_READING_NPC_DIALOG, actionArg);
+        if (!(gMarioState->action & ACT_FLAG_2D)) {
+            set_mario_action(gMarioState, ACT_READING_NPC_DIALOG, actionArg);
+        }
         dialogState = MARIO_DIALOG_STATUS_START; // starting dialog
     }
 
@@ -432,7 +434,6 @@ s32 launch_mario_until_land(struct MarioState *m, s32 endAction, s32 animation, 
 }
 
 s32 act_enter_pipe(struct MarioState *m) {
-
     if (m->prevAction == ACT_CROUCHING) {
         set_mario_animation(m, MARIO_ANIM_STOP_CROUCHING);
         if (m->actionState == 10) {
@@ -455,6 +456,7 @@ s32 act_enter_pipe(struct MarioState *m) {
                 m->marioObj->header.gfx.pos[0] = m->usedObj->oObjF4->oPosX;
                 m->marioObj->header.gfx.pos[1] = m->usedObj->oObjF4->oPosY;
                 m->marioObj->header.gfx.pos[2] = m->usedObj->oObjF4->oPosZ;
+                m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
 
                 set_mario_action(m, ACT_EXIT_PIPE, 0);
                 return FALSE;
@@ -485,6 +487,7 @@ s32 act_enter_pipe(struct MarioState *m) {
                 m->marioObj->header.gfx.pos[0] = m->usedObj->oObjF4->oPosX;
                 m->marioObj->header.gfx.pos[1] = m->usedObj->oObjF4->oPosY;
                 m->marioObj->header.gfx.pos[2] = m->usedObj->oObjF4->oPosZ;
+                m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
 
                 set_mario_action(m, ACT_EXIT_PIPE, 0);
                 return FALSE;
@@ -497,10 +500,52 @@ s32 act_enter_pipe(struct MarioState *m) {
 
 s32 act_exit_pipe(struct MarioState *m) {
     u8 timer_delay;
+    f32 dist;
     if (m->actionState == 1) {
         timer_delay = 15;
+    } else if (m->actionState != 2) {
+        timer_delay = 0;
+        if (m->actionTimer == 0) {
+            update_cam_angle_to_mario();
+            m->PMeter = 0;
+        }
+
+        uintptr_t *behaviorAddr = segmented_to_virtual(bhvOGpipe);
+        struct ObjectNode *listHead = &gObjectLists[get_object_list_from_behavior(behaviorAddr)];
+        struct Object *obj = (struct Object *) listHead->next;
+        struct Object *Pipe = NULL;
+        f32 minDist = 0x20000;
+    
+        while (obj != (struct Object *) listHead) {
+            if (obj->behavior == behaviorAddr
+                && obj->activeFlags != ACTIVE_FLAG_DEACTIVATED
+            ) {
+                f32 objDist = dist_between_objects(m->marioObj, obj);
+                if (objDist < minDist) {
+                    Pipe = obj;
+                    minDist = objDist;
+                }
+            }
+    
+            obj = (struct Object *) obj->header.next;
+        }
+
+        if (GET_BPARAM1(Pipe->oBehParams) >= 4) {
+            m->actionState = 2;
+
+            struct Object *smw = spawn_object(m->marioObj, MODEL_SMW_MARIO, bhvSMWMario);
+            SET_BPARAM1(smw->oBehParams, m->playerID);
+
+            m->faceAngle[1] = Pipe->oFaceAngleYaw;
+            smw->oFaceAngleYaw = m->faceAngle[1];
+            smw->oPosX += 10 * sins(gMarioState->faceAngle[1] - DEGREES(90));
+            smw->oPosZ += 10 * coss(gMarioState->faceAngle[1] - DEGREES(90));
+
+            m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
+        }
     } else {
         timer_delay = 0;
+        m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
     }
 
     if (m->actionTimer == 0) {
@@ -524,7 +569,11 @@ s32 act_exit_pipe(struct MarioState *m) {
 
     if (m->actionState != 1) {
         if (m->actionTimer == 20) {
-            set_mario_action(m, ACT_IDLE, m->actionArg);
+            if (m->actionState == 2) {
+                set_mario_action(m, ACT_SMW_WALK, m->actionArg);
+            } else {
+                set_mario_action(m, ACT_IDLE, m->actionArg);
+            }
         }
     } else {
         if (m->actionTimer >= (timer_delay + 25)) {
@@ -816,9 +865,9 @@ s32 common_death_handler(struct MarioState *m, s32 animation, s32 frameToDeathWa
     s32 animFrame = set_mario_animation(m, animation);
     m->actionTimer += 1;
 
-    if (!coop_delete_mario(m)) {
+    //if (!coop_delete_mario(m)) {
         level_trigger_warp(m, WARP_OP_DEATH);
-    }
+    //}
     
     m->marioBodyState->eyeState = MARIO_EYES_DEAD;
     stop_and_set_height_to_floor(m);

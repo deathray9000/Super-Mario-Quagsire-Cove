@@ -81,15 +81,16 @@ enum DialogSpeakers {
     WIGLR,
     YOSHI,
     WOOP,   // Wooper speeking
-    QUAG    // quagsire speeking
+    QUAG,   // quagsire speeking
+    STUFF   // stuffwell (or anyother partners in time character) speeking
 };
 
 #define _ 0xFF
 
 u8 sDialogSpeaker[] = {
     //       0      1      2      3      4      5      6      7      8      9
-    /* 0*/ _,     _,     _,     _,     _,     _,     _,     QUAG,  QUAG,  QUAG,
-    /* 1*/ WOOP,  _,     _,     _,     _,     QUAG,  QUAG,  _,     _,     _,
+    /* 0*/ _,     _,     _,     _,     _,     _,     _,     _,     _,     STUFF,
+    /* 1*/ _,     STUFF, QUAG,  _,     _,     QUAG,  _,     WOOP,  STUFF, _,
     /* 2*/ _,     BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1, BOWS1,
     /* 3*/ _,     _,     _,     _,     _,     _,     _,     TUXIE, _,     _,
     /* 4*/ _,     KOOPA, _,     _,     _,     _,     _,     BOMB,  _,     _,
@@ -124,6 +125,7 @@ s32 sDialogSpeakerVoice[] = {
     SOUND_GENERAL_YOSHI_TALK,
     SOUND_ACTION_WOOPER_TALKING,
     SOUND_ACTION_QUAG_TALKING,
+    SOUND_CUSTOM_STUFFWELL,
 #if defined(VERSION_JP) || defined(VERSION_US)
     NO_SOUND,
     NO_SOUND,
@@ -2171,11 +2173,11 @@ void play_dialog_sound(u8 dialogID) {
     }
 
     // "You've stepped on the (Wing|Metal|Vanish) Cap Switch"
-    if (dialogID == DIALOG_018
-     || dialogID == DIALOG_019
-     || dialogID == DIALOG_020) {
-        play_puzzle_jingle();
-    }
+    // if (dialogID == DIALOG_018
+    //  || dialogID == DIALOG_019
+    //  || dialogID == DIALOG_020) {
+    //     play_puzzle_jingle();
+    // }
 }
 
 /**

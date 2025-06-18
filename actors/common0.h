@@ -406,4 +406,24 @@ extern Gfx Silver_Star_material_revert_render_settings[];
 #include "power_flowers/geo_header.h"
 #include "power_flowers/anim_header.h"
 
+//smw_mario
+#include "smw_mario/geo_header.h"
+
+//smw_enemies_small
+#include "smw_enemies_small/geo_header.h"
+
+//smw_particles
+#include "smw_particles/geo_header.h"
+
+//smw_blocks
+#include "smw_blocks/geo_header.h"
+extern const Collision smw_blocks_collision[];
+
+
+//on_off_block
+#include "on_off_block/geo_header.h"
+#include "on_off_switch/geo_header.h"
+extern const Collision on_off_switch_collision[];
+
+
 #endif

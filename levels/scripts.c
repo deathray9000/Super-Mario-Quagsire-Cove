@@ -213,6 +213,12 @@ const LevelScript script_func_global_1[] = {
     LOAD_MODEL_FROM_GEO(MODEL_QUAGSIRE,      quagsire_geo),
     LOAD_MODEL_FROM_GEO(MODEL_STUFFWELL,      Stuffwell_geo),
     LOAD_MODEL_FROM_GEO(MODEL_POWER_FLOWERS,      power_flowers_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SMW_MARIO,      smw_mario_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SMW_ENEMIES_SMALL,      smw_enemies_small_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SMW_PARTICLES,      smw_particles_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_SMW_BLOCKS,      smw_blocks_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_ON_OFF_BLOCK,      on_off_block_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_ON_OFF_SWITCH,      on_off_switch_geo),
     RETURN(),
 };
 

@@ -836,3 +836,4 @@ void obj_spit_fire(s16 relativePosX, s16 relativePosY, s16 relativePosZ, f32 sca
 #include "behaviors/cosmic_manager.inc.c"
 #include "behaviors/cosmic_mario.inc.c"
 #include "behaviors/coop_objects.inc.c"
+#include "behaviors/smw_objects.inc.c"

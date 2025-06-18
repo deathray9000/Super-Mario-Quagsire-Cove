@@ -462,6 +462,7 @@ struct MarioState {
              u8 controlMode;
              u8 propel : 1;
              u8 STOR_State;
+             s8 PMeter;
     // -- HackerSM64 MarioState fields end --
 };
 

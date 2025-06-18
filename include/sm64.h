@@ -258,7 +258,7 @@ enum MarioActionFlags {
     ACT_FLAG_PAUSE_EXIT                 = /* 0x08000000 */ (1 << 27),
     ACT_FLAG_SWIMMING_OR_FLYING         = /* 0x10000000 */ (1 << 28),
     ACT_FLAG_WATER_OR_TEXT              = /* 0x20000000 */ (1 << 29),
-    ACT_FLAG_UNUSED                     = /* 0x40000000 */ (1 << 30),
+    ACT_FLAG_2D                         = /* 0x40000000 */ (1 << 30),
     ACT_FLAG_THROWING                   = /* 0x80000000 */ (1 << 31),
 };
 
@@ -705,6 +705,17 @@ enum MarioActionFlags {
 
 // group 0x1C0: custom actions
 // 0x1C0 - 0x1FF
+#define ACT_SMW_DUCK                0x400001C0 // (0x1C0 | ACT_FLAG_2D)
+#define ACT_SMW_WALK                0x400001C1 // (0x1C1 | ACT_FLAG_2D)
+#define ACT_SMW_JUMP                0x420009C2 // (0x1C2 | ACT_FLAG_2D | ACT_FLAG_CONTROL_JUMP_HEIGHT | ACT_FLAG_AIR)
+#define ACT_SMW_SPIN_JUMP           0x420009C3 // (0x1C3 | ACT_FLAG_2D | ACT_FLAG_CONTROL_JUMP_HEIGHT | ACT_FLAG_AIR)
+#define ACT_SMW_SKID                0x400001C4 // (0x1C4 | ACT_FLAG_2D)
+#define ACT_SMW_DUCK_JUMP           0x420009C5 // (0x1C5 | ACT_FLAG_2D | ACT_FLAG_CONTROL_JUMP_HEIGHT | ACT_FLAG_AIR)
+#define ACT_SMW_PIPE                0x400001C6 // (0x1C6 | ACT_FLAG_2D)
+#define ACT_SMW_DEATH               0x400201C7 // (0x1C7 | ACT_FLAG_2D | ACT_FLAG_INVULNERABLE)
+#define ACT_SMW_TEXT                0x400001C8 // (0x1C8 | ACT_FLAG_2D)
+#define ACT_SMW_FALL_AFTER_STAR_GRAB 0x400001C9 // (0x1C9 | ACT_FLAG_2D)
+#define ACT_SMW_VICTORY             0x400001CA // (0x1CA | ACT_FLAG_2D)
 
 /*
  this input mask is unused by the controller,

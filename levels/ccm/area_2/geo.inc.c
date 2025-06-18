@@ -3,9 +3,8 @@
 const GeoLayout ccm_area_2_geo[] = {
 	GEO_NODE_START(),
 	GEO_OPEN_NODE(),
-		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, -142, -1488, -79, ccm_dl_Level__visual__001_mesh_layer_1),
-		GEO_TRANSLATE_NODE_WITH_DL(LAYER_TRANSPARENT, -28, -1512, -97, ccm_dl_Level__visual_temp__001_mesh_layer_5),
-		GEO_TRANSLATE_NODE_WITH_DL(LAYER_TRANSPARENT, -28, -1512, -97, ccm_dl_star_feild_mesh_layer_5),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, 6149, -1071, -930, ccm_dl_flower_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(LAYER_OPAQUE, 6149, -1071, -930, ccm_dl_stage_mesh_layer_1),
 	GEO_CLOSE_NODE(),
 	GEO_RETURN(),
 };
@@ -16,7 +15,7 @@ const GeoLayout ccm_area_2[] = {
 		GEO_OPEN_NODE(),
 			GEO_NODE_ORTHO(100.0000),
 			GEO_OPEN_NODE(),
-				GEO_BACKGROUND_COLOR(0x0001),
+				GEO_BACKGROUND(BACKGROUND_OCEAN_NIGHT, geo_skybox_main),
 			GEO_CLOSE_NODE(),
 		GEO_CLOSE_NODE(),
 		GEO_ZBUFFER(1),
@@ -32,7 +31,6 @@ const GeoLayout ccm_area_2[] = {
 			GEO_CLOSE_NODE(),
 		GEO_CLOSE_NODE(),
 		GEO_DISPLAY_LIST(LAYER_OPAQUE, ccm_dl_material_revert_render_settings),
-		GEO_DISPLAY_LIST(LAYER_TRANSPARENT, ccm_dl_material_revert_render_settings),
 	GEO_CLOSE_NODE(),
 	GEO_END(),
 };

@@ -1,0 +1,17 @@
+extern const GeoLayout on_off_switch_switch_opt1[];
+extern const GeoLayout on_off_switch_geo[];
+extern Lights1 on_off_switch_on_lights;
+extern Lights1 on_off_switch_off_lights;
+extern u8 on_off_switch_on_switch_ci4[];
+extern u8 on_off_switch_on_switch_ci4_pal_rgba16[];
+extern u8 on_off_switch_off_switch_ci4[];
+extern u8 on_off_switch_off_switch_ci4_pal_rgba16[];
+extern Vtx on_off_switch_geo_mesh_layer_1_vtx_0[48];
+extern Gfx on_off_switch_geo_mesh_layer_1_tri_0[];
+extern Gfx mat_on_off_switch_on[];
+extern Gfx mat_revert_on_off_switch_on[];
+extern Gfx mat_on_off_switch_off[];
+extern Gfx mat_revert_on_off_switch_off[];
+extern Gfx on_off_switch_geo_mesh_layer_1[];
+extern Gfx on_off_switch_geo_mesh_layer_1_mat_override_off_0[];
+extern Gfx on_off_switch_material_revert_render_settings[];

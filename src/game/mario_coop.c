@@ -9,6 +9,7 @@
 #include "engine/math_util.h"
 #include "game_init.h"
 #include "camera.h"
+#include "save_file.h"
 /*
 
 mario_coop.c
@@ -51,6 +52,13 @@ Returns the MarioState of the spawned Mario, NULL if Mario count is maxed out.
 struct MarioState * coop_spawn_mario(Vec3f pos, int control_mode) {
     for (int i = 0; i < COOP_MARIO_STATES_MAX; i ++) {
         // Search for a uninitialized mario
+
+        if (gWarpCheckpoint.warpNode == 0x0D) { // #TODO hard coded spawn location based on obtained checkpoint
+            pos[0] = 246;
+            pos[1] = -644;
+            pos[2] = 1156;
+        }
+
         if (gMarioStates[i].marioObj == NULL) {
             return coop_spawn_mario_with_id(pos,i,control_mode);
         }
@@ -72,6 +80,7 @@ void coop_give_control_to_next(void) {
 
     gMarioState=&gMarioStates[gCoopActiveMarioIndex];
     gMarioObject=gMarioStates[gCoopActiveMarioIndex].marioObj;
+    update_cam_angle_to_mario();
 
     #ifdef COOP_SNAPPY_SWAP_CAMERA
         reset_camera(gCurrentArea->camera);

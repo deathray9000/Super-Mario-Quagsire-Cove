@@ -92,7 +92,7 @@ FIXLIGHTS ?= 1
 
 DEBUG_MAP_STACKTRACE_FLAG := -D DEBUG_MAP_STACKTRACE
 
-TARGET := Cosmolite_64
+TARGET := Quagsire_Cove
 
 
 # GRUCODE - selects which RSP microcode to use.
@@ -221,7 +221,7 @@ ifeq ($(NON_MATCHING),1)
 endif
 
 
-TARGET_STRING := Cosmolite_64
+TARGET_STRING := Quagsire_Cove
 
 # UNF - whether to use UNFLoader flashcart library
 #   1 - includes code in ROM

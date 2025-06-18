@@ -38,6 +38,12 @@ void celeb_star_act_spin_around_mario(void) {
 }
 
 void celeb_star_act_face_camera(void) {
+    if (gMarioState->action & ACT_FLAG_2D) {
+        o->oF8 = gMarioObject->header.gfx.angle[1] - 0x4000;
+        o->oPosX = gMarioState->pos[0] + (5 * sins(o->oF8 + 0x4000));
+        o->oPosZ = gMarioState->pos[2] + (5 * coss(o->oF8 + 0x4000));
+    }
+
     if (o->oTimer < 10) {
         if (o->oCelebStarIsBowserKey == FALSE) {
             cur_obj_scale((f32) o->oTimer / 10.0f);
@@ -47,6 +53,9 @@ void celeb_star_act_face_camera(void) {
         o->oFaceAngleYaw += 0x1000;
     } else {
         o->oFaceAngleYaw = gMarioObject->header.gfx.angle[1];
+        if (gMarioState->action & ACT_FLAG_2D) {
+            o->oFaceAngleYaw -= 0x4000;
+        }
     }
 
     if (o->oTimer == 59) {

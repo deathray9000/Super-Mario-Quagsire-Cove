@@ -550,6 +550,7 @@ extern const BehaviorScript bhvNormalPiranha[];
 extern const BehaviorScript bhvOGpipe[];
 extern const BehaviorScript bhvStarStatue[];
 extern const BehaviorScript bhvQuagsire[];
+extern const BehaviorScript bhvSMWMario[];
 extern const BehaviorScript bhvStuffwell[];
 extern const BehaviorScript bhvPowerFlowers[];
 extern const BehaviorScript bhvCosmicManager[];
@@ -560,5 +561,16 @@ extern const BehaviorScript bhvCountPlate[];
 extern const BehaviorScript bhvWeightPlateNumber[];
 extern const BehaviorScript bhvRaisePlatform[];
 extern const BehaviorScript bhvDoubleCherry[];
-
+extern const BehaviorScript bhvSMWgoomba[];
+extern const BehaviorScript bhvSMWParticlekick[];
+extern const BehaviorScript bhvSMWParticlepoof[];
+extern const BehaviorScript bhvSMWParticlestar[];
+extern const BehaviorScript bhvSMWninji[];
+extern const BehaviorScript bhvSMWMessageBlock[];
+extern const BehaviorScript bhvSMWcoin[];
+extern const BehaviorScript bhvSMWTurnBlock[];
+extern const BehaviorScript bhvSMWTurnBlockSpin[]; 
+extern const BehaviorScript bhvSMWParticleShatter[];
+extern const BehaviorScript bhvSMWOnOffSwitch[];
+extern const BehaviorScript bhvOnOffBlock[];
 #endif // BEHAVIOR_DATA_H

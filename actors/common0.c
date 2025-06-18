@@ -128,3 +128,24 @@ UNUSED static const u64 binid_28 = 28;
 #include "power_flowers/anims/data.inc.c"
 #include "power_flowers/anims/table.inc.c"
 UNUSED static const u64 binid_29 = 29;
+
+#include "smw_mario/model.inc.c"
+UNUSED static const u64 binid_30 = 30;
+
+#include "smw_enemies_small/model.inc.c"
+UNUSED static const u64 binid_31 = 31;
+
+#include "smw_particles/model.inc.c"
+UNUSED static const u64 binid_32 = 32;
+
+#include "smw_blocks/model.inc.c"
+#include "smw_blocks/collision.inc.c"
+UNUSED static const u64 binid_33 = 33;
+
+#include "on_off_block/model.inc.c"
+UNUSED static const u64 binid_34 = 34;
+
+
+#include "on_off_switch/model.inc.c"
+#include "on_off_switch/collision.inc.c"
+UNUSED static const u64 binid_35 = 35;

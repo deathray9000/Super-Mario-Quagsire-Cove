@@ -511,16 +511,16 @@
 #define MODEL_FISH_SHADOW                 0xBA        // fish_shadow_geo - fish with shadow, unused
 #define MODEL_BUTTERFLY                   0xBB        // butterfly_geo
 #define MODEL_BLACK_BOBOMB                0xBC        // black_bobomb_geo
-// find me
+#define MODEL_SMW_MARIO                   0xBD        // smw_mario_geo
 #define MODEL_KOOPA_SHELL                 0xBE        // koopa_shell_geo
 #define MODEL_KOOPA_WITHOUT_SHELL         0xBF        // koopa_without_shell_geo
 #define MODEL_GOOMBA                      0xC0        // goomba_geo
 #define MODEL_SEAWEED                     0xC1        // seaweed_geo
 #define MODEL_AMP                         0xC2        // dAmpGeo
 #define MODEL_BOBOMB_BUDDY                0xC3        // bobomb_buddy_geo
-// find me
-// find me
-// find me
+#define MODEL_SMW_ENEMIES_SMALL           0xC4        // smw_enemies_small_geo
+#define MODEL_SMW_PARTICLES               0xC5        // smw_particles
+#define MODEL_SMW_BLOCKS                  0xC6        // smw_blocks
 #define MODEL_SSL_TOX_BOX                 0xC7        // ssl_geo_000630
 #define MODEL_BOWSER_KEY_CUTSCENE         0xC8        // bowser_key_cutscene_geo
 #define MODEL_DL_CANNON_LID               0xC9        // cannon_closed_seg8_dl_080048E0
@@ -533,7 +533,7 @@
 #define MODEL_CASTLE_STAR_DOOR_30_STARS   0xD0        // castle_geo_000F00
 #define MODEL_CASTLE_STAR_DOOR_50_STARS   0xD1        // castle_geo_000F00
 #define MODEL_CCM_SNOWMAN_BASE            0xD2        // ccm_geo_0003F0
-// find me
+#define MODEL_ON_OFF_BLOCK                0xD3        // on_off_block_geo
 #define MODEL_1UP                         0xD4        // mushroom_1up_geo
 #define MODEL_CASTLE_STAR_DOOR_8_STARS    0xD5        // castle_geo_000F00
 #define MODEL_CASTLE_STAR_DOOR_70_STARS   0xD6        // castle_geo_000F00
@@ -577,6 +577,7 @@
 #define MODEL_CASTLE_GROUNDS_WARP_PIPE            MODEL_LEVEL_GEOMETRY_16   // warp_pipe_geo
 
 // Coop objects
+#define MODEL_ON_OFF_SWITCH                       0xFC
 #define MODEL_DOUBLE_CHERRY                       0xFD
 #define MODEL_EXAMPLE_SEESAW                      0xFE
 #define MODEL_RAISE_PLATFORM                      0xFF

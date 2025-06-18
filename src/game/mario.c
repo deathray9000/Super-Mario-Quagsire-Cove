@@ -22,6 +22,7 @@
 #include "mario_actions_object.h"
 #include "mario_actions_stationary.h"
 #include "mario_actions_submerged.h"
+#include "mario_actions_custom.h"
 #include "mario_misc.h"
 #include "mario_step.h"
 #include "memory.h"
@@ -1624,7 +1625,7 @@ u32 update_and_return_cap_flags(struct MarioState *m) {
     u32 flags = m->flags;
     u32 action;
 
-    if (m->capTimer > 0) {
+    if (m->capTimer > 0) { 
         action = m->action;
 
         if ((m->capTimer <= 60)
@@ -1700,8 +1701,13 @@ void mario_update_hitbox_and_cap_model(struct MarioState *m) {
     // Short hitbox for crouching/crawling/etc.
     if (m->action & ACT_FLAG_SHORT_HITBOX) {
         m->marioObj->hitboxHeight = 100.0f;
+        m->marioObj->hurtboxHeight = 100.0f;
+    } else if (m->action == ACT_SMW_DUCK || m->action == ACT_SMW_DUCK_JUMP) {
+        m->marioObj->hitboxHeight = 80.0f;
+        m->marioObj->hurtboxHeight = 80.0f;
     } else {
         m->marioObj->hitboxHeight = 160.0f;
+        m->marioObj->hurtboxHeight = 160.0f;
     }
 
     if ((m->flags & MARIO_TELEPORTING) && (m->fadeWarpOpacity != MODEL_STATE_MASK)) {
@@ -1775,8 +1781,17 @@ s32 execute_mario_action(struct MarioState *m) {
             startedBenchmark = TRUE;
         }
 #endif
-
-        m->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
+        
+        if (m->action & ACT_FLAG_2D) {
+            m->marioObj->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
+            m->flags &= ~MARIO_SPECIAL_CAPS;
+        } else {
+            m->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
+            if (m->playerID != 0) {
+                m->flags |= MARIO_VANISH_CAP;
+            }
+        }
+       
         mario_reset_bodystate(m);
         update_mario_inputs(m);
 
@@ -1806,6 +1821,13 @@ s32 execute_mario_action(struct MarioState *m) {
                 case ACT_GROUP_CUTSCENE:   inLoop = mario_execute_cutscene_action(m);   break;
                 case ACT_GROUP_AUTOMATIC:  inLoop = mario_execute_automatic_action(m);  break;
                 case ACT_GROUP_OBJECT:     inLoop = mario_execute_object_action(m);     break;
+                case ACT_GROUP_CUSTOM:
+                    if (m == gMarioState || m->controlMode == COOP_CM_ALL_ACTIVE) {
+                        inLoop = mario_execute_custom_action(m, 1); 
+                    } else {
+                        inLoop = mario_execute_custom_action(m, 0); 
+                    }
+                    break;
             }
         }
 

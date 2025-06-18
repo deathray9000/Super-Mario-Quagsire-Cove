@@ -3090,9 +3090,93 @@ void update_lakitu(struct Camera *c) {
 void update_cam_angle_to_mario(void) {
     s8DirModeBaseYaw = atan2s(gMarioObject->oPosZ - gLakituState.curPos[2], gMarioObject->oPosX - gLakituState.curPos[0]);
     s8DirModeBaseYaw += DEGREES(180);
-    //s8DirModeBaseYaw = snap_to_45_degrees(s8DirModeBaseYaw);
+    s8DirModeBaseYaw = snap_to_45_degrees(s8DirModeBaseYaw);
 }
 
+#define CAM_BOX 350
+void Handle_2D_Cam(struct Camera *c) {
+    Vec3f target_focus;
+    Vec3f target_pos;
+
+    f32 cameraSpeed = set_camera_speed();
+    u16 zoom = 1500;
+
+    vec3f_copy(target_pos, gMarioState->pos);
+
+    if (c->cutscene != CUTSCENE_NONE) {
+        sYawSpeed = 0;
+        play_cutscene(c);
+        sFramesSinceCutsceneEnded = 0;
+    } else {
+        // Clear the recent cutscene after 8 frames
+        if (gRecentCutscene != CUTSCENE_NONE && sFramesSinceCutsceneEnded < 8) {
+            sFramesSinceCutsceneEnded++;
+            if (sFramesSinceCutsceneEnded >= 8) {
+                gRecentCutscene = CUTSCENE_NONE;
+                sFramesSinceCutsceneEnded = 0;
+            }
+        }
+
+        if (gPlayer1Controller->buttonDown & R_CBUTTONS) {
+            sPanDistance += 3 * cameraSpeed;
+        } else if (gPlayer1Controller->buttonDown & L_CBUTTONS) {
+            sPanDistance -= 3 * cameraSpeed;
+        }
+
+        if (gPlayer1Controller->buttonDown & U_CBUTTONS) {
+            sCannonYOffset += 3 * cameraSpeed;
+        } else if (gPlayer1Controller->buttonDown & D_CBUTTONS) {
+            sCannonYOffset -= 3 * cameraSpeed;
+        }
+
+        if (sPanDistance > CAM_BOX) {
+            sPanDistance = CAM_BOX;
+        } else if (sPanDistance < -CAM_BOX) {
+            sPanDistance = -CAM_BOX;
+        }
+
+        if (sCannonYOffset > CAM_BOX) {
+            sCannonYOffset = CAM_BOX;
+        } else if (sCannonYOffset < -CAM_BOX) {
+            sCannonYOffset = -CAM_BOX;
+        }
+
+        if (gPlayer1Controller->buttonDown & (Z_TRIG | L_TRIG) || gMarioState->action == ACT_SMW_PIPE) {
+            sCannonYOffset = 0;
+            sPanDistance = 0;
+        }
+    }
+
+    if (gMarioState->action == ACT_SMW_VICTORY) {
+        zoom = 750;
+        sCannonYOffset = 0;
+        sPanDistance = 0;
+    }
+
+    target_pos[0] += sPanDistance * sins(gMarioState->faceAngle[1]);
+    target_pos[1] += sCannonYOffset + 200;
+    target_pos[2] += sPanDistance * coss(gMarioState->faceAngle[1]);
+
+    vec3f_copy(target_focus, target_pos);
+
+    target_focus[0] -= 5 * gMarioState->forwardVel * sins(gMarioState->faceAngle[1] - DEGREES(90));
+    target_focus[2] -= 5 * gMarioState->forwardVel * sins(gMarioState->faceAngle[1] - DEGREES(90));
+
+    target_pos[0] += zoom * sins(gMarioState->faceAngle[1] - DEGREES(90));
+    target_pos[2] += zoom * coss(gMarioState->faceAngle[1] - DEGREES(90));
+
+    vec3f_copy(gLakituState.goalPos, target_pos);
+    vec3f_copy(gLakituState.goalFocus, target_focus);
+
+    update_lakitu(c);
+
+    vec3f_copy(c->pos, target_pos);
+    vec3f_copy(c->focus, target_focus);
+
+    start_cutscene(c, get_cutscene_from_mario_status(c));
+
+};
+#undef CAM_BOX
 
 /**
  * The main camera update function.
@@ -3102,6 +3186,17 @@ void update_camera(struct Camera *c) {
     PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     gCamera = c;
     update_camera_hud_status(c);
+    
+    if (gMarioState->action == ACT_ENTER_PIPE || gMarioState->action == ACT_EXIT_PIPE) {
+        sCannonYOffset = 0;
+        sPanDistance = 0;
+    }
+
+    if (gMarioState->action & ACT_FLAG_2D) {
+        Handle_2D_Cam(c);
+        return;
+    }
+
     if (c->cutscene == CUTSCENE_NONE
 #ifdef PUPPYCAM
         && !gPuppyCam.enabled
@@ -4028,6 +4123,10 @@ s32 update_camera_hud_status(struct Camera *c) {
     }
     if (gCameraMovementFlags & CAM_MOVE_C_UP_MODE) {
         status |= CAM_STATUS_C_UP;
+    }
+
+    if (gMarioState->action & ACT_FLAG_2D) {
+        status = CAM_STATUS_2D;
     }
     set_hud_camera_status(status);
     return status;
@@ -8846,7 +8945,7 @@ void cutscene_dialog_move_mario_shoulder(struct Camera *c) {
     s16 pitch, yaw;
     Vec3f focus, pos;
 
-    if (!(gMarioState->input & INPUT_NONZERO_ANALOG)) {
+    if (!(gMarioState->input & INPUT_NONZERO_ANALOG) || gMarioState->action == ACT_SMW_TEXT) {
         
         scale_along_line(focus, sCutsceneVars[9].point, sMarioCamState->pos, 0.7f);
         vec3f_get_dist_and_angle(c->pos, focus, &dist, &pitch, &yaw);
